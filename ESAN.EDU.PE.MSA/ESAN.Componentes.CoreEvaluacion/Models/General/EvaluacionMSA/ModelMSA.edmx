@@ -1,0 +1,253 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SisEdutiva_prodModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Actor">
+          <Key>
+            <PropertyRef Name="IdActor" />
+          </Key>
+          <Property Name="IdActor" Type="int" Nullable="false" />
+          <Property Name="Codigo" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Usuario" Type="varchar" MaxLength="100" />
+          <Property Name="Contrasena" Type="varchar" MaxLength="100" />
+          <Property Name="Paterno" Type="varchar" MaxLength="50" />
+          <Property Name="Materno" Type="varchar" MaxLength="50" />
+          <Property Name="Nombres" Type="varchar" MaxLength="50" />
+          <Property Name="NombreCorto" Type="varchar" MaxLength="20" />
+          <Property Name="NombreCompleto" Type="varchar" MaxLength="150" />
+          <Property Name="IdTenor" Type="int" />
+          <Property Name="Genero" Type="bit" />
+          <Property Name="IdCivil" Type="int" />
+          <Property Name="NumeroHijo" Type="int" />
+          <Property Name="FechaNacimiento" Type="datetime" />
+          <Property Name="IdPaisNacimiento" Type="int" />
+          <Property Name="IdUbigeoNacimiento" Type="char" MaxLength="6" />
+          <Property Name="OtroNacimiento" Type="varchar" MaxLength="100" />
+          <Property Name="Direccion" Type="varchar" MaxLength="200" />
+          <Property Name="Urbanizacion" Type="varchar" MaxLength="100" />
+          <Property Name="DireccionReferencia" Type="varchar" MaxLength="100" />
+          <Property Name="IdPais" Type="int" />
+          <Property Name="IdUbigeo" Type="char" MaxLength="6" />
+          <Property Name="OtraCiudad" Type="varchar" MaxLength="100" />
+          <Property Name="CodigoPostal" Type="varchar" MaxLength="10" />
+          <Property Name="Telefono" Type="varchar" MaxLength="100" />
+          <Property Name="TelefonoReferencial" Type="varchar" MaxLength="100" />
+          <Property Name="Celular" Type="varchar" MaxLength="100" />
+          <Property Name="IdMovil" Type="int" />
+          <Property Name="IdProcedencia" Type="int" />
+          <Property Name="IdDocumento" Type="int" />
+          <Property Name="NumeroDocumento" Type="varchar" MaxLength="20" />
+          <Property Name="Ruc" Type="varchar" MaxLength="20" />
+          <Property Name="EMail" Type="varchar" MaxLength="100" />
+          <Property Name="EMailOpcional" Type="varchar" MaxLength="100" />
+          <Property Name="EMailAdicional" Type="varchar" MaxLength="100" />
+          <Property Name="Trabaja" Type="bit" />
+          <Property Name="CurriculoNombre" Type="varchar" MaxLength="50" />
+          <Property Name="OkIdUsuario" Type="bit" />
+          <Property Name="OKFecha" Type="datetime" />
+          <Property Name="IdFamilia" Type="int" />
+          <Property Name="Observacion" Type="varchar" MaxLength="500" />
+          <Property Name="IdCounter" Type="int" />
+          <Property Name="IdPeriodo" Type="int" />
+          <Property Name="UsuarioCreacion" Type="int" />
+          <Property Name="FechaCreacion" Type="datetime" />
+          <Property Name="UsuarioModificacion" Type="int" />
+          <Property Name="FechaModificacion" Type="datetime" />
+          <Property Name="CodigoAnterior" Type="varchar" MaxLength="20" />
+          <Property Name="Codigocarnet" Type="nvarchar" MaxLength="50" />
+          <Property Name="PedidoER3Carnet" Type="varchar" MaxLength="50" />
+          <Property Name="ReqMatricula" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="GeneroClave" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="EsEditadoPorUsuario" Type="bit" />
+          <Property Name="IdCalificacion" Type="int" />
+          <Property Name="AreaInteres" Type="nvarchar" MaxLength="500" />
+          <Property Name="CV" Type="nvarchar" MaxLength="50" />
+          <Property Name="NumeroPasaporte" Type="varchar" MaxLength="40" />
+          <Property Name="EsAnulado" Type="bit" />
+          <Property Name="EsAnuladoParcial" Type="bit" />
+          <Property Name="Token" Type="varchar" MaxLength="200" />
+          <Property Name="IdArea" Type="int" />
+          <Property Name="FechaIngreso" Type="datetime" />
+          <Property Name="AreaInvestigacion" Type="varchar" MaxLength="250" />
+        </EntityType>
+        <EntityContainer Name="SisEdutiva_prodModelStoreContainer">
+          <EntitySet Name="Actor" EntityType="Self.Actor" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SisEdutiva_prodModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Actor">
+          <Key>
+            <PropertyRef Name="IdActor" />
+          </Key>
+          <Property Name="IdActor" Type="Int32" Nullable="false" />
+          <Property Name="Codigo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Usuario" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Contrasena" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Paterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Materno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Nombres" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NombreCorto" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="NombreCompleto" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="IdTenor" Type="Int32" />
+          <Property Name="Genero" Type="Boolean" />
+          <Property Name="IdCivil" Type="Int32" />
+          <Property Name="NumeroHijo" Type="Int32" />
+          <Property Name="FechaNacimiento" Type="DateTime" Precision="3" />
+          <Property Name="IdPaisNacimiento" Type="Int32" />
+          <Property Name="IdUbigeoNacimiento" Type="String" MaxLength="6" FixedLength="true" Unicode="false" />
+          <Property Name="OtroNacimiento" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Direccion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Urbanizacion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DireccionReferencia" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IdPais" Type="Int32" />
+          <Property Name="IdUbigeo" Type="String" MaxLength="6" FixedLength="true" Unicode="false" />
+          <Property Name="OtraCiudad" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CodigoPostal" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Telefono" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="TelefonoReferencial" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Celular" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IdMovil" Type="Int32" />
+          <Property Name="IdProcedencia" Type="Int32" />
+          <Property Name="IdDocumento" Type="Int32" />
+          <Property Name="NumeroDocumento" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Ruc" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="EMail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="EMailOpcional" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="EMailAdicional" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Trabaja" Type="Boolean" />
+          <Property Name="CurriculoNombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="OkIdUsuario" Type="Boolean" />
+          <Property Name="OKFecha" Type="DateTime" Precision="3" />
+          <Property Name="IdFamilia" Type="Int32" />
+          <Property Name="Observacion" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="IdCounter" Type="Int32" />
+          <Property Name="IdPeriodo" Type="Int32" />
+          <Property Name="UsuarioCreacion" Type="Int32" />
+          <Property Name="FechaCreacion" Type="DateTime" Precision="3" />
+          <Property Name="UsuarioModificacion" Type="Int32" />
+          <Property Name="FechaModificacion" Type="DateTime" Precision="3" />
+          <Property Name="CodigoAnterior" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Codigocarnet" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PedidoER3Carnet" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ReqMatricula" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="GeneroClave" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="EsEditadoPorUsuario" Type="Boolean" />
+          <Property Name="IdCalificacion" Type="Int32" />
+          <Property Name="AreaInteres" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CV" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NumeroPasaporte" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="EsAnulado" Type="Boolean" />
+          <Property Name="EsAnuladoParcial" Type="Boolean" />
+          <Property Name="Token" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="IdArea" Type="Int32" />
+          <Property Name="FechaIngreso" Type="DateTime" Precision="3" />
+          <Property Name="AreaInvestigacion" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityContainer Name="SisEdutiva_prodEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Actor" EntityType="Self.Actor" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SisEdutiva_prodModelStoreContainer" CdmEntityContainer="SisEdutiva_prodEntities">
+          <EntitySetMapping Name="Actor">
+            <EntityTypeMapping TypeName="SisEdutiva_prodModel.Actor">
+              <MappingFragment StoreEntitySet="Actor">
+                <ScalarProperty Name="IdActor" ColumnName="IdActor" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+                <ScalarProperty Name="Contrasena" ColumnName="Contrasena" />
+                <ScalarProperty Name="Paterno" ColumnName="Paterno" />
+                <ScalarProperty Name="Materno" ColumnName="Materno" />
+                <ScalarProperty Name="Nombres" ColumnName="Nombres" />
+                <ScalarProperty Name="NombreCorto" ColumnName="NombreCorto" />
+                <ScalarProperty Name="NombreCompleto" ColumnName="NombreCompleto" />
+                <ScalarProperty Name="IdTenor" ColumnName="IdTenor" />
+                <ScalarProperty Name="Genero" ColumnName="Genero" />
+                <ScalarProperty Name="IdCivil" ColumnName="IdCivil" />
+                <ScalarProperty Name="NumeroHijo" ColumnName="NumeroHijo" />
+                <ScalarProperty Name="FechaNacimiento" ColumnName="FechaNacimiento" />
+                <ScalarProperty Name="IdPaisNacimiento" ColumnName="IdPaisNacimiento" />
+                <ScalarProperty Name="IdUbigeoNacimiento" ColumnName="IdUbigeoNacimiento" />
+                <ScalarProperty Name="OtroNacimiento" ColumnName="OtroNacimiento" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Urbanizacion" ColumnName="Urbanizacion" />
+                <ScalarProperty Name="DireccionReferencia" ColumnName="DireccionReferencia" />
+                <ScalarProperty Name="IdPais" ColumnName="IdPais" />
+                <ScalarProperty Name="IdUbigeo" ColumnName="IdUbigeo" />
+                <ScalarProperty Name="OtraCiudad" ColumnName="OtraCiudad" />
+                <ScalarProperty Name="CodigoPostal" ColumnName="CodigoPostal" />
+                <ScalarProperty Name="Telefono" ColumnName="Telefono" />
+                <ScalarProperty Name="TelefonoReferencial" ColumnName="TelefonoReferencial" />
+                <ScalarProperty Name="Celular" ColumnName="Celular" />
+                <ScalarProperty Name="IdMovil" ColumnName="IdMovil" />
+                <ScalarProperty Name="IdProcedencia" ColumnName="IdProcedencia" />
+                <ScalarProperty Name="IdDocumento" ColumnName="IdDocumento" />
+                <ScalarProperty Name="NumeroDocumento" ColumnName="NumeroDocumento" />
+                <ScalarProperty Name="Ruc" ColumnName="Ruc" />
+                <ScalarProperty Name="EMail" ColumnName="EMail" />
+                <ScalarProperty Name="EMailOpcional" ColumnName="EMailOpcional" />
+                <ScalarProperty Name="EMailAdicional" ColumnName="EMailAdicional" />
+                <ScalarProperty Name="Trabaja" ColumnName="Trabaja" />
+                <ScalarProperty Name="CurriculoNombre" ColumnName="CurriculoNombre" />
+                <ScalarProperty Name="OkIdUsuario" ColumnName="OkIdUsuario" />
+                <ScalarProperty Name="OKFecha" ColumnName="OKFecha" />
+                <ScalarProperty Name="IdFamilia" ColumnName="IdFamilia" />
+                <ScalarProperty Name="Observacion" ColumnName="Observacion" />
+                <ScalarProperty Name="IdCounter" ColumnName="IdCounter" />
+                <ScalarProperty Name="IdPeriodo" ColumnName="IdPeriodo" />
+                <ScalarProperty Name="UsuarioCreacion" ColumnName="UsuarioCreacion" />
+                <ScalarProperty Name="FechaCreacion" ColumnName="FechaCreacion" />
+                <ScalarProperty Name="UsuarioModificacion" ColumnName="UsuarioModificacion" />
+                <ScalarProperty Name="FechaModificacion" ColumnName="FechaModificacion" />
+                <ScalarProperty Name="CodigoAnterior" ColumnName="CodigoAnterior" />
+                <ScalarProperty Name="Codigocarnet" ColumnName="Codigocarnet" />
+                <ScalarProperty Name="PedidoER3Carnet" ColumnName="PedidoER3Carnet" />
+                <ScalarProperty Name="ReqMatricula" ColumnName="ReqMatricula" />
+                <ScalarProperty Name="GeneroClave" ColumnName="GeneroClave" />
+                <ScalarProperty Name="EsEditadoPorUsuario" ColumnName="EsEditadoPorUsuario" />
+                <ScalarProperty Name="IdCalificacion" ColumnName="IdCalificacion" />
+                <ScalarProperty Name="AreaInteres" ColumnName="AreaInteres" />
+                <ScalarProperty Name="CV" ColumnName="CV" />
+                <ScalarProperty Name="NumeroPasaporte" ColumnName="NumeroPasaporte" />
+                <ScalarProperty Name="EsAnulado" ColumnName="EsAnulado" />
+                <ScalarProperty Name="EsAnuladoParcial" ColumnName="EsAnuladoParcial" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="IdArea" ColumnName="IdArea" />
+                <ScalarProperty Name="FechaIngreso" ColumnName="FechaIngreso" />
+                <ScalarProperty Name="AreaInvestigacion" ColumnName="AreaInvestigacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
