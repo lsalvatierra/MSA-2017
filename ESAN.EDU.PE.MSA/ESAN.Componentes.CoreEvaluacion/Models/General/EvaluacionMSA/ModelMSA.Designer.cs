@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'D:\Lsalvatierra\Proyectos\ESAN-ED360\ESAN.EDU.PE.MSA\ESAN.Componentes.CoreEvaluacion\Models\General\EvaluacionMSA\ModelMSA.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\ERIKA\Source\Repos\NewRepo3\ESAN.EDU.PE.MSA\ESAN.Componentes.CoreEvaluacion\Models\General\EvaluacionMSA\ModelMSA.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

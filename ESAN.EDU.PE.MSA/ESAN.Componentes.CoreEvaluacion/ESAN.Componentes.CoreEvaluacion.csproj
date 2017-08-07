@@ -31,11 +31,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\ESANMSA\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\ESANMSA\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -50,8 +50,54 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\General\EvaluacionMSA\Actor.cs">
-      <DependentUpon>ModelMSA.tt</DependentUpon>
+    <Compile Include="Logic\Facade\EvaluacionMSA\DAPromocion.cs" />
+    <Compile Include="Models\General\EvaluacionMSA\Evaluacion.cs">
+      <DependentUpon>General.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\General\EvaluacionMSA\EvaluacionAlternativa.cs">
+      <DependentUpon>General.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\General\EvaluacionMSA\EvaluacionCiclo.cs">
+      <DependentUpon>General.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\General\EvaluacionMSA\EvaluacionMedicion.cs">
+      <DependentUpon>General.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\General\EvaluacionMSA\EvaluacionNivel.cs">
+      <DependentUpon>General.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\General\EvaluacionMSA\EvaluacionParticipante.cs">
+      <DependentUpon>General.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\General\EvaluacionMSA\EvaluacionPregunta.cs">
+      <DependentUpon>General.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\General\EvaluacionMSA\EvaluacionPromocion.cs">
+      <DependentUpon>General.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\General\EvaluacionMSA\EvaluacionPromocionCiclo.cs">
+      <DependentUpon>General.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\General\EvaluacionMSA\EvaluacionPromocionMedicion.cs">
+      <DependentUpon>General.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\General\EvaluacionMSA\EvaluacionRespuesta.cs">
+      <DependentUpon>General.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\General\EvaluacionMSA\General.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>General.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\General\EvaluacionMSA\General.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>General.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\General\EvaluacionMSA\General.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>General.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\General\EvaluacionMSA\ModelMSA.Context.cs">
       <AutoGen>True</AutoGen>
@@ -68,10 +114,28 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ModelMSA.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\General\EvaluacionMSA\Participante.cs">
+      <DependentUpon>General.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\General\EvaluacionMSA\sysdiagrams.cs">
+      <DependentUpon>General.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\General\EvaluacionMSA\TipoDocumento.cs">
+      <DependentUpon>General.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Logic\Facade\EvaluacionMSA\" />
+    <Content Include="Models\General\EvaluacionMSA\General.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>General.edmx</DependentUpon>
+      <LastGenOutput>General.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\General\EvaluacionMSA\General.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>General.edmx</DependentUpon>
+      <LastGenOutput>General.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="Models\General\EvaluacionMSA\ModelMSA.edmx">
@@ -81,6 +145,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
+    <EntityDeploy Include="Models\General\EvaluacionMSA\General.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>General.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Models\General\EvaluacionMSA\General.edmx.diagram">
+      <DependentUpon>General.edmx</DependentUpon>
+    </None>
     <None Include="Models\General\EvaluacionMSA\ModelMSA.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ModelMSA.edmx</DependentUpon>

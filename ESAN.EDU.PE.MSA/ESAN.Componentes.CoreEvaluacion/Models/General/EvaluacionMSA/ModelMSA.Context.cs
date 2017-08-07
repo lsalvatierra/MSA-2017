@@ -25,6 +25,5 @@ namespace ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Actor> Actor { get; set; }
     }
 }
