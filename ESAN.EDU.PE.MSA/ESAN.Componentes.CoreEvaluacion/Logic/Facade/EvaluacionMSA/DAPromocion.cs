@@ -16,7 +16,7 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
         static public List<EvaluacionPromocion> Listado()
         {
             List<EvaluacionPromocion> lista = new List<EvaluacionPromocion>();
-            using (var data = new SisEdutiva_prodEntities())
+            using (var data = new BDEvaluacionEntities())
             {
                 lista = data.EvaluacionPromocion.ToList();
             }
@@ -32,7 +32,7 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
             bool exito = true;
             try
             {
-                using (var data = new SisEdutiva_prodEntities())
+                using (var data = new BDEvaluacionEntities())
                 {
                     data.EvaluacionPromocion.Add(promocion);
                     data.SaveChanges();
@@ -55,7 +55,7 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
             EvaluacionPromocion promocionActual = new EvaluacionPromocion();
             try
             {
-                using (var data = new SisEdutiva_prodEntities())
+                using (var data = new BDEvaluacionEntities())
                 {
                     promocionActual = data.EvaluacionPromocion.Where(x => x.EvaluacionPromocionID == promocion.EvaluacionPromocionID).FirstOrDefault();
                     promocionActual.EvaluacionPromocionDescripcion = promocion.EvaluacionPromocionDescripcion;
@@ -84,7 +84,7 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
             EvaluacionPromocion promocion = new EvaluacionPromocion();
             try
             {
-                using (var data = new SisEdutiva_prodEntities())
+                using (var data = new BDEvaluacionEntities())
                 {
                     promocion= data.EvaluacionPromocion.Where(x => x.EvaluacionPromocionID == EvaluacionPromocionID).FirstOrDefault();
                     promocion.EvaluacionPromocionEstado = false;
