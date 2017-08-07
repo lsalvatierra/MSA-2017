@@ -181,6 +181,7 @@
     <Content Include="Scripts\bootstrap\validator\validator.js" />
     <Content Include="Areas\Seguridad\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Seguridad\Views\Principal\Index.cshtml" />
+    <Content Include="Areas\Alumno\Views\web.config" />
     <None Include="Scripts\jquery\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\jquery\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery\jquery-1.9.1.min.js" />
@@ -220,6 +221,8 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Administrador\AdministradorAreaRegistration.cs" />
+    <Compile Include="Areas\Alumno\AlumnoAreaRegistration.cs" />
+    <Compile Include="Areas\Alumno\Controllers\EvaluacionController.cs" />
     <Compile Include="Areas\Seguridad\Controllers\PrincipalController.cs" />
     <Compile Include="Areas\Seguridad\SeguridadAreaRegistration.cs" />
     <Compile Include="Global.asax.cs">
@@ -296,6 +299,9 @@
     <Folder Include="Areas\Administrador\Controllers\" />
     <Folder Include="Areas\Administrador\Models\" />
     <Folder Include="Areas\Administrador\Views\Shared\" />
+    <Folder Include="Areas\Alumno\Models\" />
+    <Folder Include="Areas\Alumno\Views\Evaluacion\" />
+    <Folder Include="Areas\Alumno\Views\Shared\" />
     <Folder Include="Areas\Seguridad\Models\" />
     <Folder Include="Areas\Seguridad\Views\Shared\" />
     <Folder Include="Controllers\" />
