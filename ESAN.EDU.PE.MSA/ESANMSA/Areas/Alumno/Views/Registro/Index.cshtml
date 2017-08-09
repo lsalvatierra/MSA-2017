@@ -1,0 +1,106 @@
+﻿@using ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA
+@{
+    ViewBag.Title = "Registro";
+    List<TipoDocumento> lstTipoDoc = (List<TipoDocumento>)ViewBag.lstTipoDoc;
+}
+@section Scripts{
+    <script src="@Url.Content("~/Scripts/Areas/Alumno/Registro/Index.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap/dialog/bootstrap-dialog.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap/bootstrap-loading.js")"></script>
+        
+    }
+@section Styles{
+    <link href="@Url.Content("~/Content/bootstrap/dialog/bootstrap-dialog.css")" rel="stylesheet" />
+    }
+<div>
+    <div class="page-header">
+        <h1>Registro de alumno</h1>
+    </div>
+    <h3>Por favor valide sus datos.</h3>
+    <div class="jumbotron" style="padding: 15px 25px 5px 25px;">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">                    
+                    <label for="cboTipoDocumento">Tipo de documento:&nbsp;</label>                    
+                    <select class="form-control" id="cboTipoDocumento" >
+                        <option selected value="0">Seleccione</option>
+                        @foreach (var obj in lstTipoDoc)
+                        {
+                            <option value="@obj.TipoDocumentoID">@obj.TipoDocumentoDescripcion</option>
+                        }
+                    </select>
+                    <div id="xtipodoc" class="hide"><h6 class="text-danger"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span>&nbsp;Seleccione tipo de documento.</h6></div>
+                    
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">             
+                    <label for="txtNroDocumento">Nro. de documento:</label>
+                    <input type="text" class="form-control" id="txtNroDocumento" maxlength="12" placeholder="Ingrese su número de documento" name="txtNroDocumento">
+                    <div id="xnrodoc" class="hide"><h6 class="text-danger"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span>&nbsp;Ingrese su número de documento.</h6></div>
+                </div>
+                <button type="button" id="btnVerificarDatos" class="btn btn-primary">Verificar&nbsp;<i class="fa fa-check" aria-hidden="true"></i></button>
+            </div>
+        </div>
+ 
+
+    </div>
+    <div id="divRegistrar" style="display: none">
+        <h3>¡Complete su información antes de empezar!</h3>
+        <div class="jumbotron" style="padding: 15px 25px 5px 25px;">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <span class="glyphicon glyphicon-asterisk" style="color: #a94442;" aria-hidden="true"></span>
+                        <label for="txtApellidoPaterno">Apellido Paterno:</label>
+                        <input type="text" class="form-control" maxlength="150" id="txtApellidoPaterno" placeholder="Ingrese su apellido paterno" name="txtApellidoPaterno">
+                    </div>
+                    <div class="form-group">
+                        <span class="glyphicon glyphicon-asterisk" style="color: #a94442;" aria-hidden="true"></span>
+                        <label for="txtApellidoMaterno">Apellido Materno:</label>
+                        <input type="text" class="form-control" maxlength="150" id="txtApellidoMaterno" placeholder="Ingrese su apellido materno" name="txtApellidoMaterno">
+                    </div>
+                    <div class="form-group">
+                        <span class="glyphicon glyphicon-asterisk" style="color: #a94442;" aria-hidden="true"></span>
+                        <label for="txtNombres">Nombres:</label>
+                        <input type="text" class="form-control" maxlength="150" id="txtNombres" placeholder="Ingrese sus nombres" name="txtNombres">
+                    </div>
+                    <div class="form-group">
+                        <span class="glyphicon glyphicon-asterisk" style="color: #a94442;" aria-hidden="true"></span>
+                        <label for="txtFechaNac">Fecha de Nacimiento:</label>
+                        <input type="text" class="form-control" maxlength="10" id="txtFechaNac" placeholder="Ingrese su fecha de nacimiento" name="txtFechaNac">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <span class="glyphicon glyphicon-asterisk" style="color: #a94442;" aria-hidden="true"></span>
+                        <label for="txtEmail">Email:</label>
+                        <input type="email" class="form-control" id="txtEmail" maxlength="150" placeholder="Ingrese su email personal" name="txtEmail">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtEmailOpcional">Email Opcional:</label>
+                        <input type="email" class="form-control" id="txtEmailOpcional" maxlength="150" placeholder="Ingrese su email opcional" name="txtEmailOpcional">
+                    </div>
+                    <div class="form-group">
+                        <span class="glyphicon glyphicon-asterisk" style="color: #a94442;" aria-hidden="true"></span>
+                        <label for="txtTelefono">Teléfono:</label>
+                        <input type="text" class="form-control" id="txtTelefono" maxlength="12" placeholder="Ingrese su teléfono personal" name="txtTelefono">
+                    </div>
+                    <div class="form-group">
+                        <label for="txtTelefonoOpcional">Telefono Opcional:</label>
+                        <input type="text" class="form-control" id="txtTelefonoOpcional" maxlength="12" placeholder="Ingrese su teléfono opcional" name="txtTelefonoOpcional">
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox" name="remember"> Acepto las políticas de protección de datos de ESAN</label>
+                    </div>
+                    <button type="button" class="btn btn-primary" id="btnGuardarEmpezar">Empezar&nbsp;<i class="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
