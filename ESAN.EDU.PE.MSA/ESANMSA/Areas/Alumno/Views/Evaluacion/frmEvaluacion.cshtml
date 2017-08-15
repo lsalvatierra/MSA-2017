@@ -1,0 +1,173 @@
+﻿@using ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA
+@{
+    ViewBag.Title = "Evaluación";
+
+    string EsExterno = ((bool)ViewBag.EsExterno).ToString();
+}
+@section Scripts{
+<script src="@Url.Content("~/Scripts/Areas/Alumno/Registro/Index.js")"></script>
+<script src="@Url.Content("~/Scripts/bootstrap/dialog/bootstrap-dialog.js")"></script>
+<script src="@Url.Content("~/Scripts/bootstrap/bootstrap-loading.js")"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        
+        $(".btnOpc").on("click", function () {
+            $($(this).parent()).find('a').each(function () {
+                $(this).removeClass("btn-primary");
+                $(this).addClass("btn-default");
+            });
+            $(this).addClass("btn-primary");
+
+            $.post(URL_PAGE + "Alumno/Evaluacion/agregarRespuestas", { idMedicion: $("#hddIdMedicion").val(), idPromocion: $("#hddIdPromocion").val(), idEvaluado: 1, Externo: false, idAlternativa: $(this).attr("data-idAlternativa"), idPregunta: $(this).attr("data-idPregunta") },
+                function (result) {
+                    $("#AvanceEvaluacion").html("");
+                    $("#AvanceEvaluacion").html(result);
+                }
+            );
+        });
+        $(".btnSiguiente").on("click", function () {
+            var PregContestadas = 0;
+            $("#divEvaluacion a").each(function (index) {
+                if ($(this).hasClass("btn-primary")) {
+                    PregContestadas++;
+                }
+            });
+            if (PregContestadas < parseInt($("#hddCantPreguntasForm").val())) {
+                BootstrapDialog.show({
+                    type: BootstrapDialog.TYPE_DANGER,
+                    title: "Evaluación",
+                    message: "Por favor conteste todas las preguntas."
+                });
+                return false;
+            } else {
+                waitingDialog.show('Cargando', { dialogSize: 'sm', progressType: 'danger' });
+                $.ajax({
+                    type: "POST",
+                    url: URL_PAGE + "Alumno/Evaluacion/siguientePaginaEvaluacion",
+                    cache: false,
+                    data: {
+                        idNivelA: $("#hddIdNivelA").val(),
+                        idNivelOrdenA: $("#hddIdNivelOrdenA").val(),
+                        idNivelOrdenB: $("#hddIdNivelOrdenB").val(),
+                        idNivelOrdenC: $("#hddIdNivelOrdenC").val()
+                    },
+                    success: function (data) {
+                        waitingDialog.hide();
+                        $("#divEvaluacion").html("");
+                        $("#divEvaluacion").html(data);
+                        $('body, html').animate({
+                            scrollTop: '0px'
+                        }, 300);
+                    }
+                });
+            }
+        });
+
+    });
+</script>
+}
+@section Styles{
+<link href="@Url.Content("~/Content/bootstrap/dialog/bootstrap-dialog.css")" rel="stylesheet" />
+<style type="text/css">
+    .main-header {
+	background: #808080;
+	color: white;
+	height: 180px;	
+	width: 100%; /* hacemos que la cabecera ocupe el ancho completo de la página */
+	left: 0; /* Posicionamos la cabecera al lado izquierdo */
+	top: 25px; /* Posicionamos la cabecera pegada arriba */
+	position: fixed; /* Hacemos que la cabecera tenga una posición fija */
+    padding-left: 30px;
+    padding-right: 30px;
+    overflow: hidden;
+    z-index: 3;
+}
+</style>
+}
+<div id="frmEvaluacion">
+    <div class="main-header">
+        <div class="page-header">
+            <h1>@ViewBag.NombreEvaluacion</h1>
+
+            <input type="hidden" value="@ViewBag.IdMedicion" id="hddIdMedicion" />
+            <input type="hidden" value="@ViewBag.IdPromocion" id="hddIdPromocion" />
+
+            @if ((bool)ViewBag.EsExterno)
+            {
+                <p class="lead">Evaluando a: @ViewBag.NombresParticipanteEvaluar.</p>
+                <input type="hidden" value="@EsExterno" id="hddExterno" />
+                <input type="hidden" value="@ViewBag.IdEvaluado" id="hddIdEvaluado" />
+            }
+        </div>
+        @*<div class="row">
+            <div class="col-md-12 ">*@
+                <div id="AvanceEvaluacion">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                        </div>
+                    </div>
+                </div>
+            @*</div>
+        </div>*@
+    </div>
+    <br /><br /><br /><br /><br /><br /><br />
+    <div id="divEvaluacion">
+        @{    List<EvaluacionPregunta> lstPreguntas = (List<EvaluacionPregunta>)ViewBag.LstPreguntas;
+            int cntPreguntasForm = lstPreguntas.Count; }
+        <!--Hiddens para la paginación de las preguntas.-->
+        <input type="hidden" value="@ViewBag.IDNivelA" id="hddIdNivelA" />
+        <input type="hidden" value="@ViewBag.IDNivelOrdenA" id="hddIdNivelOrdenA" />
+        <input type="hidden" value="@ViewBag.IDNivelOrdenB" id="hddIdNivelOrdenB" />
+        <input type="hidden" value="@ViewBag.IDNivelOrdenC" id="hddIdNivelOrdenC" />
+        <input type="hidden" value="@cntPreguntasForm" id="hddCantPreguntasForm" />
+        <h2>@ViewBag.NivelA</h2>
+        @if (ViewBag.NivelB != "")
+        {
+            <h3>@ViewBag.NivelB.</h3>
+        }        
+        <div class="jumbotron" style="padding: 5px 25px 5px 25px;">
+            @if (ViewBag.NivelC != "")
+            {
+                <h3>@ViewBag.NivelC</h3>
+            }            
+            @foreach (var objPregunta in lstPreguntas)
+            {
+                <p>@objPregunta.EvaluacionPreguntaDescripcion</p>
+                if ((bool)objPregunta.EsInversa)
+                {
+                    <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
+                    @foreach (var objAlternativa in objPregunta.EvaluacionAlternativa)
+                    {
+                        //int idAlternativaInverso = Convert.ToInt32(objPregunta.EvaluacionAlternativa.OrderByDescending(q => q.EvaluacionAlternativaDescripcion).FirstOrDefault().EvaluacionAlternativaID);
+                        <a class="btn btn-default btnOpc" data-idPregunta="@objPregunta.EvaluacionPreguntaID" data-idAlternativa="@objAlternativa.EvaluacionAlternativaID" role="button">@objAlternativa.EvaluacionAlternativaDescripcion</a>
+                    }
+                    </div>
+                }
+                else
+                {
+                    <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
+                    @foreach (var objAlternativa in objPregunta.EvaluacionAlternativa)
+                    {
+                        <a class="btn btn-default btnOpc" data-idPregunta="@objPregunta.EvaluacionPreguntaID" data-idAlternativa="@objAlternativa.EvaluacionAlternativaID" role="button">@objAlternativa.EvaluacionAlternativaDescripcion</a>
+                    }
+                    </div>
+                }
+            <br />
+            }
+        </div>
+        <div class="row">
+            <div class="col-md-1">
+                @*<div class="form-group">
+                    <button type="button" class="btn btn-success">Anterior</button>
+                </div>*@
+            </div>
+            <div class="col-md-10">
+            </div>
+            <div class="col-md-1">
+                <div class="form-group">
+                    <button type="button" class="btn btn-success btnSiguiente">Siguiente</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

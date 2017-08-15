@@ -1,0 +1,134 @@
+﻿@{
+    ViewBag.Title = "Registro";
+    string Externo = ((bool)ViewBag.EsExterno).ToString();
+    int IdPromocion= ((int)ViewBag.IdPromocion);
+    int IdMedicion = ((int)ViewBag.IdMedicion);
+
+}
+@section Scripts{
+    <script src="@Url.Content("~/Scripts/Areas/Alumno/Registro/Index.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap/dialog/bootstrap-dialog.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap/bootstrap-loading.js")"></script>
+     
+}
+@section Styles{
+    <link href="@Url.Content("~/Content/bootstrap/dialog/bootstrap-dialog.css")" rel="stylesheet" />
+}
+<div>
+    <form id="frmRegistro" action="@Url.Action("Index","Evaluacion",new { area = "Alumno", idMedicion = IdMedicion, idPromocion = IdPromocion, Externo = Externo })" method="post">
+        <input type="hidden" id="hddIdPromocion" value="@ViewBag.IdPromocion" />
+        <input type="hidden" id="hddIdMedicion" value="@ViewBag.IdMedicion" />
+        <input type="hidden" id="hddExterno" value="@Externo" />
+        @if (!(bool)ViewBag.EsExterno)
+        {
+            <div class="page-header">
+                <h1>Registro de alumno</h1>
+            </div>
+            <h3>Por favor valide sus datos.</h3>
+            <div class="jumbotron" style="padding: 15px 25px 5px 25px;">
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="txtNroDocumento">Código de alumno:</label>
+                            <input type="text" class="form-control" id="txtNroDocumento" maxlength="8" placeholder="Ingrese su código de alumno" name="txtNroDocumento">
+                            <div id="xnrodoc" class="hide"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div style="padding-top: 25px;">
+                            <button type="button" id="btnVerificarDatos" class="btn btn-primary">Verificar&nbsp;<i class="fa fa-check" aria-hidden="true"></i></button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div id="divRegistrar" style="display: none">
+                <h3>¡Complete su información antes de empezar!</h3>
+                <div class="jumbotron" style="padding: 15px 25px 5px 25px;">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="txtApellidoPaterno">Apellido Paterno:</label>
+                                <input type="text" class="form-control" maxlength="150" id="txtApellidoPaterno" placeholder="Ingrese su apellido paterno" name="txtApellidoPaterno">
+                                <div id="xapepat" class="hide"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="txtApellidoMaterno">Apellido Materno:</label>
+                                <input type="text" class="form-control" maxlength="150" id="txtApellidoMaterno" placeholder="Ingrese su apellido materno" name="txtApellidoMaterno">
+                                <div id="xapemat" class="hide"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="txtNombres">Nombres:</label>
+                                <input type="text" class="form-control" maxlength="150" id="txtNombres" placeholder="Ingrese sus nombres" name="txtNombres">
+                                <div id="xnom" class="hide"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            @if (!(bool)ViewBag.EsExterno)
+                            {
+                                <div class="checkbox">
+                                    <label><input type="checkbox" name="remember"> Acepto las políticas de protección de datos de ESAN.</label>
+                                </div>
+                            }
+                            <button type="button" class="btn btn-primary" id="btnGuardarEmpezar">Empezar&nbsp;<i class="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        }
+        else
+        {
+            <div class="page-header">
+                <h1>¡Complete su información antes de empezar!</h1>
+            </div>
+            <h3>Por favor registre sus datos.</h3>
+            <div id="divRegistrar">
+                <div class="jumbotron" style="padding: 15px 25px 5px 25px;">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="txtApellidoPaterno">Apellido Paterno:</label>
+                                <input type="text" class="form-control" maxlength="150" id="txtApellidoPaterno" placeholder="Ingrese su apellido paterno" name="txtApellidoPaterno">
+                                <div id="xapepat" class="hide"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="txtApellidoMaterno">Apellido Materno:</label>
+                                <input type="text" class="form-control" maxlength="150" id="txtApellidoMaterno" placeholder="Ingrese su apellido materno" name="txtApellidoMaterno">
+                                <div id="xapemat" class="hide"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="txtNombres">Nombres:</label>
+                                <input type="text" class="form-control" maxlength="150" id="txtNombres" placeholder="Ingrese sus nombres" name="txtNombres">
+                                <div id="xnom" class="hide"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-primary" id="btnGuardarEmpezar">Empezar&nbsp;<i class="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        }
+
+    </form>
+
+
+</div>
+
+
