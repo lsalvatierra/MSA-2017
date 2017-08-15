@@ -12,11 +12,9 @@
         <EntityTypeShape EntityType="BDEvaluacionModel.EvaluacionNivel" Width="1.5" PointX="3" PointY="8.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BDEvaluacionModel.EvaluacionParticipante" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BDEvaluacionModel.EvaluacionPregunta" Width="1.5" PointX="5.25" PointY="9.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="BDEvaluacionModel.EvaluacionPromocion" Width="1.5" PointX="3" PointY="12.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="BDEvaluacionModel.EvaluacionPromocionCiclo" Width="1.5" PointX="5.25" PointY="12.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="BDEvaluacionModel.EvaluacionPromocionMedicion" Width="1.5" PointX="7.5" PointY="12.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BDEvaluacionModel.EvaluacionPromocion" Width="2.375" PointX="1.375" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BDEvaluacionModel.EvaluacionPromocionCiclo" Width="2.375" PointX="11.625" PointY="12.625" IsExpanded="true" />
         <EntityTypeShape EntityType="BDEvaluacionModel.EvaluacionRespuesta" Width="1.5" PointX="9.75" PointY="9.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="BDEvaluacionModel.Participante" Width="1.5" PointX="5.25" PointY="16" IsExpanded="true" />
         <EntityTypeShape EntityType="BDEvaluacionModel.sysdiagrams" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="BDEvaluacionModel.TipoDocumento" Width="1.5" PointX="3" PointY="17.25" IsExpanded="true" />
         <AssociationConnector Association="BDEvaluacionModel.FK_EvaluacionCiclo_Evaluacion" ManuallyRouted="false" />
@@ -26,17 +24,23 @@
         <AssociationConnector Association="BDEvaluacionModel.FK_EvaluacionRespuesta_EvaluacionAlternativa" ManuallyRouted="false" />
         <AssociationConnector Association="BDEvaluacionModel.FK_EvaluacionMedicion_EvaluacionCiclo" ManuallyRouted="false" />
         <AssociationConnector Association="BDEvaluacionModel.FK_EvaluacionPromocionCiclo_EvaluacionCiclo" ManuallyRouted="false" />
-        <AssociationConnector Association="BDEvaluacionModel.FK_EvaluacionPromocionMedicion_EvaluacionMedicion" ManuallyRouted="false" />
         <AssociationConnector Association="BDEvaluacionModel.FK_EvaluacionRespuesta_EvaluacionMedicion" ManuallyRouted="false" />
         <AssociationConnector Association="BDEvaluacionModel.FK_EvaluacionNivel_EvaluacionNivel" ManuallyRouted="false" />
         <AssociationConnector Association="BDEvaluacionModel.FK_EvaluacionPregunta_EvaluacionNivel" ManuallyRouted="false" />
         <AssociationConnector Association="BDEvaluacionModel.FK_EvaluacionPromocionCiclo_EvaluacionPromocion" ManuallyRouted="false" />
-        <AssociationConnector Association="BDEvaluacionModel.FK_EvaluacionPromocionMedicion_EvaluacionPromocion" ManuallyRouted="false" />
         <AssociationConnector Association="BDEvaluacionModel.FK_EvaluacionRespuesta_EvaluacionPromocion" ManuallyRouted="false" />
-        <AssociationConnector Association="BDEvaluacionModel.FK_EvaluacionRespuesta_Participante" ManuallyRouted="false" />
-        <AssociationConnector Association="BDEvaluacionModel.FK_EvaluacionRespuesta_Participante1" ManuallyRouted="false" />
-        <AssociationConnector Association="BDEvaluacionModel.FK_Participante_TipoDocumento" ManuallyRouted="false" />
-        <AssociationConnector Association="BDEvaluacionModel.EvaluacionPromocionParticipante" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="BDEvaluacionModel.EvaluacionPromocionMedicion" Width="2.375" PointX="10.875" PointY="6.25" />
+        <AssociationConnector Association="BDEvaluacionModel.FK_EvaluacionPromocionMedicion_EvaluacionCiclo" />
+        <AssociationConnector Association="BDEvaluacionModel.FK_EvaluacionPromocionMedicion_EvaluacionMedicion" />
+        <AssociationConnector Association="BDEvaluacionModel.FK_EvaluacionPromocionMedicion_EvaluacionPromocion" />
+        <EntityTypeShape EntityType="BDEvaluacionModel.Participante" Width="3" PointX="5.25" PointY="16.125" />
+        <AssociationConnector Association="BDEvaluacionModel.FK_EvaluacionRespuesta_Participante" />
+        <AssociationConnector Association="BDEvaluacionModel.FK_EvaluacionRespuesta_Participante1" />
+        <AssociationConnector Association="BDEvaluacionModel.FK_Participante_TipoDocumento" />
+        <EntityTypeShape EntityType="BDEvaluacionModel.EvaluacionPromocionParticipante" Width="2.25" PointX="9" PointY="13.75" />
+        <AssociationConnector Association="BDEvaluacionModel.FK_EvaluacionPromocionParticipante_EvaluacionMedicion" />
+        <AssociationConnector Association="BDEvaluacionModel.FK_EvaluacionPromocionParticipante_EvaluacionPromocion" />
+        <AssociationConnector Association="BDEvaluacionModel.FK_EvaluacionPromocionParticipante_Participante" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

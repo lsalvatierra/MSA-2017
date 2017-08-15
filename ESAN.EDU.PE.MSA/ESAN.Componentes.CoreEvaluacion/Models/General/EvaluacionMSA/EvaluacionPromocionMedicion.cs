@@ -14,11 +14,14 @@ namespace ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA
     
     public partial class EvaluacionPromocionMedicion
     {
-        public int EvaluacionPromocionID { get; set; }
+        public long EvaluacionCicloID { get; set; }
         public int EvaluacionMedicionID { get; set; }
         public Nullable<System.DateTime> EvaluacionPromMedicionFecIni { get; set; }
         public Nullable<System.DateTime> EvaluacionPromMedicionFecFin { get; set; }
+        public string EvaluacionMedicionDescripcion { get; set; }
+        public int EvaluacionPromocionID { get; set; }
     
+        public virtual EvaluacionCiclo EvaluacionCiclo { get; set; }
         public virtual EvaluacionMedicion EvaluacionMedicion { get; set; }
         public virtual EvaluacionPromocion EvaluacionPromocion { get; set; }
     }

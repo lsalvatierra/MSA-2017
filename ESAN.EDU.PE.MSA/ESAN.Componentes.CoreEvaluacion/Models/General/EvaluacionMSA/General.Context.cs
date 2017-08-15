@@ -34,10 +34,11 @@ namespace ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA
         public virtual DbSet<EvaluacionPregunta> EvaluacionPregunta { get; set; }
         public virtual DbSet<EvaluacionPromocion> EvaluacionPromocion { get; set; }
         public virtual DbSet<EvaluacionPromocionCiclo> EvaluacionPromocionCiclo { get; set; }
-        public virtual DbSet<EvaluacionPromocionMedicion> EvaluacionPromocionMedicion { get; set; }
         public virtual DbSet<EvaluacionRespuesta> EvaluacionRespuesta { get; set; }
-        public virtual DbSet<Participante> Participante { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<TipoDocumento> TipoDocumento { get; set; }
+        public virtual DbSet<EvaluacionPromocionMedicion> EvaluacionPromocionMedicion { get; set; }
+        public virtual DbSet<Participante> Participante { get; set; }
+        public virtual DbSet<EvaluacionPromocionParticipante> EvaluacionPromocionParticipante { get; set; }
     }
 }

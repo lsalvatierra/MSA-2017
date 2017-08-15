@@ -1,0 +1,60 @@
+﻿@using ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA
+@{
+    List<Evaluacion> listadoEvaluacion = new List<Evaluacion>();
+    if (ViewBag.ListadoEvaluacion != null)
+    {
+        listadoEvaluacion = (List<Evaluacion>)ViewBag.ListadoEvaluacion;
+    }
+}
+
+<form class="form-horizontal">
+    <div class="form-group">
+        <label class="col-sm-3 control-label">Código de la promoci&oacute;n</label>
+        <div class="col-sm-4">
+            <input type="text" disabled class="form-control" id="txtCodigoPromocion" placeholder="">
+            <input type="checkbox" id="chkPersonalizarCodigo" class="chkPersonalizarCodigo" value="1">Personalizar
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">Nombre de la promoci&oacute;n</label>
+        <div class="col-sm-6">
+            @*<p class="form-control-static">email@example.com</p>*@
+            <input type="text" class="form-control" id="txtNombrePromocion" placeholder="Ingrese el nombre de la promoción">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">Correo de la promoci&oacute;n</label>
+        <div class="col-sm-6">
+            @*<p class="form-control-static">email@example.com</p>*@
+            <input type="email" class="txtCorreoPromocion form-control" id="txtCorreoPromocion" placeholder="Email">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputPassword" class="col-sm-3 control-label">Evauaci&oacute;n</label>
+        <div class="col-sm-6">
+            @*<input type="password" class="form-control" id="inputPassword" placeholder="Password">*@
+            <select class="cboEvaluacion">
+                <option id="-1">SELECCIONE</option>
+                @foreach (Evaluacion item in listadoEvaluacion)
+                {
+                    <option value="@item.EvaluacionID">@item.EvaluacionDescripcion</option>
+                }
+
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">Fecha Inicio</label>
+        <div class="col-sm-4">
+            @*<p class="form-control-static">email@example.com</p>*@
+            <input type="text" class="form-control" id="txtFechaInicio" placeholder="dd/mm/yyyy">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">Fecha Fin</label>
+        <div class="col-sm-4">
+            @*<p class="form-control-static">email@example.com</p>*@
+            <input type="text" class="form-control" id="txtFechaFin" placeholder="dd/mm/yyyy">
+        </div>
+    </div>
+</form>

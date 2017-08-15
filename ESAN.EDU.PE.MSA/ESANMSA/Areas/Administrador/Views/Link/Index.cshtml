@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewBag.Title = "Generación de links";
+}
+@*<script src="~/Scripts/Areas/Administrador/Promocion.js"></script>*@
+<h2>Generación de links</h2>
+@*<input type="button" id="btnNuevaPromocion" class="btnNuevaPromocion btn btn-primary" value="Nuevo Registro" />*@
+<hr />
+<div id="divListadoPromocionLinks"></div>
+
+
+
+
+<script>
+    CargarListado();
+
+    function CargarListado() {
+        $.ajax({
+            'url': URL_PAGE + 'Administrador/Link/ListadoPromocion',
+            'type': 'POST',
+            //'data': $('#yourFormId').serialize(),
+            'success': function (view) {
+                //process here
+                $("#divListadoPromocionLinks").html(view);
+            }
+        });
+    }
+
+
+</script>

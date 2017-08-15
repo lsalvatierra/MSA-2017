@@ -12,16 +12,15 @@ namespace ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA
     using System;
     using System.Collections.Generic;
     
-    public partial class EvaluacionPromocionCiclo
+    public partial class EvaluacionPromocionParticipante
     {
         public int EvaluacionPromocionID { get; set; }
-        public long EvaluacionCicloID { get; set; }
-        public Nullable<System.DateTime> EvaluacionPromCicloFecIni { get; set; }
-        public Nullable<System.DateTime> EvaluacionPromCicloFecFin { get; set; }
-        public Nullable<int> EvaluacionCicloNro { get; set; }
-        public string EvaluacionCicloDescripcion { get; set; }
+        public long ParticipanteID { get; set; }
+        public int EvaluacionMedicionID { get; set; }
+        public Nullable<bool> EsExterno { get; set; }
     
-        public virtual EvaluacionCiclo EvaluacionCiclo { get; set; }
+        public virtual EvaluacionMedicion EvaluacionMedicion { get; set; }
         public virtual EvaluacionPromocion EvaluacionPromocion { get; set; }
+        public virtual Participante Participante { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
 {
@@ -13,12 +14,17 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
         /// Listado de todas las promociones activas creadas
         /// </summary>
         /// <returns>List<EvaluacionPromocion></returns>
-        static public List<EvaluacionPromocion> Listado()
+        static public List<EvaluacionPromocion> Listado(int EvaluacionPromocionID)
         {
             List<EvaluacionPromocion> lista = new List<EvaluacionPromocion>();
             using (var data = new BDEvaluacionEntities())
             {
-                lista = data.EvaluacionPromocion.ToList();
+                lista = EvaluacionPromocionID == -1 ?
+                        data.EvaluacionPromocion.Where(x => x.EvaluacionPromocionEstado == true)
+                        .Include(b => b.EvaluacionPromocionCiclo).Include(c => c.EvaluacionPromocionMedicion).Include(d => d.EvaluacionPromocionParticipante).ToList() :
+                        data.EvaluacionPromocion.Where(x => x.EvaluacionPromocionEstado == true && x.EvaluacionPromocionID == EvaluacionPromocionID)
+                        .Include(b => b.EvaluacionPromocionCiclo).Include(c => c.EvaluacionPromocionMedicion).Include(d => d.EvaluacionPromocionParticipante).ToList();
+
             }
             return lista;
         }
@@ -34,13 +40,60 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
             {
                 using (var data = new BDEvaluacionEntities())
                 {
-                    data.EvaluacionPromocion.Add(promocion);
-                    data.SaveChanges();
+                    using (var dbContextTransaction = data.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            //Se registra la promoción
+                            promocion.EvaluacionPromocionEstado = true;
+                            data.EvaluacionPromocion.Add(promocion);
+                            data.SaveChanges();
+                            //Obtener el ciclo de la evaluación
+                            List<EvaluacionCiclo> listaCiclo = data.EvaluacionCiclo.Where(x => x.EvaluacionID == promocion.EvaluacionID).ToList();
+                            //Se registra el ciclo de la promoción
+                            List<EvaluacionPromocionCiclo> listaPromocionCiclo = new List<EvaluacionPromocionCiclo>();
+                            EvaluacionPromocionCiclo promocionCiclo;
+                            List<EvaluacionPromocionMedicion> listaPromocionMedicion = new List<EvaluacionPromocionMedicion>();
+                            List<EvaluacionMedicion> listaMedicion = new List<EvaluacionMedicion>();
+                            EvaluacionPromocionMedicion promocionMedicion;
+                            foreach (EvaluacionCiclo item in listaCiclo)
+                            {
+                                promocionCiclo = new EvaluacionPromocionCiclo();
+                                promocionCiclo.EvaluacionCicloID = item.EvaluacionCicloID;
+                                promocionCiclo.EvaluacionPromocionID = promocion.EvaluacionPromocionID;
+                                promocionCiclo.EvaluacionCicloDescripcion = item.EvaluacionCicloDescripcion;
+                                listaPromocionCiclo.Add(promocionCiclo);
+
+                                listaMedicion = data.EvaluacionMedicion.Where(a => a.EvaluacionCicloID == item.EvaluacionCicloID).ToList();
+                                foreach (EvaluacionMedicion item2 in listaMedicion)
+                                {
+                                    promocionMedicion = new EvaluacionPromocionMedicion();
+                                    promocionMedicion.EvaluacionMedicionID = item2.EvaluacionMedicionID;
+                                    promocionMedicion.EvaluacionCicloID = item.EvaluacionCicloID;
+                                    promocionMedicion.EvaluacionMedicionDescripcion = item2.EvaluacionMedicionDescripcion;
+                                    promocionMedicion.EvaluacionPromocionID = promocion.EvaluacionPromocionID;
+                                    listaPromocionMedicion.Add(promocionMedicion);
+                                }
+                            }
+                            data.EvaluacionPromocionCiclo.AddRange(listaPromocionCiclo);
+                            data.EvaluacionPromocionMedicion.AddRange(listaPromocionMedicion);
+                            //Confirmar datos
+                            data.SaveChanges();
+                            dbContextTransaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            dbContextTransaction.Rollback();
+                            exito = false;
+                        }
+
+                    }
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 exito = false;
+
             }
             return exito;
         }
@@ -86,7 +139,7 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
             {
                 using (var data = new BDEvaluacionEntities())
                 {
-                    promocion= data.EvaluacionPromocion.Where(x => x.EvaluacionPromocionID == EvaluacionPromocionID).FirstOrDefault();
+                    promocion = data.EvaluacionPromocion.Where(x => x.EvaluacionPromocionID == EvaluacionPromocionID).FirstOrDefault();
                     promocion.EvaluacionPromocionEstado = false;
                     data.SaveChanges();
                 }

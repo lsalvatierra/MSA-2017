@@ -18,9 +18,9 @@ namespace ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA
         public EvaluacionPromocion()
         {
             this.EvaluacionPromocionCiclo = new HashSet<EvaluacionPromocionCiclo>();
-            this.EvaluacionPromocionMedicion = new HashSet<EvaluacionPromocionMedicion>();
             this.EvaluacionRespuesta = new HashSet<EvaluacionRespuesta>();
-            this.Participante = new HashSet<Participante>();
+            this.EvaluacionPromocionMedicion = new HashSet<EvaluacionPromocionMedicion>();
+            this.EvaluacionPromocionParticipante = new HashSet<EvaluacionPromocionParticipante>();
         }
     
         public int EvaluacionPromocionID { get; set; }
@@ -30,15 +30,16 @@ namespace ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA
         public Nullable<System.DateTime> EvaluacionPromocionFecIni { get; set; }
         public Nullable<System.DateTime> EvaluacionPromocionFecFin { get; set; }
         public bool EvaluacionPromocionEstado { get; set; }
+        public string EvaluacionPromocionCorreo { get; set; }
     
         public virtual Evaluacion Evaluacion { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EvaluacionPromocionCiclo> EvaluacionPromocionCiclo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EvaluacionPromocionMedicion> EvaluacionPromocionMedicion { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EvaluacionRespuesta> EvaluacionRespuesta { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Participante> Participante { get; set; }
+        public virtual ICollection<EvaluacionPromocionMedicion> EvaluacionPromocionMedicion { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EvaluacionPromocionParticipante> EvaluacionPromocionParticipante { get; set; }
     }
 }

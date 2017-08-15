@@ -17,8 +17,9 @@ namespace ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public EvaluacionMedicion()
         {
-            this.EvaluacionPromocionMedicion = new HashSet<EvaluacionPromocionMedicion>();
             this.EvaluacionRespuesta = new HashSet<EvaluacionRespuesta>();
+            this.EvaluacionPromocionMedicion = new HashSet<EvaluacionPromocionMedicion>();
+            this.EvaluacionPromocionParticipante = new HashSet<EvaluacionPromocionParticipante>();
         }
     
         public int EvaluacionMedicionID { get; set; }
@@ -28,8 +29,10 @@ namespace ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA
     
         public virtual EvaluacionCiclo EvaluacionCiclo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EvaluacionRespuesta> EvaluacionRespuesta { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EvaluacionPromocionMedicion> EvaluacionPromocionMedicion { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EvaluacionRespuesta> EvaluacionRespuesta { get; set; }
+        public virtual ICollection<EvaluacionPromocionParticipante> EvaluacionPromocionParticipante { get; set; }
     }
 }

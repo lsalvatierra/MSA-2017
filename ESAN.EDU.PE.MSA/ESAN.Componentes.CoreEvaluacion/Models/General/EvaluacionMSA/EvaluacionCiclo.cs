@@ -19,6 +19,7 @@ namespace ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA
         {
             this.EvaluacionMedicion = new HashSet<EvaluacionMedicion>();
             this.EvaluacionPromocionCiclo = new HashSet<EvaluacionPromocionCiclo>();
+            this.EvaluacionPromocionMedicion = new HashSet<EvaluacionPromocionMedicion>();
         }
     
         public long EvaluacionCicloID { get; set; }
@@ -32,5 +33,7 @@ namespace ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA
         public virtual ICollection<EvaluacionMedicion> EvaluacionMedicion { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EvaluacionPromocionCiclo> EvaluacionPromocionCiclo { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EvaluacionPromocionMedicion> EvaluacionPromocionMedicion { get; set; }
     }
 }

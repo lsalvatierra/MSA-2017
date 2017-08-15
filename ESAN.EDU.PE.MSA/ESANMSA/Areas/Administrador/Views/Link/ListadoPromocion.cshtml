@@ -1,0 +1,33 @@
+﻿@using ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA
+@{
+    List<EvaluacionPromocion> listadoPromocion = new List<EvaluacionPromocion>();
+    if (ViewBag.ListadoPromocion != null)
+    {
+        listadoPromocion = (List<EvaluacionPromocion>)ViewBag.ListadoPromocion;
+    }
+}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>C&oacute;digo</th>
+            <th>Nombre de la Promoci&oacute;n</th>
+            <th>Fecha Inicio - Fecha Fin</th>
+            <th># Ciclos - # Mediciones</th>
+            <th># Participantes</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (EvaluacionPromocion item in listadoPromocion)
+        {
+            <tr>
+                <td>@item.EvaluacionPromocionCodigo</td>
+                <td>@item.EvaluacionPromocionDescripcion</td>
+                <td>@item.EvaluacionPromocionFecIni.Value.ToShortDateString() - @item.EvaluacionPromocionFecFin.Value.ToShortDateString()</td>
+                <td>@item.EvaluacionPromocionCiclo.Count() - @item.EvaluacionPromocionMedicion.Count()</td>
+                <td>@item.EvaluacionPromocionParticipante.Count() </td>
+                <td> <input type="button" class="btnVisualizarParticipantes btn btn-success" value="Visualizar participantes" idPromo="@item.EvaluacionPromocionID" /></td>
+            </tr>
+        }
+    </tbody>
+</table>

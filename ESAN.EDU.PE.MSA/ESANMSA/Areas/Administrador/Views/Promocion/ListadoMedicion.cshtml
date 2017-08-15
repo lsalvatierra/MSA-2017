@@ -1,0 +1,85 @@
+﻿@using ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA
+@{
+    List<EvaluacionPromocion> listadoPromocion = new List<EvaluacionPromocion>();
+    if (ViewBag.ListadoPromocion != null)
+    {
+        listadoPromocion = (List<EvaluacionPromocion>)ViewBag.ListadoPromocion;
+    }
+    List<EvaluacionPromocionCiclo> listadoCiclo = new List<EvaluacionPromocionCiclo>();
+    if (ViewBag.ListadoCiclo != null)
+    {
+        listadoCiclo = (List<EvaluacionPromocionCiclo>)ViewBag.ListadoCiclo;
+    }
+
+    List<EvaluacionPromocionMedicion> listadoMedicion = new List<EvaluacionPromocionMedicion>();
+    if (ViewBag.ListadoMedicion != null)
+    {
+        listadoMedicion = (List<EvaluacionPromocionMedicion>)ViewBag.ListadoMedicion;
+    }
+
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                Medici&oacute;n
+            </th>
+            <th>
+                Ciclo
+            </th>
+            <th>
+                Fecha Inicio
+            </th>
+            <th>
+                Fecha Fin
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (EvaluacionPromocionCiclo ciclo in listadoCiclo)
+        {
+            foreach (EvaluacionPromocionMedicion medicion in listadoMedicion.Where(x => x.EvaluacionCicloID == ciclo.EvaluacionCicloID && x.EvaluacionPromocionID == ciclo.EvaluacionPromocionID).ToList())
+            {
+                <tr>
+                    <td>@medicion.EvaluacionMedicionDescripcion</td>
+                    <td>@ciclo.EvaluacionCicloDescripcion</td>
+                    <td>
+                        @if (medicion.EvaluacionPromMedicionFecIni == null)
+                        {
+                            <input type="button" class="btn btn-danger btn-xs btnAsignarFechaIni" idpromo="@medicion.EvaluacionPromocionID" idciclo ="@medicion.EvaluacionCicloID" idmedicion="@medicion.EvaluacionMedicionID" tipo="I" value="NO ASIGNADO" />
+                        }
+                        else
+                        {
+                            <input type="button" class="btn btn-success btn-xs btnAsignarFechaIni" idpromo="@medicion.EvaluacionPromocionID" idciclo ="@medicion.EvaluacionCicloID" idmedicion="@medicion.EvaluacionMedicionID" tipo="I" value="@medicion.EvaluacionPromMedicionFecIni.Value.ToShortDateString()" />
+                        }
+
+
+                    </td>
+                    <td>
+                        @if (medicion.EvaluacionPromMedicionFecFin == null)
+                        {
+                            <input type="button" class="btn btn-danger btn-xs btnAsignarFechaFin" idpromo="@medicion.EvaluacionPromocionID" idciclo ="@medicion.EvaluacionCicloID" idmedicion="@medicion.EvaluacionMedicionID" tipo="F" value="NO ASIGNADO" />
+                        }
+                        else
+                        {
+                            <input type="button" class="btn btn-success btn-xs btnAsignarFechaFin" idpromo="@medicion.EvaluacionPromocionID" idciclo ="@medicion.EvaluacionCicloID" idmedicion="@medicion.EvaluacionMedicionID" tipo="F" value="@medicion.EvaluacionPromMedicionFecFin.Value.ToShortDateString()" />
+                        }
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<script>
+    $(".btnAsignarFechaIni").datepicker({
+        //onSelect: function (dateText) {
+        //    display("Selected date: " + dateText + "; input's current value: " + this.value);
+        //    alert("asdasdasd");
+        //},
+        changeMonth: true, changeYear: true, minDate: 0, maxDate: "+4Y", dateFormat: 'dd/mm/yy'
+    });
+    $(".btnAsignarFechaFin").datepicker({ changeMonth: true, changeYear: true, minDate: 0, maxDate: "+4Y", dateFormat: 'dd/mm/yy' });
+</script>

@@ -19,7 +19,7 @@ namespace ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA
         {
             this.EvaluacionRespuesta = new HashSet<EvaluacionRespuesta>();
             this.EvaluacionRespuesta1 = new HashSet<EvaluacionRespuesta>();
-            this.EvaluacionPromocion = new HashSet<EvaluacionPromocion>();
+            this.EvaluacionPromocionParticipante = new HashSet<EvaluacionPromocionParticipante>();
         }
     
         public long ParticipanteID { get; set; }
@@ -34,7 +34,6 @@ namespace ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA
         public string ParticipanteEmailOpcional { get; set; }
         public string ParticipanteTelefono { get; set; }
         public string ParticipanteTelefonoOpcional { get; set; }
-        public Nullable<bool> EsExterno { get; set; }
         public Nullable<bool> ParticipanteEstado { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -43,6 +42,6 @@ namespace ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA
         public virtual ICollection<EvaluacionRespuesta> EvaluacionRespuesta1 { get; set; }
         public virtual TipoDocumento TipoDocumento { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<EvaluacionPromocion> EvaluacionPromocion { get; set; }
+        public virtual ICollection<EvaluacionPromocionParticipante> EvaluacionPromocionParticipante { get; set; }
     }
 }
