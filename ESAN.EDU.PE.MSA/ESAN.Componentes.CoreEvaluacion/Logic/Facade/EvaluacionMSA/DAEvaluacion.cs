@@ -24,5 +24,19 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
             return lista;
         }
 
+        /// <summary>
+        /// Obtener la evaluación por promoción.
+        /// </summary>
+        /// <param name="p_idPromocion">Id Promocion</param>
+        /// <returns>Objeto Evaluación.</returns>
+        public static Evaluacion ObtenerEvaluacion(int p_idPromocion)
+        {
+            Evaluacion objParticipante = null;
+            using (var data = new BDEvaluacionEntities())
+            {
+                return objParticipante = data.EvaluacionPromocion.Where(q => q.EvaluacionPromocionID == p_idPromocion).FirstOrDefault().Evaluacion;
+            }
+        }
+
     }
 }
