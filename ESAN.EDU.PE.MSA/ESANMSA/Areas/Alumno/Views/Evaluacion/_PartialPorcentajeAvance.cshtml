@@ -1,0 +1,9 @@
+﻿@{ 
+    string avanceEval = ((double)ViewBag.avanceEvaluacion).ToString();
+}
+
+<div class="progress">
+    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="@avanceEval" aria-valuemin="0" aria-valuemax="100" style="width: @avanceEval%;">
+        @avanceEval %
+    </div>
+</div>

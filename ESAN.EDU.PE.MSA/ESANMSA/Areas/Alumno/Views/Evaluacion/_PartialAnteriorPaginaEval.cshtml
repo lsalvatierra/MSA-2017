@@ -1,0 +1,164 @@
+﻿@using ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".btnOpc").on("click", function () {
+            $($(this).parent()).find('a').each(function () {
+                $(this).removeClass("btn-primary");
+                $(this).addClass("btn-default");
+            });
+            $(this).addClass("btn-primary");
+
+            $.post(URL_PAGE + "Alumno/Evaluacion/agregarRespuestas", { idMedicion: $("#hddIdMedicion").val(), idPromocion: $("#hddIdPromocion").val(), idEvaluado: 1, Externo: false, idAlternativa: $(this).attr("data-idAlternativa"), idPregunta: $(this).attr("data-idPregunta") },
+                function (result) {
+                    $("#AvanceEvaluacion").html("");
+                    $("#AvanceEvaluacion").html(result);
+                }
+            );
+        });
+        $(".btnSiguiente").on("click", function () {
+            var PregContestadas = 0;
+            $("#divEvaluacion a").each(function (index) {
+                if ($(this).hasClass("btn-primary")) {
+                    PregContestadas++;
+                }
+            });
+            if (PregContestadas < parseInt($("#hddCantPreguntasForm").val())) {
+                BootstrapDialog.show({
+                    type: BootstrapDialog.TYPE_DANGER,
+                    title: "Evaluación",
+                    message: "Por favor conteste todas las preguntas."
+                });
+                return false;
+            } else {
+                waitingDialog.show('Cargando', { dialogSize: 'sm', progressType: 'danger' });
+                $.ajax({
+                    type: "POST",
+                    url: URL_PAGE + "Alumno/Evaluacion/siguientePaginaEvaluacion",
+                    cache: false,
+                    data: {
+                        idNivelA: $("#hddIdNivelA").val(),
+                        idNivelOrdenA: $("#hddIdNivelOrdenA").val(),
+                        idNivelOrdenB: $("#hddIdNivelOrdenB").val(),
+                        idNivelOrdenC: $("#hddIdNivelOrdenC").val()
+                    },
+                    success: function (data) {
+                        waitingDialog.hide();
+                        $("#divEvaluacion").html("");
+                        $("#divEvaluacion").html(data);
+                    }
+                });
+            }
+        });
+        $(".btnAnterior").on("click", function () {
+            waitingDialog.show('Cargando', { dialogSize: 'sm', progressType: 'danger' });
+            $.ajax({
+                type: "POST",
+                url: URL_PAGE + "Alumno/Evaluacion/anteriorPaginaEvaluacion",
+                cache: false,
+                data: {
+                    idNivelA: $("#hddIdNivelA").val(),
+                    idNivelOrdenA: $("#hddIdNivelOrdenA").val(),
+                    idNivelOrdenB: $("#hddIdNivelOrdenB").val(),
+                    idNivelOrdenC: $("#hddIdNivelOrdenC").val()
+                },
+                success: function (data) {
+                    waitingDialog.hide();
+                    $("#divEvaluacion").html("");
+                    $("#divEvaluacion").html(data);
+                }
+            });
+        });
+        $(".btnFinalizar").on("click", function () {
+            var PregContestadas = 0;
+            $("#divEvaluacion a").each(function (index) {
+                if ($(this).hasClass("btn-primary")) {
+                    PregContestadas++;
+                }
+            });
+            if (PregContestadas < parseInt($("#hddCantPreguntasForm").val())) {
+                BootstrapDialog.show({
+                    type: BootstrapDialog.TYPE_DANGER,
+                    title: "Evaluación",
+                    message: "Por favor conteste todas las preguntas."
+                });
+                return false;
+            } else {
+                waitingDialog.show('Cargando', { dialogSize: 'sm', progressType: 'danger' });
+                $.ajax({
+                    type: "POST",
+                    url: URL_PAGE + "Alumno/Evaluacion/finalizarEvaluacion",
+                    cache: false,
+                    success: function (data) {
+                        waitingDialog.hide();
+                        $("#frmEvaluacion").html("");
+                        $("#frmEvaluacion").html(data);
+                    }
+                });
+            }
+        });
+    });
+</script>
+<div id="divEvaluacion">
+    @{    List<EvaluacionPregunta> lstPreguntas = (List<EvaluacionPregunta>)ViewBag.LstPreguntas;
+            int cntPreguntasForm = lstPreguntas.Count; }
+    <!--Hiddens para la paginación de las preguntas.-->
+    <input type="hidden" value="@ViewBag.IDNivelA" id="hddIdNivelA" />
+    <input type="hidden" value="@ViewBag.IDNivelOrdenA" id="hddIdNivelOrdenA" />
+    <input type="hidden" value="@ViewBag.IDNivelOrdenB" id="hddIdNivelOrdenB" />
+    <input type="hidden" value="@ViewBag.IDNivelOrdenC" id="hddIdNivelOrdenC" />
+    <input type="hidden" value="@cntPreguntasForm" id="hddCantPreguntasForm" />
+    <h2>@ViewBag.NivelA</h2>
+    @if (ViewBag.NivelB != "")
+    {
+        <h3>@ViewBag.NivelB.</h3>
+    }
+
+    <div class="jumbotron" style="padding: 5px 25px 5px 25px;">
+        @if (ViewBag.NivelC != "")
+            {
+            <h3>@ViewBag.NivelC</h3>
+        }
+        @foreach (var objPregunta in lstPreguntas)
+            {
+            <p>@objPregunta.EvaluacionPreguntaDescripcion</p>
+            <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
+                @foreach (var objAlternativa in objPregunta.EvaluacionAlternativa)
+                {
+                    <a class="btn btn-default btnOpc" data-idPregunta="@objPregunta.EvaluacionPreguntaID" data-idAlternativa="@objAlternativa.EvaluacionAlternativaID" role="button">@objAlternativa.EvaluacionAlternativaDescripcion</a>
+                }
+            </div>
+                <br />
+        }
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+            <div class="form-group">
+                @if ((bool)ViewBag.AnteriorPagEvaluacion)
+                {
+                    <button type="button" class="btn btn-success btnAnterior">Anterior</button>
+                }
+            </div>
+        </div>
+        <div class="col-md-10">
+        </div>
+        <div class="col-md-1">
+            @if ((bool)ViewBag.FinalizarEvaluacion)
+            {
+                <div class="form-group">
+                    <button type="button" class="btn btn-success btnFinalizar">Finalizar</button>
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <button type="button" class="btn btn-success btnSiguiente">Siguiente</button>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+
+
