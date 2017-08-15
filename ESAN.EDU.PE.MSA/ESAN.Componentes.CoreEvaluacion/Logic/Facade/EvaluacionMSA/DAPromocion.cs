@@ -139,7 +139,7 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
             {
                 using (var data = new BDEvaluacionEntities())
                 {
-                    promocion = data.EvaluacionPromocion.Where(x => x.EvaluacionPromocionID == EvaluacionPromocionID).FirstOrDefault();
+                    promocion= data.EvaluacionPromocion.Where(x => x.EvaluacionPromocionID == EvaluacionPromocionID).FirstOrDefault();
                     promocion.EvaluacionPromocionEstado = false;
                     data.SaveChanges();
                 }
