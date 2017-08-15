@@ -37,6 +37,7 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
                 return objParticipante = data.EvaluacionPromocion.Where(q => q.EvaluacionPromocionID == p_idPromocion).FirstOrDefault().Evaluacion;
             }
         }
+        ///ghfgfgfg
 
     }
 }
