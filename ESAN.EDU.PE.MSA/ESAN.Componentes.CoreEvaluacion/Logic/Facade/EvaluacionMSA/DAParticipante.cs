@@ -52,7 +52,7 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
                 using (var data = new BDEvaluacionEntities())
                 {
                     var promocion = data.EvaluacionPromocion.Find(p_idPromocion);
-                    promocion.Participante.Add(p_objParticipante);
+                    //promocion.Participante.Add(p_objParticipante);
                     rpta = data.SaveChanges();
                 }
             }
