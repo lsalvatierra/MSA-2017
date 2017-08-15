@@ -42,7 +42,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
             objParticipante.ParticipanteApeMaterno = p_apeMaterno;
             objParticipante.ParticipanteNombres = p_nombres;
             objParticipante.ParticipanteNombreCompleto = p_apePaterno + " " + p_apeMaterno + " " + p_nombres;
-            objParticipante.EsExterno = p_Externo;
+            //objParticipante.EsExterno = p_Externo;
             objParticipante.ParticipanteEstado = true;
             int rptaReg = DAParticipante.RegistrarParticipante(objParticipante, p_idPromocion);
             bool rpta = false; 
