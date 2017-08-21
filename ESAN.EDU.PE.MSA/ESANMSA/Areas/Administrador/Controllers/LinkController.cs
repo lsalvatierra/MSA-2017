@@ -1,4 +1,5 @@
 ﻿using ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA;
+using ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +21,25 @@ namespace ESANMSA.Areas.Administrador.Controllers
             ViewBag.ListadoPromocion = DAPromocion.Listado(-1);
             return PartialView();
         }
+
+        public ActionResult ListadoParticipante(int EvaluacionPromocionID)
+        {
+            ViewBag.ListadoPromocionCiclo = DAPromocionCiclo.Listado(EvaluacionPromocionID);
+            return PartialView();
+        }
+        [HttpPost]
+        public JsonResult ListadoMedicion(int EvaluacionPromocionID, int EvaluacionCicloID)
+        {
+            List<EvaluacionPromocionMedicion> listado = DAPromocionMedicion.Listado(EvaluacionPromocionID, EvaluacionCicloID);
+            return Json(new { listamedicion = listado }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ListadoParticipanteDetalle(int EvaluacionPromocionID, int EvaluacionMedicionID)
+        {
+            ViewBag.ListadoPromocionParticipante = DAPromocion.ListadoParticipante(EvaluacionPromocionID, EvaluacionMedicionID);
+            return PartialView();
+        }
+
+
     }
 }
