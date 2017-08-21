@@ -1,0 +1,62 @@
+﻿@using ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA
+@{ 
+    List<EvaluacionPromocionCiclo> lstCiclo = (List<EvaluacionPromocionCiclo>)ViewBag.lstCiclo;
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#cboCiclos").on("change", function () {
+            //alert($(this).attr("data-idPromocion"));
+            waitingDialog.show('Cargando', { dialogSize: 'sm', progressType: 'danger' });
+            $.ajax({
+                type: "POST",
+                url: URL_PAGE + "Administrador/ResultadoEvaluacion/ListaParticipantesPromocionCiclo",
+                cache: false,
+                data: {
+                    p_idPromocion: $("#hddIdPromocion").val(),
+                    p_idCiclo: $(this).val()
+                },
+                success: function (data) {
+                    $("#divlistParticipantes").html("");
+                    $("#divlistParticipantes").html(data);
+                    waitingDialog.hide();
+                }
+            });
+        });
+
+    });
+</script>
+<div class="content">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Ciclos por promoción:</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+                    <label>Ciclo:</label><input type="hidden" id="hddIdPromocion" value="@ViewBag.idPromocion" />
+                    <select class="form-control" id="cboCiclos">
+                        <option value="0" selected disabled>Seleccione</option>
+                        @foreach (var obj in lstCiclo)
+                        {
+                            <option value="@obj.EvaluacionCicloID">@obj.EvaluacionCicloDescripcion</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="divlstRecursos" class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Resultado:</h3>
+        </div>
+        <div class="panel-body">
+            <div id="divlistParticipantes">
+                @Html.Partial("_ListaParticipantes")               
+            </div>
+        </div>
+    </div>
+</div>

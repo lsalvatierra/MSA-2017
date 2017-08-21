@@ -1,0 +1,59 @@
+﻿@using ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA
+@{
+    ViewBag.Title = "Resultado";
+    List<EvaluacionPromocion> lstPromocion = (List<EvaluacionPromocion>)ViewBag.lstPromocion;
+}
+@section Scripts{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/bootstrap/dialog/bootstrap-dialog.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/bootstrap/bootstrap-loading.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/bootstrap/table/bootstrap-table.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/Areas/Administrador/ResultadoEvaluacion/frmPromociones.js")"></script>
+}
+@section Styles{
+    <link href="@Url.Content("~/Content/bootstrap/dialog/bootstrap-dialog.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootstrap/table/bootstrap-table.css")" rel="stylesheet" />
+}
+<h2>Resultado de Promociones</h2>
+<div id="divfrmResultado">
+    <div class="row">
+        <div class="col-md-12 col-xs-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">PROMOCIONES</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-bordered table-hover" id="tblSesion" data-search="true" data-search-align="left" data-toggle="table">
+                        <thead>
+                            <tr>
+                                <th>CÓDIGO</th>
+                                <th>PROMOCIÓN</th>
+                                <th>EVALUACIÓN</th>
+                                <th>FECHA INICIO</th>
+                                <th>FECHA FIN</th>
+                                <th data-align="center">VER</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var objPromocion in lstPromocion)
+                            {
+                                <tr>
+                                    <td>@Html.Raw(objPromocion.EvaluacionPromocionCodigo)</td>
+                                    <td>@Html.Raw(objPromocion.EvaluacionPromocionDescripcion)</td>
+                                    <td>@Html.Raw(objPromocion.Evaluacion.EvaluacionDescripcion)</td>
+                                    <td>@Html.Raw(objPromocion.EvaluacionPromocionFecIni.Value.ToShortDateString())</td>
+                                    <td>@Html.Raw(objPromocion.EvaluacionPromocionFecFin.Value.ToShortDateString())</td>
+                                    <td>
+                                        <a data-placement="top" data-idPromocion="@objPromocion.EvaluacionPromocionID" style="cursor: pointer;" class="btnVerParticipantes"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
