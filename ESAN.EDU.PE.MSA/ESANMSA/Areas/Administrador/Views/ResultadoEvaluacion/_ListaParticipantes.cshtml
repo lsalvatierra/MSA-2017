@@ -1,0 +1,38 @@
+﻿@using ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA
+@{
+    List<EvaluacionPromocionParticipante> lstParticipantes = (List<EvaluacionPromocionParticipante>)ViewBag.lstParticipantes;
+}
+<link href="@Url.Content("~/Content/bootstrap/table/bootstrap-table.css")" rel="stylesheet" />
+<script type="text/javascript" src="@Url.Content("~/Scripts/bootstrap/table/bootstrap-table.js")"></script>
+<table class="table table-bordered table-hover" id="tblSesion" data-search="true" data-search-align="left" data-toggle="table">
+    <thead>
+        <tr>
+            <th>CÓDIGO</th>
+            <th>APELLIDO PATERNO</th>
+            <th>APELLIDO MATERNO</th>
+            <th>NOMBRES</th>
+            <th data-align="center">RESULTADO</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (lstParticipantes != null)
+        {
+            foreach (EvaluacionPromocionParticipante objPart in lstParticipantes)
+            {
+                if (objPart.Participante.EvaluacionRespuesta.Count > 0)
+                {
+                    <tr>
+                        <td>@Html.Raw(objPart.Participante.ParticipanteNroDoc)</td>
+                        <td>@Html.Raw(objPart.Participante.ParticipanteApePaterno)</td>
+                        <td>@Html.Raw(objPart.Participante.ParticipanteApeMaterno)</td>
+                        <td>@Html.Raw(objPart.Participante.ParticipanteNombres)</td>
+                        <td>
+                            <a data-placement="top" target="_blank" href="@Url.Action("ResultadoParticipante", "ResultadoEvaluacion",new { area = "Administrador", idMedicion = objPart.EvaluacionMedicionID, idPromocion = objPart.EvaluacionPromocionID, idParticipante = objPart.ParticipanteID })" style="cursor: pointer;"><span class="glyphicon glyphicon-save" aria-hidden="true"></span></a>
+                        </td>
+                    </tr>
+                }
+
+            }
+        }
+    </tbody>
+</table> 
