@@ -1,0 +1,58 @@
+﻿@using ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA
+@{
+    List<EvaluacionPromocionParticipante> listadoPromocionParticipante = new List<EvaluacionPromocionParticipante>();
+    if (ViewBag.ListadoPromocionParticipante != null)
+    {
+        listadoPromocionParticipante = (List<EvaluacionPromocionParticipante>)ViewBag.ListadoPromocionParticipante;
+    }
+}
+
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                DNI
+            </th>
+            <th>
+                PARTICIPANTE
+            </th>
+            <th>
+                    
+            </th>
+            <th>
+
+            </th>
+            <th>
+                ENV&Iacute;O
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in listadoPromocionParticipante)
+        {
+            string url = HttpContext.Current.Request.Url.AbsoluteUri + "/" + item.ParticipanteID + "/" + item.EvaluacionPromocionID.ToString() + "/" + item.EvaluacionMedicionID;
+            <tr>
+                <td>@item.Participante.ParticipanteNroDoc</td>
+                <td>@item.Participante.ParticipanteNombreCompleto</td>
+                <td>                    
+                    <a href="@url" target="_blank" type="button" class="btn btn-default btnUrlLink" aria-label="Left Align">
+                        <span class="glyphicon glyphicon glyphicon-globe" aria-hidden="true"> Link</span>
+                    </a>
+                   
+                </td>
+                <td>
+                    <button type="button" class="btn btn-default btnCopiarUrl" aria-label="Left Align" url="@url">
+                        <span class="glyphicon glyphicon glyphicon-copy" aria-hidden="true"> Copiar</span>
+                    </button>
+                </td>
+                <td>
+                    <a href="#" type="button" class="btn btn-default" aria-label="Left Align">
+                        <span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span>
+                    </a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>

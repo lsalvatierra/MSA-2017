@@ -3,15 +3,22 @@
     ViewBag.Title = "Generación de links";
 }
 @*<script src="~/Scripts/Areas/Administrador/Promocion.js"></script>*@
-<h2>Generación de links</h2>
+<h2>Listado de Promociones</h2>
 @*<input type="button" id="btnNuevaPromocion" class="btnNuevaPromocion btn btn-primary" value="Nuevo Registro" />*@
 <hr />
 <div id="divListadoPromocionLinks"></div>
-
-
-
+<hr />
+<h2>Generación de links</h2>
+<hr />
+<div id="divListadoParticipanteLinks"></div>
+<hr />
+<div id="divListadoParticipanteLinksDetalle"></div>
+<input type="hidden" id="hidEvaluacionPromocionID" />
 
 <script>
+
+
+
     CargarListado();
 
     function CargarListado() {
@@ -26,5 +33,127 @@
         });
     }
 
+    $(document).on('click', '.btnVisualizarParticipantes', function () {
+        var vPromocionID = $(this).attr("idpromo");
+        $("#hidEvaluacionPromocionID").val(vPromocionID);
+
+        $.ajax({
+            'url': URL_PAGE + 'Administrador/Link/ListadoParticipante',
+            'type': 'POST',
+            'data': {
+                EvaluacionPromocionID: vPromocionID
+            },
+            'success': function (view) {
+                //process here
+                $("#divListadoParticipanteLinks").html(view);
+            }
+        });
+    });
+
+    $(document).on('change', '.cboCicloParticipante', function () {
+        var vCicloID = $(this).val();
+        var vPromocionID = $("#hidEvaluacionPromocionID").val();
+        var $select = $('#cboMedicionParticipante');
+        $.ajax({
+            'url': URL_PAGE + 'Administrador/Link/ListadoMedicion',
+            'type': 'POST',
+            cache: false,
+            contentType: "application/json; charset=utf-8",
+            'data': JSON.stringify({
+                EvaluacionPromocionID: vPromocionID,
+                EvaluacionCicloID: vCicloID
+            }),
+            'success': function (data) {
+                $select.html("");
+                $select.append($('<option>', {
+                    value: "-1",
+                    text: "SELECCIONE"
+                }));
+                $.each(data.listamedicion, function (i, state) {
+                    if (state.EvaluacionPromMedicionFecIni == null || state.EvaluacionPromMedicionFecFin == null) {
+                        alert("Aún no se ha configurado fechas para este ciclo. Por favor realizar la configuración.");
+                        return false;
+                    } else {
+                        // parse JSON formatted date to javascript date object
+                        var fechaInicio = new Date(parseInt(state.EvaluacionPromMedicionFecIni.substr(6)));
+                        var fechaFin = new Date(parseInt(state.EvaluacionPromMedicionFecFin.substr(6)));
+                        // format display date (e.g. 04/10/2012)
+                        var vFecIni = $.datepicker.formatDate("dd/mm/yy", fechaInicio);
+                        var vFecFin = $.datepicker.formatDate("dd/mm/yy", fechaFin);
+                        //alert(displayDate);
+                        //return false;
+                        $('<option>', {
+                            value: state.EvaluacionMedicionID
+                        }).html(state.EvaluacionMedicionDescripcion + " (" + vFecIni + " - " + vFecFin + ")").appendTo($select);
+                    }
+
+                });
+            }
+        });
+    });
+
+
+    $(document).on('change', '.cboMedicionParticipante', function () {
+
+        var vPromocionID = $("#hidEvaluacionPromocionID").val();
+        var vMedicionID = $("#cboMedicionParticipante").val();
+        $.ajax({
+            'url': URL_PAGE + 'Administrador/Link/ListadoParticipanteDetalle',
+            'type': 'POST',
+            'data': {
+                EvaluacionPromocionID: vPromocionID,
+                EvaluacionMedicionID: vMedicionID
+            },
+            'success': function (view) {
+                //process here
+                $("#divListadoParticipanteLinksDetalle").html(view);
+
+            }
+        });
+
+
+    });
+
+
+
+    $(document).on('click', '#btnEnviarCorreo', function () {
+        alert("Enviando....");
+    });
+
+
+
+    // Copy to clipboard example
+    $(document).on('click', '.btnCopiarUrl', function () {
+        var copiar = $(this).attr("url");    
+        copyTextToClipboard(copiar);
+    });
+   
+    function copyTextToClipboard(text) {
+        var textArea = document.createElement("textarea");
+
+        textArea.style.position = 'fixed';
+        textArea.style.top = 0;
+        textArea.style.left = 0;
+        textArea.style.width = '2em';
+        textArea.style.height = '2em';
+        textArea.style.padding = 0;
+        textArea.style.border = 'none';
+        textArea.style.outline = 'none';
+        textArea.style.boxShadow = 'none';
+        textArea.style.background = 'transparent';
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+            var successful = document.execCommand('copy');
+            var msg = successful ? 'successful' : 'unsuccessful';
+            console.log('Copying text command was ' + msg);
+        } catch (err) {
+            console.log('Oops, unable to copy');
+        }
+        document.body.removeChild(textArea);
+    }
+
+    
 
 </script>
