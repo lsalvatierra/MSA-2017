@@ -139,7 +139,7 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
             {
                 using (var data = new BDEvaluacionEntities())
                 {
-                    promocion= data.EvaluacionPromocion.Where(x => x.EvaluacionPromocionID == EvaluacionPromocionID).FirstOrDefault();
+                    promocion = data.EvaluacionPromocion.Where(x => x.EvaluacionPromocionID == EvaluacionPromocionID).FirstOrDefault();
                     promocion.EvaluacionPromocionEstado = false;
                     data.SaveChanges();
                 }
@@ -151,6 +151,22 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
 
             return exito;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="EvaluacionPromocionID"></param>
+        /// <returns></returns>
+        static public List<EvaluacionPromocionParticipante> ListadoParticipante(int EvaluacionPromocionID, int EvaluacionMedicionID)
+        {
+            List<EvaluacionPromocionParticipante> lista = new List<EvaluacionPromocionParticipante>();
+            using (var data = new BDEvaluacionEntities())
+            {
+                lista = EvaluacionPromocionID == -1 && EvaluacionMedicionID == -1 ?
+                        data.EvaluacionPromocionParticipante.Include(x=>x.Participante).ToList() :
+                        data.EvaluacionPromocionParticipante.Include(x => x.Participante).Where(x => x.EvaluacionPromocionID == EvaluacionPromocionID && x.EvaluacionMedicionID == EvaluacionMedicionID).ToList();
 
+            }
+            return lista;
+        }
     }
 }

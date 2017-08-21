@@ -17,6 +17,7 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
                 lista = CicloID == -1 && PromocionID == -1 ?
                         data.EvaluacionPromocionMedicion.ToList() :
                         data.EvaluacionPromocionMedicion.Where(x => x.EvaluacionCicloID == CicloID && x.EvaluacionPromocionID == PromocionID).ToList();
+                data.Configuration.LazyLoadingEnabled = false;
             }
             return lista;
         }
