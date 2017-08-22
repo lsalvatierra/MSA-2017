@@ -96,10 +96,10 @@
                     type: "POST",
                     url: URL_PAGE + "Alumno/Evaluacion/finalizarEvaluacion",
                     cache: false,
-                    success: function (data) {
-                        waitingDialog.hide();
+                    success: function (data) {                       
                         $("#frmEvaluacion").html("");
                         $("#frmEvaluacion").html(data);
+                        waitingDialog.hide();
                     }
                 });
             }

@@ -72,7 +72,7 @@
     .main-header {
 	background: #808080;
 	color: white;
-	height: 180px;	
+	height: 205px;	
 	width: 100%; /* hacemos que la cabecera ocupe el ancho completo de la página */
 	left: 0; /* Posicionamos la cabecera al lado izquierdo */
 	top: 25px; /* Posicionamos la cabecera pegada arriba */
@@ -88,15 +88,15 @@
     <div class="main-header">
         <div class="page-header">
             <h1>@ViewBag.NombreEvaluacion</h1>
-
             <input type="hidden" value="@ViewBag.IdMedicion" id="hddIdMedicion" />
             <input type="hidden" value="@ViewBag.IdPromocion" id="hddIdPromocion" />
             <input type="hidden" value="@EsExterno" id="hddExterno" />
+            <input type="hidden" value="@ViewBag.IdEvaluado" id="hddIdEvaluado" />
             @if ((bool)ViewBag.EsExterno)
             {
                 <p class="lead">Evaluando a: @ViewBag.NombresParticipanteEvaluar.</p>
                 
-                <input type="hidden" value="@ViewBag.IdEvaluado" id="hddIdEvaluado" />
+
             }
         </div>
         @*<div class="row">
@@ -110,7 +110,7 @@
             @*</div>
         </div>*@
     </div>
-    <br /><br /><br /><br /><br /><br /><br />
+    <br /><br /><br /><br /><br /><br /><br /><br />
     <div id="divEvaluacion">
         @{    List<EvaluacionPregunta> lstPreguntas = (List<EvaluacionPregunta>)ViewBag.LstPreguntas;
             int cntPreguntasForm = lstPreguntas.Count; }

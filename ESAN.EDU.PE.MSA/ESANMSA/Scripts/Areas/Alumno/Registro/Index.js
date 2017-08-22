@@ -24,13 +24,16 @@
                     if (data.Existe == -1) {
                         $("#divExisteEval").fadeOut("fast");
                         $("#divRegistrar").fadeIn("slow");
+                        waitingDialog.hide();
                     } else if (data.Existe == 1) {
                         $("#divRegistrar").fadeOut("fast");
                         $("#divExisteEval").fadeIn("slow");
+                        waitingDialog.hide();
                     } else if (data.Existe == 0) {
                         $("#frmRegistro").submit();
+                        
                     }
-                    waitingDialog.hide();
+                    
                 }
             });
         }
@@ -81,11 +84,12 @@
                 },
                 success: function (data) {
                     if (data.rpta) {
-                        $("#frmRegistro").submit();
+                        $("#frmRegistro").submit();                        
                     } else {
-                      alert("Ocurrió un error en la base de datos.")
+                        alert("Ocurrió un error en la base de datos.");
+                        waitingDialog.hide();
                     }
-                    waitingDialog.hide();
+                   
                 }
             });
 
@@ -108,7 +112,7 @@
             waitingDialog.show('Cargando', { dialogSize: 'sm', progressType: 'danger' });
             $.ajax({
                 type: "POST",
-                url: URL_PAGE + "Alumno/Registro/RegistrarUsuario",
+                url: URL_PAGE + "Alumno/Registro/RegistrarUsuarioExterno",
                 cache: false,
                 data: {
                     p_idPromocion: $("#hddIdPromocion").val(),
@@ -119,10 +123,12 @@
                 success: function (data) {
                     if (data.rpta) {
                         $("#frmRegistro").submit();
+                        
                     } else {
-                        alert("Ocurrió un error en la base de datos.")
+                        alert("Ocurrió un error en la base de datos.");
+                        waitingDialog.hide();
                     }
-                    waitingDialog.hide();
+                   
                 }
             });
 

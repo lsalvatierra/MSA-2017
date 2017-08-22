@@ -24,6 +24,11 @@ namespace ESANMSA.Areas.Alumno.Controllers
             ViewBag.IdEvaluado = idEvaluado;
             if (Externo)
             {
+                Participante objParticipante = DAParticipante.ObtenerParticipantexID(idEvaluado);
+                if (objParticipante == null)
+                {
+                    return RedirectToAction("FormularioError", "Registro", new { area = "Alumno", p_tipoError = 3 });
+                }
                 ViewBag.lstTipoRelacion = DATipoRelacionParticipante.ListaTipoRelacion();
             }
             if (objPromMed != null)
@@ -37,9 +42,6 @@ namespace ESANMSA.Areas.Alumno.Controllers
             else {
                 return RedirectToAction("FormularioError", "Registro", new { area = "Alumno", p_tipoError = 2 });
             }
-
-
-
         }
 
         public ActionResult FormularioError(int p_tipoError) {
@@ -47,6 +49,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
             switch (p_tipoError) {
                 case 1: mensajeError = "No se encuentra en el rango de fechas para la evaluación."; break;
                 case 2: mensajeError = "No existe evaluación."; break;
+                case 3: mensajeError = "No existe el participante a evalular."; break;
                 default: mensajeError = "Error desconocido."; break;
             }
             ViewBag.mensajeError = mensajeError;

@@ -32,10 +32,9 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
         /// <returns>Objeto Participante.</returns>
         public static Participante ObtenerParticipantexID(int p_idParticipante)
         {
-            Participante objParticipante = null;
             using (var data = new BDEvaluacionEntities())
             {
-                return objParticipante = data.Participante.Where(q => q.TipoDocumentoID == p_idParticipante).FirstOrDefault();
+                return data.Participante.Where(q => q.ParticipanteID == p_idParticipante).FirstOrDefault();
             }
         }
 
