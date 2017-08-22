@@ -21,62 +21,81 @@ namespace ESANMSA.Areas.Alumno.Controllers
         // GET: Alumno/Evaluacion
         public ActionResult frmEvaluacion(int idMedicion, int idPromocion, int idEvaluado, bool Externo)
         {
-            lstEvaluacionRespuesta.Clear();
-            cantidadMostradas = 0;
-            cantidadIniPreg = 0;
-            cantidadResulta = 0;
-            objEvaluacion = DAEvaluacion.ObtenerEvaluacion(idPromocion);
-            List<EvaluacionPregunta> lstPreguntas = new List<EvaluacionPregunta>();
-            ViewBag.NombreEvaluacion = objEvaluacion.EvaluacionDescripcion;
-            ViewBag.IdMedicion = idMedicion;
-            ViewBag.IdPromocion = idPromocion;
-            ViewBag.EsExterno = Externo;
-            if (Externo) {
-                ViewBag.NombresParticipanteEvaluar = DAParticipante.ObtenerParticipantexID(idEvaluado).ParticipanteNombreCompleto;
+            if (Session["Alumno"] != null)
+            {
+                lstEvaluacionRespuesta.Clear();
+                cantidadMostradas = 0;
+                cantidadIniPreg = 0;
+                cantidadResulta = 0;
+                objEvaluacion = DAEvaluacion.ObtenerEvaluacion(idPromocion);
+                List<EvaluacionPregunta> lstPreguntas = new List<EvaluacionPregunta>();
+                ViewBag.NombreEvaluacion = objEvaluacion.EvaluacionDescripcion;
+                ViewBag.IdMedicion = idMedicion;
+                ViewBag.IdPromocion = idPromocion;
+                ViewBag.EsExterno = Externo;
                 ViewBag.IdEvaluado = idEvaluado;
-            }
-            //Obtenemos toda la evaluación y se guarda a una variable global.
-            lstEvaluacion = DAEvaluacionNivel.ListaNivelesxEvaluacion(idPromocion, 0);
-            //De la evaluación se extrae los primeros objetos para esta primera pagina
-            if (lstEvaluacion.FirstOrDefault() != null) {
-                ViewBag.NivelA = lstEvaluacion.FirstOrDefault().EvaluacionNivelDescripcion;
-                ViewBag.IDNivelA = lstEvaluacion.FirstOrDefault().EvaluacionNivelID;
-                ViewBag.IDNivelOrdenA = lstEvaluacion.FirstOrDefault().EvaluacionNivelOrden;
-                if (lstEvaluacion.FirstOrDefault().EvaluacionNivel1.Count() > 0)
+                if (Externo)
                 {
-                    ViewBag.NivelB = lstEvaluacion.FirstOrDefault().EvaluacionNivel1.FirstOrDefault().EvaluacionNivelDescripcion;
-
-                    ViewBag.IDNivelOrdenB = lstEvaluacion.FirstOrDefault().EvaluacionNivel1.FirstOrDefault().EvaluacionNivelOrden;
-
-                    if (lstEvaluacion.FirstOrDefault().EvaluacionNivel1.FirstOrDefault().EvaluacionNivel1.Count > 0)
+                    Participante objParticipante = DAParticipante.ObtenerParticipantexID(idEvaluado);
+                    if (objParticipante != null)
                     {
-                        ViewBag.NivelC = lstEvaluacion.FirstOrDefault().EvaluacionNivel1.FirstOrDefault().EvaluacionNivel1.FirstOrDefault().EvaluacionNivelDescripcion;
-                        ViewBag.IDNivelOrdenC = lstEvaluacion.FirstOrDefault().EvaluacionNivel1.FirstOrDefault().EvaluacionNivel1.FirstOrDefault().EvaluacionNivelOrden;
-                        lstPreguntas = DAEvaluacionPregunta.ListaPreguntasxNivelEvaluacion(Convert.ToInt32(lstEvaluacion.FirstOrDefault().EvaluacionNivel1.FirstOrDefault().EvaluacionNivel1.FirstOrDefault().EvaluacionNivelID));
-                        ViewBag.LstPreguntas = lstPreguntas;
+                        ViewBag.NombresParticipanteEvaluar = objParticipante.ParticipanteNombreCompleto;
                     }
                     else {
-                        //Se coloca 0 cuando ya no existe más subniveles.
-                        ViewBag.NivelC = "";
-                        ViewBag.IDNivelOrdenC = 0;
-                        lstPreguntas = DAEvaluacionPregunta.ListaPreguntasxNivelEvaluacion(Convert.ToInt32(lstEvaluacion.FirstOrDefault().EvaluacionNivel1.FirstOrDefault().EvaluacionNivelID));
-                        
-                        ViewBag.LstPreguntas = lstPreguntas;
+                        return RedirectToAction("FormularioError", "Registro", new { area = "Alumno", p_tipoError = 3 });
+                    }
+                    
+                }
+                //Obtenemos toda la evaluación y se guarda a una variable global.
+                lstEvaluacion = DAEvaluacionNivel.ListaNivelesxEvaluacion(idPromocion, 0);
+                //De la evaluación se extrae los primeros objetos para esta primera pagina
+                if (lstEvaluacion.FirstOrDefault() != null)
+                {
+                    ViewBag.NivelA = lstEvaluacion.FirstOrDefault().EvaluacionNivelDescripcion;
+                    ViewBag.IDNivelA = lstEvaluacion.FirstOrDefault().EvaluacionNivelID;
+                    ViewBag.IDNivelOrdenA = lstEvaluacion.FirstOrDefault().EvaluacionNivelOrden;
+                    if (lstEvaluacion.FirstOrDefault().EvaluacionNivel1.Count() > 0)
+                    {
+                        ViewBag.NivelB = lstEvaluacion.FirstOrDefault().EvaluacionNivel1.FirstOrDefault().EvaluacionNivelDescripcion;
 
+                        ViewBag.IDNivelOrdenB = lstEvaluacion.FirstOrDefault().EvaluacionNivel1.FirstOrDefault().EvaluacionNivelOrden;
+
+                        if (lstEvaluacion.FirstOrDefault().EvaluacionNivel1.FirstOrDefault().EvaluacionNivel1.Count > 0)
+                        {
+                            ViewBag.NivelC = lstEvaluacion.FirstOrDefault().EvaluacionNivel1.FirstOrDefault().EvaluacionNivel1.FirstOrDefault().EvaluacionNivelDescripcion;
+                            ViewBag.IDNivelOrdenC = lstEvaluacion.FirstOrDefault().EvaluacionNivel1.FirstOrDefault().EvaluacionNivel1.FirstOrDefault().EvaluacionNivelOrden;
+                            lstPreguntas = DAEvaluacionPregunta.ListaPreguntasxNivelEvaluacion(Convert.ToInt32(lstEvaluacion.FirstOrDefault().EvaluacionNivel1.FirstOrDefault().EvaluacionNivel1.FirstOrDefault().EvaluacionNivelID));
+                            ViewBag.LstPreguntas = lstPreguntas;
+                        }
+                        else
+                        {
+                            //Se coloca 0 cuando ya no existe más subniveles.
+                            ViewBag.NivelC = "";
+                            ViewBag.IDNivelOrdenC = 0;
+                            lstPreguntas = DAEvaluacionPregunta.ListaPreguntasxNivelEvaluacion(Convert.ToInt32(lstEvaluacion.FirstOrDefault().EvaluacionNivel1.FirstOrDefault().EvaluacionNivelID));
+
+                            ViewBag.LstPreguntas = lstPreguntas;
+
+                        }
+                    }
+                    else
+                    {
+                        //Se coloca 0 cuando ya no existe más subniveles.
+                        ViewBag.NivelB = "";
+                        ViewBag.IDNivelOrdenB = 0;
+                        lstPreguntas = DAEvaluacionPregunta.ListaPreguntasxNivelEvaluacion(Convert.ToInt32(lstEvaluacion.FirstOrDefault().EvaluacionNivelID));
+                        ViewBag.LstPreguntas = lstPreguntas;
                     }
                 }
-                else {
-                    //Se coloca 0 cuando ya no existe más subniveles.
-                    ViewBag.NivelB = "";
-                    ViewBag.IDNivelOrdenB = 0;
-                    lstPreguntas = DAEvaluacionPregunta.ListaPreguntasxNivelEvaluacion(Convert.ToInt32(lstEvaluacion.FirstOrDefault().EvaluacionNivelID));
-                    ViewBag.LstPreguntas = lstPreguntas;
-                }
+                cantidadIniPreg = lstPreguntas.Count;
+                cantidadMostradas = cantidadMostradas + lstPreguntas.Count;
+                return View();
             }
-            cantidadIniPreg = lstPreguntas.Count;
-            cantidadMostradas = cantidadMostradas + lstPreguntas.Count;
+            else {
+                return RedirectToAction("Formulario","Registro",new { area="Alumno", idPromocion = idPromocion, idMedicion = idMedicion, idEvaluado = idEvaluado, Externo = Externo });
+
+            }
             
-            return View();
         }
 
 

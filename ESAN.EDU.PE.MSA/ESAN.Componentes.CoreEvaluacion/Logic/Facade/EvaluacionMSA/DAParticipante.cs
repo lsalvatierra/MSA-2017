@@ -32,10 +32,9 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
         /// <returns>Objeto Participante.</returns>
         public static Participante ObtenerParticipantexID(int p_idParticipante)
         {
-            Participante objParticipante = null;
             using (var data = new BDEvaluacionEntities())
             {
-                return objParticipante = data.Participante.Where(q => q.TipoDocumentoID == p_idParticipante).FirstOrDefault();
+                return data.Participante.Where(q => q.ParticipanteID == p_idParticipante).FirstOrDefault();
             }
         }
 
@@ -106,7 +105,7 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
             using (var data = new BDEvaluacionEntities())
             {
                 int idMedicion = data.EvaluacionPromocionMedicion.Where(q => q.EvaluacionPromocionID == p_idPromocion && q.EvaluacionCicloID == p_idCiclo).FirstOrDefault().EvaluacionMedicionID;
-                lista = data.EvaluacionPromocionParticipante.Include(x => x.Participante).Where(x => x.EvaluacionPromocionID == p_idPromocion && x.EvaluacionMedicionID == idMedicion && x.EsExterno == false).ToList();
+                lista = data.EvaluacionPromocionParticipante.Include(x => x.Participante).Include(x => x.Participante.EvaluacionRespuesta).Where(x => x.EvaluacionPromocionID == p_idPromocion && x.EvaluacionMedicionID == idMedicion && x.EsExterno == false).ToList();
 
             }
             return lista;
