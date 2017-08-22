@@ -18,7 +18,7 @@
             });
             $(this).addClass("btn-primary");
 
-            $.post(URL_PAGE + "Alumno/Evaluacion/agregarRespuestas", { idMedicion: $("#hddIdMedicion").val(), idPromocion: $("#hddIdPromocion").val(), idEvaluado: 1, Externo: false, idAlternativa: $(this).attr("data-idAlternativa"), idPregunta: $(this).attr("data-idPregunta") },
+            $.post(URL_PAGE + "Alumno/Evaluacion/agregarRespuestas", { idMedicion: $("#hddIdMedicion").val(), idPromocion: $("#hddIdPromocion").val(), idEvaluado: $("#hddIdEvaluado").val(), Externo: $("#hddExterno").val(), idAlternativa: $(this).attr("data-idAlternativa"), idPregunta: $(this).attr("data-idPregunta") },
                 function (result) {
                     $("#AvanceEvaluacion").html("");
                     $("#AvanceEvaluacion").html(result);
@@ -91,11 +91,11 @@
 
             <input type="hidden" value="@ViewBag.IdMedicion" id="hddIdMedicion" />
             <input type="hidden" value="@ViewBag.IdPromocion" id="hddIdPromocion" />
-
+            <input type="hidden" value="@EsExterno" id="hddExterno" />
             @if ((bool)ViewBag.EsExterno)
             {
                 <p class="lead">Evaluando a: @ViewBag.NombresParticipanteEvaluar.</p>
-                <input type="hidden" value="@EsExterno" id="hddExterno" />
+                
                 <input type="hidden" value="@ViewBag.IdEvaluado" id="hddIdEvaluado" />
             }
         </div>

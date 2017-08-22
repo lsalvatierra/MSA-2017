@@ -9,7 +9,7 @@
             });
             $(this).addClass("btn-primary");
 
-            $.post(URL_PAGE + "Alumno/Evaluacion/agregarRespuestas", { idMedicion: $("#hddIdMedicion").val(), idPromocion: $("#hddIdPromocion").val(), idEvaluado: 1, Externo: false, idAlternativa: $(this).attr("data-idAlternativa"), idPregunta: $(this).attr("data-idPregunta") },
+            $.post(URL_PAGE + "Alumno/Evaluacion/agregarRespuestas", { idMedicion: $("#hddIdMedicion").val(), idPromocion: $("#hddIdPromocion").val(), idEvaluado: $("#hddIdEvaluado").val(), Externo: $("#hddExterno").val(), idAlternativa: $(this).attr("data-idAlternativa"), idPregunta: $(this).attr("data-idPregunta") },
                 function (result) {
                     $("#AvanceEvaluacion").html("");
                     $("#AvanceEvaluacion").html(result);
@@ -110,6 +110,8 @@
     @{    List<EvaluacionPregunta> lstPreguntas = (List<EvaluacionPregunta>)ViewBag.LstPreguntas;
         List<EvaluacionRespuesta> lstEvaluacionRespuesta = (List<EvaluacionRespuesta>)ViewBag.LstRespuestas;
         EvaluacionRespuesta objRpta = null;
+        List<EvaluacionAlternativa> lstAlternativaInversa = null;
+        EvaluacionAlternativa objAlternativaInversa = null;
         int cntPreguntasForm = lstPreguntas.Count; }
     <!--Hiddens para la paginación de las preguntas.-->
     <input type="hidden" value="@ViewBag.IDNivelA" id="hddIdNivelA" />
@@ -130,24 +132,55 @@
         }        
         @foreach (var objPregunta in lstPreguntas){
             objRpta = lstEvaluacionRespuesta.Where(q => q.EvaluacionAlternativa.EvaluacionPreguntaID == objPregunta.EvaluacionPreguntaID).FirstOrDefault();
+            lstAlternativaInversa = objPregunta.EvaluacionAlternativa.OrderByDescending(q => q.EvaluacionAlternativaDescripcion).ToList();           
             <p>@objPregunta.EvaluacionPreguntaDescripcion</p>
+
+
                 <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
                     @foreach (var objAlternativa in objPregunta.EvaluacionAlternativa)
                     {
                         if (objRpta != null)
                         {
-                            if (objRpta.EvaluacionAlternativaID == objAlternativa.EvaluacionAlternativaID)
+                            if ((bool)objPregunta.EsInversa)
                             {
-                                <a class="btn btn-primary btnOpc" data-idPregunta="@objPregunta.EvaluacionPreguntaID" data-idAlternativa="@objAlternativa.EvaluacionAlternativaID" role="button">@objAlternativa.EvaluacionAlternativaDescripcion</a>
+                                objAlternativaInversa = null;
+                                objAlternativaInversa = lstAlternativaInversa.First();
+                                if (objRpta.EvaluacionAlternativaID == objAlternativaInversa.EvaluacionAlternativaID)
+                                {
+                                    <a class="btn btn-primary btnOpc" data-idPregunta="@objPregunta.EvaluacionPreguntaID" data-idAlternativa="@objAlternativaInversa.EvaluacionAlternativaID" role="button">@objAlternativa.EvaluacionAlternativaDescripcion</a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-default btnOpc" data-idPregunta="@objPregunta.EvaluacionPreguntaID" data-idAlternativa="@objAlternativaInversa.EvaluacionAlternativaID" role="button">@objAlternativa.EvaluacionAlternativaDescripcion</a>
+                                }
+                                lstAlternativaInversa.Remove(objAlternativaInversa);
+                            }
+                            else
+                            {
+                                if (objRpta.EvaluacionAlternativaID == objAlternativa.EvaluacionAlternativaID)
+                                {
+                                    <a class="btn btn-primary btnOpc" data-idPregunta="@objPregunta.EvaluacionPreguntaID" data-idAlternativa="@objAlternativa.EvaluacionAlternativaID" role="button">@objAlternativa.EvaluacionAlternativaDescripcion</a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-default btnOpc" data-idPregunta="@objPregunta.EvaluacionPreguntaID" data-idAlternativa="@objAlternativa.EvaluacionAlternativaID" role="button">@objAlternativa.EvaluacionAlternativaDescripcion</a>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if ((bool)objPregunta.EsInversa)
+                            {
+                                objAlternativaInversa = null;
+                                objAlternativaInversa = lstAlternativaInversa.First();
+                                <a class="btn btn-default btnOpc" data-idPregunta="@objPregunta.EvaluacionPreguntaID" data-idAlternativa="@objAlternativaInversa.EvaluacionAlternativaID" role="button">@objAlternativa.EvaluacionAlternativaDescripcion</a>                            
+                                lstAlternativaInversa.Remove(objAlternativaInversa);
                             }
                             else
                             {
                                 <a class="btn btn-default btnOpc" data-idPregunta="@objPregunta.EvaluacionPreguntaID" data-idAlternativa="@objAlternativa.EvaluacionAlternativaID" role="button">@objAlternativa.EvaluacionAlternativaDescripcion</a>
                             }
-                        }
-                        else
-                        {
-                            <a class="btn btn-default btnOpc" data-idPregunta="@objPregunta.EvaluacionPreguntaID" data-idAlternativa="@objAlternativa.EvaluacionAlternativaID" role="button">@objAlternativa.EvaluacionAlternativaDescripcion</a>
+
                         }
                     }
                 </div>

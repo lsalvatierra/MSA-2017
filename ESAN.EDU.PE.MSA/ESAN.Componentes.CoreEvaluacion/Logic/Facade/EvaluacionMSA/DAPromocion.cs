@@ -168,5 +168,15 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
             }
             return lista;
         }
+
+
+        static public List<EvaluacionPromocion> ListaPromocionEvaluacionActivas()
+        {
+            using (var data = new BDEvaluacionEntities())
+            {
+                return data.EvaluacionPromocion.Include(x => x.Evaluacion).Where(q => q.EvaluacionPromocionEstado == true).ToList();
+
+            }
+        }
     }
 }

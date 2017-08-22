@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA;
-
+using System.Data.Entity;
 namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
 {
     public class DAParticipante
@@ -44,22 +44,80 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
         /// </summary>
         /// <param name="p_objParticipante">Objeto Participante</param>
         /// <returns>True o false</returns>
-        public static int RegistrarParticipante(Participante p_objParticipante, int p_idPromocion)
+        public static int RegistrarParticipante(Participante p_objParticipante)
         {
             int rpta = 0;
             try
             {
                 using (var data = new BDEvaluacionEntities())
                 {
-                    var promocion = data.EvaluacionPromocion.Find(p_idPromocion);
-                    //promocion.Participante.Add(p_objParticipante);
-                    rpta = data.SaveChanges();
+                    data.Participante.Add(p_objParticipante);
+                    data.SaveChanges();
+                    rpta = Convert.ToInt32(p_objParticipante.ParticipanteID);
                 }
             }
             catch {
                 rpta = 0;
             }
             return rpta;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="p_idParticipante"></param>
+        /// <param name="p_idPromocion"></param>
+        /// <param name="p_idMedicion"></param>
+        /// <returns></returns>
+        public static int ObtenerParticipantePromocionYRespuestas(int p_idParticipante, int p_idPromocion, int p_idMedicion)
+        {
+            int rpta = 0;
+            using (var data = new BDEvaluacionEntities())
+            {
+                if (data.EvaluacionPromocionParticipante.Where(q => q.EvaluacionMedicionID == p_idMedicion && q.EvaluacionPromocionID == p_idPromocion && q.ParticipanteID == p_idParticipante).FirstOrDefault() != null) {
+                    rpta = 0;
+                    if (data.EvaluacionRespuesta.Where(q => q.EvaluacionMedicionID == p_idMedicion && q.EvaluacionPromocionID == p_idPromocion && q.ParticipanteID == p_idParticipante).ToList().Count > 0) {
+                        rpta = 1;
+                    }
+                }
+            }
+            return rpta;
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="p_idPromocion"></param>
+        /// <param name="p_idMedicion"></param>
+        /// <returns></returns>
+        public static EvaluacionPromocionMedicion ObtenerEvaluacionPromocionMedicion(int p_idPromocion, int p_idMedicion) {
+            
+            using (var data = new BDEvaluacionEntities())
+            {
+                return data.EvaluacionPromocionMedicion.Where(q => q.EvaluacionMedicionID == p_idMedicion && q.EvaluacionPromocionID == p_idPromocion).FirstOrDefault();
+            }
+        }
+
+
+        static public List<EvaluacionPromocionParticipante> ListaParticipantes(int p_idPromocion, int p_idCiclo)
+        {
+            List<EvaluacionPromocionParticipante> lista = new List<EvaluacionPromocionParticipante>();
+            using (var data = new BDEvaluacionEntities())
+            {
+                int idMedicion = data.EvaluacionPromocionMedicion.Where(q => q.EvaluacionPromocionID == p_idPromocion && q.EvaluacionCicloID == p_idCiclo).FirstOrDefault().EvaluacionMedicionID;
+                lista = data.EvaluacionPromocionParticipante.Include(x => x.Participante).Where(x => x.EvaluacionPromocionID == p_idPromocion && x.EvaluacionMedicionID == idMedicion && x.EsExterno == false).ToList();
+
+            }
+            return lista;
+        }
+        static public List<sp_PromedioEvaluacion_Result> ObtenerResultadoxParticipante(int p_idPromocion, int p_idMedicion, int p_idParticipante)
+        {
+           
+            using (var data = new BDEvaluacionEntities())
+            {
+                return data.sp_PromedioEvaluacion(p_idParticipante, p_idPromocion, p_idMedicion).ToList();
+            }
         }
     }
 }

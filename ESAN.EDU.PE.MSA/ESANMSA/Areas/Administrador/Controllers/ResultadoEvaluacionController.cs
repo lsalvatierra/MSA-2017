@@ -45,14 +45,14 @@ namespace ESANMSA.Areas.Administrador.Controllers
             ViewBag.lstResultCA = DAParticipante.ObtenerResultadoxParticipante(idPromocion, idMedicion, idParticipante).Where(q => q.IdNivelA == 3 && q.IdNivelB == 15).ToList();
             ViewBag.lstResultCB = DAParticipante.ObtenerResultadoxParticipante(idPromocion, idMedicion, idParticipante).Where(q => q.IdNivelA == 3 && q.IdNivelB == 16).ToList();
             Response.HeaderEncoding = System.Text.Encoding.Default;
-            return new Rotativa.ViewAsPdf("ResultadoParticipante", null)
-            {
-                
-                FileName = "TestViewAsPdf.pdf",
-                PageSize = Rotativa.Options.Size.A4,
-                PageMargins = new Rotativa.Options.Margins(27, 25, 25, 25)
-            };
-            //return View();
+            //return new Rotativa.ViewAsPdf("ResultadoParticipante", null)
+            //{
+
+            //    FileName = "TestViewAsPdf.pdf",
+            //    PageSize = Rotativa.Options.Size.A4,
+            //    PageMargins = new Rotativa.Options.Margins(27, 25, 25, 25)
+            //};
+            return View();
         }
     }
 }

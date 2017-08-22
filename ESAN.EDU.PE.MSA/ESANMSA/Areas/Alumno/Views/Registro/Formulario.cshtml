@@ -1,9 +1,10 @@
-﻿@{
+﻿@using ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA
+@{
     ViewBag.Title = "Registro";
     string Externo = ((bool)ViewBag.EsExterno).ToString();
     int IdPromocion= ((int)ViewBag.IdPromocion);
     int IdMedicion = ((int)ViewBag.IdMedicion);
-
+    int IdEvaluado = ((int)ViewBag.IdEvaluado);
 }
 @section Scripts{
     <script src="@Url.Content("~/Scripts/Areas/Alumno/Registro/Index.js")"></script>
@@ -15,7 +16,7 @@
     <link href="@Url.Content("~/Content/bootstrap/dialog/bootstrap-dialog.css")" rel="stylesheet" />
 }
 <div>
-    <form id="frmRegistro" action="@Url.Action("Index","Evaluacion",new { area = "Alumno", idMedicion = IdMedicion, idPromocion = IdPromocion, Externo = Externo })" method="post">
+    <form id="frmRegistro" action="@Url.Action("frmEvaluacion","Evaluacion",new { area = "Alumno", idMedicion = IdMedicion, idPromocion = IdPromocion, idEvaluado = IdEvaluado, Externo = Externo })" method="post">
         <input type="hidden" id="hddIdPromocion" value="@ViewBag.IdPromocion" />
         <input type="hidden" id="hddIdMedicion" value="@ViewBag.IdMedicion" />
         <input type="hidden" id="hddExterno" value="@Externo" />
@@ -71,21 +72,27 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            @if (!(bool)ViewBag.EsExterno)
+                            @*@if (!(bool)ViewBag.EsExterno)
                             {
                                 <div class="checkbox">
                                     <label><input type="checkbox" name="remember"> Acepto las políticas de protección de datos de ESAN.</label>
                                 </div>
-                            }
+                            }*@
                             <button type="button" class="btn btn-primary" id="btnGuardarEmpezar">Empezar&nbsp;<i class="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
                         </div>
                     </div>
                 </div>
 
             </div>
+            <div id="divExisteEval" style="display: none" class="text-center alert alert-warning">
+                <h1><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> <strong>Advertencia</strong> <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span></h1>
+                <h2>Usted ya realizó la evaluación.</h2>
+            </div>
         }
         else
         {
+            List<TipoRelacionParticipante> lstTipoRelacion = (List<TipoRelacionParticipante>)ViewBag.lstTipoRelacion;
+
             <div class="page-header">
                 <h1>¡Complete su información antes de empezar!</h1>
             </div>
@@ -95,29 +102,22 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label for="txtApellidoPaterno">Apellido Paterno:</label>
-                                <input type="text" class="form-control" maxlength="150" id="txtApellidoPaterno" placeholder="Ingrese su apellido paterno" name="txtApellidoPaterno">
-                                <div id="xapepat" class="hide"></div>
+                                <label for="cboTipoRelacion">Tipo de relación:</label>
+                                <select class="form-control" id="cboTipoRelacion">
+                                    <option selected value="0">Seleccione</option>
+                                    @foreach (var obj in lstTipoRelacion)
+                                    {
+                                        <option value="@obj.TipoRelacionId">@obj.DescripcionTipoRelacion</option>
+                                    }
+                                </select>
+                                <div id="xtiporel" class="hide"></div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="txtApellidoMaterno">Apellido Materno:</label>
-                                <input type="text" class="form-control" maxlength="150" id="txtApellidoMaterno" placeholder="Ingrese su apellido materno" name="txtApellidoMaterno">
-                                <div id="xapemat" class="hide"></div>
+                        <div class="col-md-8">
+                            <div style="padding-top: 25px;">
+                                <button type="button" id="btnGuardarEmpezarExterno" class="btn btn-primary">Empezar&nbsp;<i class="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
                             </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="txtNombres">Nombres:</label>
-                                <input type="text" class="form-control" maxlength="150" id="txtNombres" placeholder="Ingrese sus nombres" name="txtNombres">
-                                <div id="xnom" class="hide"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <button type="button" class="btn btn-primary" id="btnGuardarEmpezar">Empezar&nbsp;<i class="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
+
                         </div>
                     </div>
                 </div>

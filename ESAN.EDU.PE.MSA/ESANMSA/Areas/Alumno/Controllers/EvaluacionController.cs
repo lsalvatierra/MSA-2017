@@ -22,6 +22,9 @@ namespace ESANMSA.Areas.Alumno.Controllers
         public ActionResult frmEvaluacion(int idMedicion, int idPromocion, int idEvaluado, bool Externo)
         {
             lstEvaluacionRespuesta.Clear();
+            cantidadMostradas = 0;
+            cantidadIniPreg = 0;
+            cantidadResulta = 0;
             objEvaluacion = DAEvaluacion.ObtenerEvaluacion(idPromocion);
             List<EvaluacionPregunta> lstPreguntas = new List<EvaluacionPregunta>();
             ViewBag.NombreEvaluacion = objEvaluacion.EvaluacionDescripcion;
@@ -81,12 +84,11 @@ namespace ESANMSA.Areas.Alumno.Controllers
         public ActionResult agregarRespuestas(int idMedicion, int idPromocion, int idEvaluado, bool Externo, int idAlternativa, int idPregunta)
         {
 
-            //if (Session["Alumno"] != null)
-            //{
-                int idParticipante = 2;
+            if (Session["Alumno"] != null)
+            {
+                int idParticipante = Convert.ToInt32(((Participante)Session["Alumno"]).ParticipanteID);
                 if (lstEvaluacionRespuesta.Count > 0)
-                {
-                    //int idParticipante = Convert.ToInt32(((Participante)Session["Alumno"]).ParticipanteID);                    
+                {                                     
                     EvaluacionRespuesta objEvalRpta = ObtenerRespuesta(idPromocion, idMedicion, idParticipante, idPregunta, idEvaluado, Externo);
                     if (Externo)
                     {
@@ -124,7 +126,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
                         AgregarListaDeRespuestas(idPromocion, idMedicion, idAlternativa, idParticipante, 0, idPregunta);
                     }
                 }
-            //}
+            }
             cantidadResulta = lstEvaluacionRespuesta.Count;
             double avance = (cantidadResulta * 100) / cantidadPreguntasEvaluacion;
             ViewBag.avanceEvaluacion = avance;
@@ -462,6 +464,8 @@ namespace ESANMSA.Areas.Alumno.Controllers
         [HttpPost]
         public ActionResult finalizarEvaluacion()
         {
+            Session.Abandon();
+            Session.Remove("Alumno");
             ViewBag.rptaRegEvaluacion = DAEvaluacionRespuesta.RegistrarRespuestaEvaluacion(lstEvaluacionRespuesta);
             return PartialView("_PartialFinEvaluacion");
         }
