@@ -18,7 +18,7 @@
                 PARTICIPANTE
             </th>
             <th>
-                    
+
             </th>
             <th>
 
@@ -31,15 +31,17 @@
     <tbody>
         @foreach (var item in listadoPromocionParticipante)
         {
-            string url = HttpContext.Current.Request.Url.AbsoluteUri + "/" + item.ParticipanteID + "/" + item.EvaluacionPromocionID.ToString() + "/" + item.EvaluacionMedicionID;
+            //string url = HttpContext.Current.Request.Url.AbsoluteUri + "/" + item.ParticipanteID + "/" + item.EvaluacionPromocionID.ToString() + "/" + item.EvaluacionMedicionID;
+            //string url = @Url.Action("frmEvaluacion","Evaluacion",new { area = "Alumno", idMedicion = IdMedicion, idPromocion = IdPromocion, idEvaluado = IdEvaluado, Externo = Externo })
+            string url = "http://localhost:60303/" + "/Alumno/Evaluacion/frmEvaluacion?idMedicion=" + item.EvaluacionMedicionID.ToString() + "&idPromocion=" + item.EvaluacionPromocionID.ToString() + "&idEvaluado=0&Externo=false";
             <tr>
                 <td>@item.Participante.ParticipanteNroDoc</td>
                 <td>@item.Participante.ParticipanteNombreCompleto</td>
-                <td>                    
+                <td>
                     <a href="@url" target="_blank" type="button" class="btn btn-default btnUrlLink" aria-label="Left Align">
                         <span class="glyphicon glyphicon glyphicon-globe" aria-hidden="true"> Link</span>
                     </a>
-                   
+
                 </td>
                 <td>
                     <button type="button" class="btn btn-default btnCopiarUrl" aria-label="Left Align" url="@url">
