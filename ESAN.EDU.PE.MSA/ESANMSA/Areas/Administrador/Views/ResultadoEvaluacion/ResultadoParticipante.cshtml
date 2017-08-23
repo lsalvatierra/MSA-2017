@@ -14,10 +14,10 @@
 }
 
 <!DOCTYPE  html>
-<html>
+<html lang="es-pe">
 <head>
-    <meta name="viewport"   content="text/html; charset=utf-8" http-equiv="Content-Type"  />
-    <style type="text/css">
+    <meta  charset="utf-8"  />
+    @*<style type="text/css">
             body {
 
         font: 12pt "Tahoma";
@@ -49,149 +49,18 @@
                 margin: 1.25em 0;
                 text-align: justify;
             }
-    </style>
+    </style>*@
     <title></title>
-    <script type="text/javascript" src="@Url.Content("~/Scripts/canvasjs/canvasjs.min.js")"></script>
-    <script type="text/javascript">
-        window.onload = function () {
-            // Se obtienen las listas y las parseamos JSON.
-            var listaNivelAA = JSON.parse('@Html.Raw(JsonConvert.SerializeObject(lstResultAA))');
-            var listaNivelAB = JSON.parse('@Html.Raw(JsonConvert.SerializeObject(lstResultAB))');
-            var listaNivelAC = JSON.parse('@Html.Raw(JsonConvert.SerializeObject(lstResultAC))');
-            var listaNivelB = JSON.parse('@Html.Raw(JsonConvert.SerializeObject(lstResultB))');
-            var listaNivelCA = JSON.parse('@Html.Raw(JsonConvert.SerializeObject(lstResultCA))');
-            var listaNivelCB = JSON.parse('@Html.Raw(JsonConvert.SerializeObject(lstResultCB))');
-
-            var dataPointsNiveles = []; 
-            var tituloNiveles = "";
-            for (key in listaNivelAA) {
-                if (key == 1) {
-                    tituloNiveles = 'Ingeniería'//listaNivelAA[key].NivelB;
-                }
-                dataPointsNiveles.push({ label: listaNivelAA[key].NivelC, y: listaNivelAA[key].Promedio });
-            }
-            var chartNivelAA = new CanvasJS.Chart("chartNivelAA",
-            {
-                title: {
-                    text: tituloNiveles
-                },
-                
-                data: [
-                {
-                    indexLabel: "{y}",
-                    dataPoints: dataPointsNiveles
-                }]
-            });
-            chartNivelAA.render();
-
-            dataPointsNiveles = [];
-            for (key in listaNivelAB) {
-                if (key == 1) {
-                    tituloNiveles = listaNivelAB[key].NivelB;
-                }
-                dataPointsNiveles.push({ label: listaNivelAB[key].NivelC, y: listaNivelAB[key].Promedio });
-            }
-            var chartNivelAB = new CanvasJS.Chart("chartNivelAB",
-            {
-                title: {
-                    text: tituloNiveles
-                },
-                
-                data: [
-                {
-                    indexLabel: "{y}",
-                    dataPoints: dataPointsNiveles
-                }]
-            });
-            chartNivelAB.render();
-
-            dataPointsNiveles = [];
-            for (key in listaNivelAC) {
-                if (key == 1) {
-                    tituloNiveles = listaNivelAC[key].NivelB;
-                }
-                dataPointsNiveles.push({ label: listaNivelAC[key].NivelC, y: listaNivelAC[key].Promedio });
-            }
-            var chartNivelAC = new CanvasJS.Chart("chartNivelAC",
-            {
-                title: {
-                    text: tituloNiveles
-                },
-                
-                data: [
-                {
-                    indexLabel: "{y}",
-                    dataPoints: dataPointsNiveles
-                }]
-            });
-            chartNivelAC.render();
-
-            dataPointsNiveles = [];
-            for (key in listaNivelB) {
-                if (key == 1) {
-                    tituloNiveles = listaNivelB[key].NivelA;
-                }
-                dataPointsNiveles.push({ label: listaNivelB[key].NivelB, y: listaNivelB[key].Promedio });
-            }
-            var chartNivelB = new CanvasJS.Chart("chartNivelB",
-            {
-                title: {
-                    text: tituloNiveles
-                },
-                
-                data: [
-                {
-                    indexLabel: "{y}",
-                    dataPoints: dataPointsNiveles
-                }]
-            });
-            chartNivelB.render();
-
-
-            dataPointsNiveles = [];
-            for (key in listaNivelCA) {
-                if (key == 1) {
-                    tituloNiveles = listaNivelCA[key].NivelB;
-                }
-                dataPointsNiveles.push({ label: listaNivelCA[key].NivelC, y: listaNivelCA[key].Promedio });
-            }
-            var chartNivelCA = new CanvasJS.Chart("chartNivelCA",
-            {
-                title: {
-                    text: tituloNiveles
-                },
-                
-                data: [
-                {
-                    indexLabel: "{y}",
-                    dataPoints: dataPointsNiveles
-                }]
-            });
-            chartNivelCA.render();
-
-            dataPointsNiveles = [];
-            for (key in listaNivelCB) {
-                if (key == 1) {
-                    tituloNiveles = listaNivelCB[key].NivelB;
-                }
-                dataPointsNiveles.push({ label: listaNivelCB[key].NivelC, y: listaNivelCB[key].Promedio });
-            }
-            var chartNivelCB = new CanvasJS.Chart("chartNivelCB",
-            {
-                title: {
-                    text: tituloNiveles
-                },
-                
-                data: [
-                {
-                    indexLabel: "{y}",
-                    dataPoints: dataPointsNiveles
-                }]
-            });
-            chartNivelCB.render();
-
-        }
-    </script>
+   <style type="text/css">
+       #chartDiv {
+  width:100%;
+  height:100%;
+}
+   </style>
+    @*<script type="text/javascript" src="@Url.Content("~/Scripts/canvasjs/canvasjs.min.js")"></script>*@    
+    @*<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js" ></script>*@
+    <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+    @*<script type="text/javascript" src="@Url.Content("~/Scripts/Areas/Administrador/ResultadoEvaluacion/ResultadoParticipante.js")"></script>*@    
 </head>
 <body>
     <!--PAGINA 1-->
@@ -208,6 +77,26 @@
         </ul>
         <p>Le sugerimos prestar especial atención a los siguientes aspectos:</p>
         <p>Gracias por su participación.</p>
+        <div id="chartDiv"></div>
+        <script>
+            var chartData = {
+                type: "bar",  // Specify your chart type here.
+                title: {
+                    text: "My Fírst Chárt" // Adds a title to your chart
+                },
+                legend: {}, // Creates an interactive legend
+                series: [  // Insert your series data here.
+                    { values: [35, 42, 67, 89] },
+                    { values: [28, 40, 39, 36] }
+                ]
+            };
+            zingchart.render({ // Render Method[3]
+                id: "chartDiv",
+                data: chartData,
+                height: 400,
+                width: 600
+            });
+        </script>
     </div>
     @*<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />*@
     <!--PAGINA 2-->
@@ -270,8 +159,10 @@
                     <td>Comunicación</td>
                     <td>Mantener una conversación fructífera. Evitar monopolizar y bloquear a otros de participar.</td>
                 </tr>
-            </tbody>            
+            </tbody>
         </table><br /><br /><br /><br />
+
+
         <div id="chartNivelAA" style="height: 500px; width: 1000px;"></div>
         <div id="chartNivelAB" style="height: 500px; width: 1000px;"></div>
         <div id="chartNivelAC" style="height: 500px; width: 1000px;"></div>
@@ -365,5 +256,6 @@
         <p>Si necesita ayuda para completar este ejercicio o para identificar acciones específicas dirigidas a mejorar sus habilidades consulte con el Dr. Varela (otmar.varela@ualr.edu).</p>
         <p>Este ejercicio debe ser enviado ,hasta el 14 de octubre al correo otmar.varela@ualr.edu.</p>
     </div>
+    
 </body>
 </html>

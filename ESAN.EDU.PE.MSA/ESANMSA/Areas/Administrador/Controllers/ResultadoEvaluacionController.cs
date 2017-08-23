@@ -6,10 +6,11 @@ using System.Web.Mvc;
 using ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA;
 using ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA;
 using Newtonsoft.Json;
+using ReportManagement;
 
 namespace ESANMSA.Areas.Administrador.Controllers
 {
-    public class ResultadoEvaluacionController : Controller
+    public class ResultadoEvaluacionController : PdfViewController
     {
         // GET: Administrador/ResultadoEvaluacion
         public ActionResult frmPromociones()
@@ -44,15 +45,17 @@ namespace ESANMSA.Areas.Administrador.Controllers
 
             ViewBag.lstResultCA = DAParticipante.ObtenerResultadoxParticipante(idPromocion, idMedicion, idParticipante).Where(q => q.IdNivelA == 3 && q.IdNivelB == 15).ToList();
             ViewBag.lstResultCB = DAParticipante.ObtenerResultadoxParticipante(idPromocion, idMedicion, idParticipante).Where(q => q.IdNivelA == 3 && q.IdNivelB == 16).ToList();
-            Response.HeaderEncoding = System.Text.Encoding.Default;
-            //return new Rotativa.ViewAsPdf("ResultadoParticipante", null)
-            //{
 
-            //    FileName = "TestViewAsPdf.pdf",
-            //    PageSize = Rotativa.Options.Size.A4,
-            //    PageMargins = new Rotativa.Options.Margins(27, 25, 25, 25)
-            //};
-            return View();
+            //return ViewPdf("nuevoPDF", "ResultadoParticipante", null);
+            //return new RazorPDF.PdfResult(ViewBag, "ResultadoParticipante");
+            return new Rotativa.ViewAsPdf("ResultadoParticipante")
+            {
+                
+                FileName = "TestViewAsPdf.pdf",
+                PageSize = Rotativa.Options.Size.A4,
+                PageMargins = new Rotativa.Options.Margins(27, 25, 25, 25)
+            };
+            //return View();
         }
     }
 }
