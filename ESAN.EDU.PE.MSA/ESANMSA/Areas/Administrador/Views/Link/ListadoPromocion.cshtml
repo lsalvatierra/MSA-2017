@@ -26,7 +26,7 @@
                 <td>@item.EvaluacionPromocionFecIni.Value.ToShortDateString() - @item.EvaluacionPromocionFecFin.Value.ToShortDateString()</td>
                 <td>@item.EvaluacionPromocionCiclo.Count() - @item.EvaluacionPromocionMedicion.Count()</td>
                 <td>@item.EvaluacionPromocionParticipante.Count() </td>
-                <td> <input type="button" class="btnVisualizarParticipantes btn btn-success" value="Visualizar participantes" idPromo="@item.EvaluacionPromocionID" /></td>
+                <td> <input type="button" class="btnVisualizarParticipantes btn btn-success" value="Visualizar participantes" idPromo="@item.EvaluacionPromocionID" correo="@item.EvaluacionPromocionCorreo" /></td>
             </tr>
         }
     </tbody>

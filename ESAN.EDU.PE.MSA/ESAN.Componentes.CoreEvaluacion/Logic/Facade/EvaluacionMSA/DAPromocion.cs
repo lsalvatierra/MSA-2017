@@ -72,6 +72,7 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
                                     promocionMedicion.EvaluacionCicloID = item.EvaluacionCicloID;
                                     promocionMedicion.EvaluacionMedicionDescripcion = item2.EvaluacionMedicionDescripcion;
                                     promocionMedicion.EvaluacionPromocionID = promocion.EvaluacionPromocionID;
+                                    promocionMedicion.EsEvaluado = item2.EvaluacionMedicionDescripcion.Equals("AUTOEVALUACION") ? false : true;
                                     listaPromocionMedicion.Add(promocionMedicion);
                                 }
                             }
@@ -156,13 +157,14 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
         /// </summary>
         /// <param name="EvaluacionPromocionID"></param>
         /// <returns></returns>
-        static public List<EvaluacionPromocionParticipante> ListadoParticipante(int EvaluacionPromocionID, int EvaluacionMedicionID)
+        static public List<EvaluacionPromocionParticipante> ListadoParticipante(int EvaluacionPromocionID, int EvaluacionMedicionID, bool EsLink)
         {
             List<EvaluacionPromocionParticipante> lista = new List<EvaluacionPromocionParticipante>();
             using (var data = new BDEvaluacionEntities())
             {
                 lista = EvaluacionPromocionID == -1 && EvaluacionMedicionID == -1 ?
-                        data.EvaluacionPromocionParticipante.Include(x=>x.Participante).ToList() :
+                        data.EvaluacionPromocionParticipante.Include(x => x.Participante).ToList() :
+                        EsLink ? data.EvaluacionPromocionParticipante.Include(x => x.Participante).Where(x => x.EvaluacionPromocionID == EvaluacionPromocionID && x.EvaluacionMedicionID != EvaluacionMedicionID).ToList() :
                         data.EvaluacionPromocionParticipante.Include(x => x.Participante).Where(x => x.EvaluacionPromocionID == EvaluacionPromocionID && x.EvaluacionMedicionID == EvaluacionMedicionID).ToList();
 
             }

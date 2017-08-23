@@ -14,6 +14,7 @@
 <hr />
 <div id="divListadoParticipanteLinksDetalle"></div>
 <input type="hidden" id="hidEvaluacionPromocionID" />
+<input type="hidden" id="hidEvaluacionPromocionCorreo" />
 
 <script>
 
@@ -36,7 +37,7 @@
     $(document).on('click', '.btnVisualizarParticipantes', function () {
         var vPromocionID = $(this).attr("idpromo");
         $("#hidEvaluacionPromocionID").val(vPromocionID);
-
+        $("#hidEvaluacionPromocionCorreo").val($(this).attr("correo"));
         $.ajax({
             'url': URL_PAGE + 'Administrador/Link/ListadoParticipante',
             'type': 'POST',
@@ -54,6 +55,7 @@
         var vCicloID = $(this).val();
         var vPromocionID = $("#hidEvaluacionPromocionID").val();
         var $select = $('#cboMedicionParticipante');
+
         $.ajax({
             'url': URL_PAGE + 'Administrador/Link/ListadoMedicion',
             'type': 'POST',
@@ -80,10 +82,9 @@
                         // format display date (e.g. 04/10/2012)
                         var vFecIni = $.datepicker.formatDate("dd/mm/yy", fechaInicio);
                         var vFecFin = $.datepicker.formatDate("dd/mm/yy", fechaFin);
-                        //alert(displayDate);
-                        //return false;
                         $('<option>', {
-                            value: state.EvaluacionMedicionID
+                            value: state.EvaluacionMedicionID,
+                            esevaluado: state.EsEvaluado
                         }).html(state.EvaluacionMedicionDescripcion + " (" + vFecIni + " - " + vFecFin + ")").appendTo($select);
                     }
 
@@ -94,40 +95,40 @@
 
 
     $(document).on('change', '.cboMedicionParticipante', function () {
-
         var vPromocionID = $("#hidEvaluacionPromocionID").val();
         var vMedicionID = $("#cboMedicionParticipante").val();
-        $.ajax({
-            'url': URL_PAGE + 'Administrador/Link/ListadoParticipanteDetalle',
-            'type': 'POST',
-            'data': {
-                EvaluacionPromocionID: vPromocionID,
-                EvaluacionMedicionID: vMedicionID
-            },
-            'success': function (view) {
-                //process here
-                $("#divListadoParticipanteLinksDetalle").html(view);
+        var vEsEvaluado = $('option:selected', this).attr('esevaluado');
+        $("#divListadoParticipanteLinksDetalle").html("");
 
-            }
-        });
+        if (vEsEvaluado == "true") {
+            $.ajax({
+                'url': URL_PAGE + 'Administrador/Link/ListadoParticipanteDetalle',
+                'type': 'POST',
+                'data': {
+                    EvaluacionPromocionID: vPromocionID,
+                    EvaluacionMedicionID: vMedicionID
+                },
+                'success': function (view) {
+                    //process here
+                    $("#divListadoParticipanteLinksDetalle").html(view);
 
-
+                }
+            });
+        }
     });
-
-
 
     $(document).on('click', '#btnEnviarCorreo', function () {
-        alert("Enviando....");
+        if (confirm("Se enviará un correo al siguiente destinatario: " + $("#hidEvaluacionPromocionCorreo").val() + " \n asdasd")) {
+            alert("Enviando....");
+        }
     });
-
-
 
     // Copy to clipboard example
     $(document).on('click', '.btnCopiarUrl', function () {
-        var copiar = $(this).attr("url");    
+        var copiar = $(this).attr("url");
         copyTextToClipboard(copiar);
     });
-   
+
     function copyTextToClipboard(text) {
         var textArea = document.createElement("textarea");
 
@@ -153,7 +154,5 @@
         }
         document.body.removeChild(textArea);
     }
-
-    
 
 </script>
