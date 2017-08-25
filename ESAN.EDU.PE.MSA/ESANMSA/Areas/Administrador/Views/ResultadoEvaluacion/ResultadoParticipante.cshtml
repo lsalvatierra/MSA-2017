@@ -2,70 +2,52 @@
 @using Newtonsoft.Json;  
 @{
     Layout = null;
-    List<sp_PromedioEvaluacion_Result> lstResultAA = (List<sp_PromedioEvaluacion_Result>)ViewBag.lstResultAA;
-    List<sp_PromedioEvaluacion_Result> lstResultAB = (List<sp_PromedioEvaluacion_Result>)ViewBag.lstResultAB;
-    List<sp_PromedioEvaluacion_Result> lstResultAC = (List<sp_PromedioEvaluacion_Result>)ViewBag.lstResultAC;
-
-    List<sp_PromedioEvaluacion_Result> lstResultB = (List<sp_PromedioEvaluacion_Result>)ViewBag.lstResultB;
-
-    List<sp_PromedioEvaluacion_Result> lstResultCA = (List<sp_PromedioEvaluacion_Result>)ViewBag.lstResultCA;
-    List<sp_PromedioEvaluacion_Result> lstResultCB = (List<sp_PromedioEvaluacion_Result>)ViewBag.lstResultCB;
-
+    List<PromedioEvaluacionxCicloNivel_Result> lstResultA = (List<PromedioEvaluacionxCicloNivel_Result>)ViewBag.lstResultA;
+    List<PromedioEvaluacionxCicloNivel_Result> lstResultB = (List<PromedioEvaluacionxCicloNivel_Result>)ViewBag.lstResultB;
+    List<PromedioEvaluacionxCicloNivel_Result> lstResultC = (List<PromedioEvaluacionxCicloNivel_Result>)ViewBag.lstResultC;
 }
-
 <!DOCTYPE  html>
 <html lang="es-pe">
 <head>
-    <meta  charset="utf-8"  />
-    @*<style type="text/css">
-            body {
-
-        font: 12pt "Tahoma";
-    }
-        #dina4 {
-    width: 70em;
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+ <style type="text/css">
+    .diva4 {
+        width: 70em;
         min-height: 107em;
-        border: 1px #D3D3D3 solid;
-}
-            p {
-                font-size: 1.7em;
-                line-height: 1.2em;
-                margin: 1.25em 0;
-                text-align: justify;
-            }
-            h2 {
-                text-align: center;
-            }
 
-            ul {
-                font-size: 1.7em;
-                line-height: 1.2em;
-                margin: 1.25em 0;
-                text-align: justify;
-            }
-            table {
-                font-size: 1.65em;
-                line-height: 1.1em;
-                margin: 1.25em 0;
-                text-align: justify;
-            }
-    </style>*@
-    <title></title>
-   <style type="text/css">
-       #chartDiv {
-  width:100%;
-  height:100%;
-}
-   </style>
-    @*<script type="text/javascript" src="@Url.Content("~/Scripts/canvasjs/canvasjs.min.js")"></script>*@    
-    @*<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js" ></script>*@
+    }
+    .diva4 p {
+        font-size: 1.7em;
+        line-height: 1.6em;
+        margin: 1.2em 0;
+        text-align: justify;
+    }
+    .diva4 ul {
+        font-size: 1.7em;
+        line-height: 1.6em;
+        margin: 1.2em 0;
+        text-align: justify;
+    }
+
+    .diva4 table {
+        font-size: 1.65em;
+        line-height: 1.25em;
+        margin: 1.25em 0;
+    }
+    h2, h3 {
+        text-align: center;
+    }
+</style>
+    <title>Reporte</title>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery/jquery.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/bootstrap/bootstrap.min.js")"></script>
+    <link href="@Url.Content("~/Content/bootstrap/bootstrap.min.css")" rel="stylesheet" />
     <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
-    @*<script type="text/javascript" src="@Url.Content("~/Scripts/Areas/Administrador/ResultadoEvaluacion/ResultadoParticipante.js")"></script>*@    
 </head>
 <body>
     <!--PAGINA 1-->
-    <div id="dina4">
-        <h2>INFORME EVALUACIÓN DE HABILIDADES DE GERENCIALES</h2>
+    <div class="diva4">
+        <h2><strong>INFORME EVALUACIÓN DE HABILIDADES DE GERENCIALES</strong></h2>
         <p>Este informe muestra los resultados de la evaluación de sus habilidades de gestión (trabajo en equipo, liderazgo, y presentación oral) tomadas en Setiembre 2017.  El objetivo del informe es  facilitar su decisión con respecto a la habilidad que desea trabajar.</p>
         <p>El informe presenta una sección por cada habilidad evaluada.</p>
         <p>En la página introductoria de cada habilidad, encontrará una tabla que describe los comportamientos asociados a la misma, seguida de gráficos que le muestran cómo las diferentes fuentes (es decir, compañeros de clase o de trabajo) le evaluaron, así como  su autoevaluación. Se le presenta además, su ubicación en el grupo, en base a dos desviaciones estándares respecto de la media de la promoción. Para determinar si su puntaje cae dentro de este rango "estándar" compare la retroalimentación que le han dado sus compañeros con ese rango.</p>
@@ -77,31 +59,11 @@
         </ul>
         <p>Le sugerimos prestar especial atención a los siguientes aspectos:</p>
         <p>Gracias por su participación.</p>
-        <div id="chartDiv"></div>
-        <script>
-            var chartData = {
-                type: "bar",  // Specify your chart type here.
-                title: {
-                    text: "My Fírst Chárt" // Adds a title to your chart
-                },
-                legend: {}, // Creates an interactive legend
-                series: [  // Insert your series data here.
-                    { values: [35, 42, 67, 89] },
-                    { values: [28, 40, 39, 36] }
-                ]
-            };
-            zingchart.render({ // Render Method[3]
-                id: "chartDiv",
-                data: chartData,
-                height: 400,
-                width: 600
-            });
-        </script>
+
     </div>
-    @*<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />*@
     <!--PAGINA 2-->
-    <div>
-        <h2>HABILIDADES DE TRABAJO EN EQUIPO</h2>
+    <div class="diva4">
+        <h2><strong>HABILIDADES DE TRABAJO EN EQUIPO</strong></h2>
         <p>La evaluación de las habilidades de trabajo en equipo sigue la clasificación de Marks, Mathieu y Zaccaro (2001), de los comportamientos de trabajo en equipo, que incluye tres grandes categorías:</p>
         <p>
             <ul type="1">
@@ -110,66 +72,161 @@
                 <li><strong>Comportamientos interpersonales: </strong>Comportamientos necesarios para mantener un ambiente de equipo apropiado.</li>
             </ul>
         </p>
+        
         <table border="1">
             <thead>
                 <tr>
-                    <th>Categoría</th>
-                    <th>Conductas</th>
-                    <th>Descripción</th>
+                    <th style="text-align: center;">Categoría</th>
+                    <th style="text-align: center;">Conductas</th>
+                    <th style="text-align: center;">Descripción</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td rowspan="2">1. Comportamientos transicionales</td>
-                    <td>Análisis, formulación y planificación de la misión</td>
-                    <td>Interpretación y evaluación de la misión del equipo, incluyendo la identificación de sus principales tareas, así como las condiciones ambientales operativas y los recursos del equipo disponibles para la ejecución de la misión.</td>
+                    <td style="padding:5px 5px 5px 5px;" rowspan="2">1. Comportamientos transicionales</td>
+                    <td style="padding:5px 5px 5px 5px;">Análisis, formulación y planificación de la misión</td>
+                    <td style="text-align: justify; padding:5px 5px 5px 5px;">Interpretación y evaluación de la misión del equipo, incluyendo la identificación de sus principales tareas, así como las condiciones ambientales operativas y los recursos del equipo disponibles para la ejecución de la misión.</td>
                 </tr>
                 <tr>
-                    <td>Estrategia</td>
-                    <td>Desarrollo de cursos alternativos de acción para el cumplimiento de la misión.</td>
+                    <td style="padding:5px 5px 5px 5px;">Estrategia</td>
+                    <td style="text-align: justify; padding:5px 5px 5px 5px;">Desarrollo de cursos alternativos de acción para el cumplimiento de la misión.</td>
                 </tr>
                 <tr>
-                    <td rowspan="3">2. Comportamientos de la acción</td>
-                    <td>Monitoreo de la Situación</td>
-                    <td>Seguimiento de la tarea y el progreso hacia el logro de la misión, la interpretación de la información del sistema en términos de lo que se requiere para el logro de las metas, y la transmisión de los progresos a los miembros del equipo.</td>
+                    <td style="padding:5px 5px 5px 5px;" rowspan="3">2. Comportamientos de la acción</td>
+                    <td style="padding:5px 5px 5px 5px;">Monitoreo de la Situación</td>
+                    <td style="text-align: justify; padding:5px 5px 5px 5px;">Seguimiento de la tarea y el progreso hacia el logro de la misión, la interpretación de la información del sistema en términos de lo que se requiere para el logro de las metas, y la transmisión de los progresos a los miembros del equipo.</td>
                 </tr>
                 <tr>
-                    <td>Ayudar a otros</td>
-                    <td>Ayudar a los miembros del equipo a realizar sus tareas. La asistencia puede ocurrir al (1) proporcionar al compañero de equipo comentarios verbales o coaching; (2) ayudar a un compañero de equipo sobre la conducta en la realización de acciones; o (3) asumir y completar una tarea para un compañero de equipo.</td>
+                    <td style="padding:5px 5px 5px 5px;">Ayudar a otros</td>
+                    <td style="text-align: justify; padding:5px 5px 5px 5px;">Ayudar a los miembros del equipo a realizar sus tareas. La asistencia puede ocurrir al (1) proporcionar al compañero de equipo comentarios verbales o coaching; (2) ayudar a un compañero de equipo sobre la conducta en la realización de acciones; o (3) asumir y completar una tarea para un compañero de equipo.</td>
                 </tr>
                 <tr>
-                    <td>Coordinación</td>
-                    <td>Orquestar la secuencia y el momento de las acciones interdependientes.</td>
+                    <td style="padding:5px 5px 5px 5px;">Coordinación</td>
+                    <td style="text-align: justify; padding:5px 5px 5px 5px;">Orquestar la secuencia y el momento de las acciones interdependientes.</td>
                 </tr>
 
                 <tr>
-                    <td rowspan="4">3. Comportamientos interpersonales</td>
-                    <td>Gestión de los conflictos</td>
-                    <td>Establecer condiciones para prevenir, controlar o guiar el conflicto de equipo antes de que ocurra. Trabajando a través de desacuerdos de tareas e interpersonales entre los miembros del equipo.</td>
+                    <td style="padding:5px 5px 5px 5px;" rowspan="4">3. Comportamientos interpersonales</td>
+                    <td style="padding:5px 5px 5px 5px;">Gestión de los conflictos</td>
+                    <td style="text-align: justify; padding:5px 5px 5px 5px;">Establecer condiciones para prevenir, controlar o guiar el conflicto de equipo antes de que ocurra. Trabajando a través de desacuerdos de tareas e interpersonales entre los miembros del equipo.</td>
                 </tr>
                 <tr>
-                    <td>Motivación</td>
-                    <td>Generar y preservar un sentido de confianza colectiva, motivación y cohesión basada en las tareas con respecto a la realización de la misión.</td>
+                    <td style="padding:5px 5px 5px 5px;">Motivación</td>
+                    <td style="text-align: justify; padding:5px 5px 5px 5px;">Generar y preservar un sentido de confianza colectiva, motivación y cohesión basada en las tareas con respecto a la realización de la misión.</td>
                 </tr>
                 <tr>
-                    <td>Gestión de las emociones</td>
-                    <td>Regular las emociones de los miembros durante la realización de la misión, incluyendo (pero no limitado a) la cohesión social, la frustración y el estímulo.</td>
+                    <td style="padding:5px 5px 5px 5px;">Gestión de las emociones</td>
+                    <td style="text-align: justify; padding:5px 5px 5px 5px;">Regular las emociones de los miembros durante la realización de la misión, incluyendo (pero no limitado a) la cohesión social, la frustración y el estímulo.</td>
                 </tr>
                 <tr>
-                    <td>Comunicación</td>
-                    <td>Mantener una conversación fructífera. Evitar monopolizar y bloquear a otros de participar.</td>
+                    <td style="padding:5px 5px 5px 5px;">Comunicación</td>
+                    <td style="text-align: justify; padding:5px 5px 5px 5px;">Mantener una conversación fructífera. Evitar monopolizar y bloquear a otros de participar.</td>
                 </tr>
             </tbody>
-        </table><br /><br /><br /><br />
+        </table>
+    </div>
+    <!--Página gráficos A -->
+    <div class="diva4">
+        <h3><strong>DESVIACIÓN ESTÁNDAR DE HABILIDADES DE TRABAJO EN EQUIPO</strong></h3>
+        <table id="tblNivelA" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Conductas</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in lstResultA.OrderByDescending(q => q.IdNivel).ToList())
+                {
+                    <tr>
+                        <td>@obj.Nivel</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <table style="margin: 0 auto;" border="1">
+            <thead>
+                <tr>
+                    <th style="padding:5px 5px 5px 5px; text-align: center;">Conductas</th>
+                    <th style="padding:5px 5px 5px 5px; text-align: center;">Desv. Estándar</th>
+                    <th style="padding:5px 5px 5px 5px; text-align: center;">Mínimo</th>
+                    <th style="padding:5px 5px 5px 5px; text-align: center;">Máximo</th>
 
-
-        <div id="chartNivelAA" style="height: 500px; width: 1000px;"></div>
-        <div id="chartNivelAB" style="height: 500px; width: 1000px;"></div>
-        <div id="chartNivelAC" style="height: 500px; width: 1000px;"></div>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in lstResultA)
+                {
+                    <tr>
+                        <td style="padding:5px 5px 5px 5px;">@obj.Nivel</td>
+                        <td style="padding:5px 5px 5px 5px; text-align: center;">@obj.DesvEstandard</td>
+                        <td style="padding:5px 5px 5px 5px; text-align: center;">@obj.DesvEstandardMin</td>
+                        <td style="padding:5px 5px 5px 5px; text-align: center;">@obj.DesvEstandardMax</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <br /><br />
+        <h3><strong>HABILIDADES DE TRABAJO EN EQUIPO</strong></h3>
+        <div id="chartDiv"></div>
+        <script type="text/javascript">
+            var listaNivelA = JSON.parse('@Html.Raw(JsonConvert.SerializeObject(lstResultA.OrderByDescending(q => q.IdNivel).ToList()))');
+            var dataNivelTexto = [];
+            var dataNivelValPromPersonal = [];
+            var dataNivelValPromPares = [];
+            $("#tblNivelA tbody tr").each(function (index) {
+                $(this).children("td").each(function (index2) {
+                    switch (index2) {
+                        case 0: dataNivelTexto.push($(this).text());
+                            break;
+                    }
+                });
+            });
+            for (key in listaNivelA) {
+                dataNivelValPromPersonal.push(listaNivelA[key].PromPersonal);
+                dataNivelValPromPares.push(listaNivelA[key].PromPares);
+            }
+            var chartData = {
+                type: "hbar",  // Specify your chart type here.
+                "plotarea": {
+                    "adjust-layout": true,
+                    "margin-right": "12%"
+                },
+                "legend": {
+               
+                },
+                "plot": {
+                    "value-box": {
+                        "text": "%v"
+                    },
+                    "tooltip": {
+                        "text": "%v"
+                    }
+                },
+                "scale-x": {
+                    "values": dataNivelTexto
+                },
+                series: [  // Insert your series data here.
+                    {
+                        values: dataNivelValPromPersonal,
+                        "text": "Personal"
+                    },
+                    {
+                        values: dataNivelValPromPares,
+                        "text": "Pares"
+                    }
+                ]
+            };
+            zingchart.render({ // Render Method[3]
+                id: "chartDiv",
+                data: chartData,
+                height: 800,
+                width: "100%"
+            });
+        </script>
     </div>
     <!--PAGINA 3-->
-    <div>
-        <h2>HABILIDADES DE LIDERAZGO</h2>
+    <div class="diva4">
+        <h2><strong>HABILIDADES DE LIDERAZGO</strong></h2>
         <p>La evaluación de las habilidades de Liderazgo sigue la clasificación de los estilos de liderazgo de Bass (1985) en dos grandes categorías:</p>
         <p>
             <ul type="1">
@@ -181,51 +238,147 @@
         <table border="1">
             <thead>
                 <tr>
-                    <th>Categoría</th>
-                    <th>Conductas</th>
-                    <th>Descripción</th>
+                    <th style="text-align: center;">Categoría</th>
+                    <th style="text-align: center;">Conductas</th>
+                    <th style="text-align: center;">Descripción</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td rowspan="4">1. Liderazgo transformacional</td>
-                    <td>A. Influencia idealizada</td>
-                    <td>La medida en que los líderes crean un sentido de propósito colectivo, defienden nuevas ideas, unen su acción a los estándares morales y van más allá de su propio interés.</td>
+                    <td style="padding:5px 5px 5px 5px;" rowspan="4">1. Liderazgo transformacional</td>
+                    <td style="padding:5px 5px 5px 5px;">A. Influencia idealizada</td>
+                    <td style="text-align: justify; padding:5px 5px 5px 5px;">La medida en que los líderes crean un sentido de propósito colectivo, defienden nuevas ideas, unen su acción a los estándares morales y van más allá de su propio interés.</td>
                 </tr>
                 <tr>
-                    <td>B.Motivación inspiradora</td>
-                    <td>La capacidad del líder para establecer altos estándares y para animar a otros a cumplir estos estándares.</td>
+                    <td style="padding:5px 5px 5px 5px;">B.Motivación inspiradora</td>
+                    <td style="text-align: justify; padding:5px 5px 5px 5px;">La capacidad del líder para establecer altos estándares y para animar a otros a cumplir estos estándares.</td>
                 </tr>
                 <tr>
-                    <td>C. Estimulación intelectual</td>
-                    <td>Capacidad del líder para alentar a otros a cuestionar suposiciones pre-establecidas. Forman perspectivas distintas y buscan soluciones innovadoras.</td>
+                    <td style="padding:5px 5px 5px 5px;">C. Estimulación intelectual</td>
+                    <td style="text-align: justify; padding:5px 5px 5px 5px;">Capacidad del líder para alentar a otros a cuestionar suposiciones pre-establecidas. Forman perspectivas distintas y buscan soluciones innovadoras.</td>
                 </tr>
                 <tr>
-                    <td>D. Consideración individualizada</td>
-                    <td>La medida en que los líderes consideran las necesidades personales de los seguidores y muestran preocupación por el desarrollo de los demás.</td>
+                    <td style="padding:5px 5px 5px 5px;">D. Consideración individualizada</td>
+                    <td style="text-align: justify; padding:5px 5px 5px 5px;">La medida en que los líderes consideran las necesidades personales de los seguidores y muestran preocupación por el desarrollo de los demás.</td>
                 </tr>
 
                 <tr>
-                    <td rowspan="3">2. Liderazgo transaccional</td>
-                    <td>A. Recompensa contingente</td>
-                    <td>El grado en que los líderes proporcionan recompensas adecuadas (o castigo) para apoyar el logro de metas.</td>
+                    <td  style="padding:5px 5px 5px 5px;" rowspan="3">2. Liderazgo transaccional</td>
+                    <td style="padding:5px 5px 5px 5px;">A. Recompensa contingente</td>
+                    <td style="text-align: justify; padding:5px 5px 5px 5px;">El grado en que los líderes proporcionan recompensas adecuadas (o castigo) para apoyar el logro de metas.</td>
                 </tr>
                 <tr>
-                    <td>B. Gestión por excepción</td>
-                    <td>La medida en que los líderes enfatizan los fracasos de los seguidores y intervienen exclusivamente para corregir situaciones.</td>
+                    <td style="padding:5px 5px 5px 5px;">B. Gestión por excepción</td>
+                    <td style="text-align: justify; padding:5px 5px 5px 5px;">La medida en que los líderes enfatizan los fracasos de los seguidores y intervienen exclusivamente para corregir situaciones.</td>
                 </tr>
                 <tr>
-                    <td>C. Laissez-Faire</td>
-                    <td>El grado en que los líderes se abstienen de intervenir en situaciones que requieren acción.</td>
+                    <td style="padding:5px 5px 5px 5px;">C. Laissez-Faire</td>
+                    <td style="text-align: justify; padding:5px 5px 5px 5px;">El grado en que los líderes se abstienen de intervenir en situaciones que requieren acción.</td>
                 </tr>
 
             </tbody>
         </table>
-        <div id="chartNivelB" style="height: 500px; width: 1000px;"></div>
+        <br />
+        <h3><strong>DESVIACIÓN ESTÁNDAR DE HABILIDADES DE LIDERAZGO</strong></h3>
+        <table style="margin: 0 auto;" border="1">
+            <thead>
+                <tr>
+                    <th style="padding:5px 5px 5px 5px; text-align: center;">Conductas</th>
+                    <th style="padding:5px 5px 5px 5px; text-align: center;">Desv. Estándar</th>
+                    <th style="padding:5px 5px 5px 5px; text-align: center;">Mínimo</th>
+                    <th style="padding:5px 5px 5px 5px; text-align: center;">Máximo</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in lstResultC)
+                {
+                    <tr>
+                        <td style="padding:5px 5px 5px 5px;">@obj.Nivel</td>
+                        <td style="padding:5px 5px 5px 5px; text-align: center;">@obj.DesvEstandard</td>
+                        <td style="padding:5px 5px 5px 5px; text-align: center;">@obj.DesvEstandardMin</td>
+                        <td style="padding:5px 5px 5px 5px; text-align: center;">@obj.DesvEstandardMax</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <!--Página gráficos C -->
+    <div class="diva4">       
+        <table  id="tblNivelC"  style="display: none;" >
+            <thead>
+                <tr>
+                    <th>Conductas</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in lstResultC.OrderByDescending(q => q.IdNivel).ToList())
+                {
+                    <tr>
+                        <td>@obj.Nivel</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <h3><strong>HABILIDADES DE LIDERAZGO</strong></h3>
+        <div style="justify-content: center;" id="chartDivNivelC"></div>
+        <script type="text/javascript">
+            var listaNivelC = JSON.parse('@Html.Raw(JsonConvert.SerializeObject(lstResultC.OrderByDescending(q => q.IdNivel).ToList()))');
+            var dataNivelTexto = [];
+            var dataNivelValPromPersonal = [];
+            var dataNivelValPromPares = [];
+            $("#tblNivelC tbody tr").each(function (index) {
+                var campo1;
+                $(this).children("td").each(function (index2) {
+                    switch (index2) {
+                        case 0: dataNivelTexto.push($(this).text());
+                            break;
+                    }
+                });
+            });
+            for (key in listaNivelC) {
+                dataNivelValPromPersonal.push(listaNivelC[key].PromPersonal);
+                dataNivelValPromPares.push(listaNivelC[key].PromPares);
+            }
+            var chartData = {
+                type: "hbar",  // Specify your chart type here.
+                "plotarea": {
+                    "adjust-layout": true,
+                    "margin-right": "12%"
+                },
+                legend: {}, // Creates an interactive legend
+                "plot": {
+                    "value-box": {
+                        "text": "%v"
+                    },
+                    "tooltip": {
+                        "text": "%v"
+                    }
+                },
+                "scale-x": {
+                    "values": dataNivelTexto
+                },
+                series: [  // Insert your series data here.
+                    {
+                        values: dataNivelValPromPersonal,
+                        "text": "Personal"
+                    },
+                    {
+                        values: dataNivelValPromPares,
+                        "text": "Pares"
+                    }
+                ]
+            };
+            zingchart.render({ // Render Method[3]
+                id: "chartDivNivelC",
+                data: chartData,
+                height: 800,
+                width: "100%"
+            });
+        </script>
     </div>
     <!--PAGINA 4-->
-    <div>
-        <h2>HABILIDADES DE PRESENTACIÓN ORAL</h2>
+    <div class="diva4">
+        <h2><strong>HABILIDADES DE PRESENTACIÓN ORAL</strong></h2>
         <p>La evaluación de las habilidades de presentación sigue el Canon Retórico Romano de Cicerón y las Pruebas Retóricas de Aristóteles, que enfatizan cinco elementos de presentaciones efectivas:</p>
         <p>
             <ul type="1">
@@ -237,13 +390,103 @@
             </ul>
         </p>
         <p>Los comportamientos incluidos en cada categoría se describen a continuación.</p>
-        <div id="chartNivelCA" style="height: 500px; width: 1000px;"></div>
-        <div id="chartNivelCB" style="height: 500px; width: 1000px;"></div>
-    </div>
+        <h3><strong>DESVIACIÓN ESTÁNDAR DE PRESENTACIÓN ORAL</strong></h3>
+        <table id="tblNivelB" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Conductas</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in lstResultB.OrderByDescending(q => q.IdNivel).ToList())
+                {
+                    <tr>
+                        <td>@obj.Nivel</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <table style="margin: 0 auto;" border="1">
+            <thead>
+                <tr>
+                    <th style="padding:5px 5px 5px 5px; text-align: center;">Conductas</th>
+                    <th style="padding:5px 5px 5px 5px; text-align: center;">Desv. Estándar</th>
+                    <th style="padding:5px 5px 5px 5px; text-align: center;">Mínimo</th>
+                    <th style="padding:5px 5px 5px 5px; text-align: center;">Máximo</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in lstResultB)
+                {
+                    <tr>
+                        <td style="padding:5px 5px 5px 5px;">@obj.Nivel</td>
+                        <td style="padding:5px 5px 5px 5px; text-align: center;">@obj.DesvEstandard</td>
+                        <td style="padding:5px 5px 5px 5px; text-align: center;">@obj.DesvEstandardMin</td>
+                        <td style="padding:5px 5px 5px 5px; text-align: center;">@obj.DesvEstandardMax</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <h3><strong>HABILIDADES DE PRESENTACIÓN ORAL</strong></h3>
+        <div style="justify-content: center;" id="chartDivNivelB"></div>
+        <script type="text/javascript">
+            var listaNivelB = JSON.parse('@Html.Raw(JsonConvert.SerializeObject(lstResultB.OrderByDescending(q => q.IdNivel).ToList()))');
+            var dataNivelTexto = [];
+            var dataNivelValPromPersonal = [];
+            var dataNivelValPromPares = [];
 
+            $("#tblNivelB tbody tr").each(function (index) {
+                $(this).children("td").each(function (index2) {
+                    switch (index2) {
+                        case 0: dataNivelTexto.push($(this).text());
+                            break;
+                    }
+                });
+            });
+            for (key in listaNivelB) {
+                dataNivelValPromPersonal.push(listaNivelB[key].PromPersonal);
+                dataNivelValPromPares.push(listaNivelB[key].PromPares);
+            }
+            var chartData = {
+                type: "hbar",  // Specify your chart type here.
+                "plotarea": {
+                    "adjust-layout": true,
+                    "margin-right": "12%"
+                },
+                legend: {}, // Creates an interactive legend
+                "plot": {
+                    "value-box": {
+                        "text": "%v"
+                    },
+                    "tooltip": {
+                        "text": "%v"
+                    }
+                },
+                "scale-x": {
+                    "values": dataNivelTexto
+                },
+                series: [  // Insert your series data here.
+                    {
+                        values: dataNivelValPromPersonal,
+                        "text": "Personal"
+                    },
+                    {
+                        values: dataNivelValPromPares,
+                        "text": "Pares"
+                    }
+                ]
+            };
+            zingchart.render({ // Render Method[3]
+                id: "chartDivNivelB",
+                data: chartData,
+                height: 350,
+                width: "100%"
+            });
+        </script>
+    </div>
     <!--PAGINA 5-->
-    <div>
-        <h2>EJERCICIO DE REFLEXIÓN</h2>
+    <div class="diva4">
+        <h2><strong>EJERCICIO DE REFLEXIÓN</strong></h2>
         <p>Después de revisar este informe, responda brevemente las siguientes preguntas:</p>
         <p>
             <ul type="1">

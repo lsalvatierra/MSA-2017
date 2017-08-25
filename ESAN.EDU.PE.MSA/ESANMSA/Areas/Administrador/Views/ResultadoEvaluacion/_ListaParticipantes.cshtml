@@ -27,7 +27,7 @@
                         <td>@Html.Raw(objPart.Participante.ParticipanteApeMaterno)</td>
                         <td>@Html.Raw(objPart.Participante.ParticipanteNombres)</td>
                         <td>
-                            <a data-placement="top" target="_blank" href="@Url.Action("ResultadoParticipante", "ResultadoEvaluacion",new { area = "Administrador", idMedicion = objPart.EvaluacionMedicionID, idPromocion = objPart.EvaluacionPromocionID, idParticipante = objPart.ParticipanteID })" style="cursor: pointer;"><span class="glyphicon glyphicon-save" aria-hidden="true"></span></a>
+                            <a data-placement="top" target="_blank" href="@Url.Action("ResultadoParticipante", "ResultadoEvaluacion",new { area = "Administrador", idEvaluacion = objPart.EvaluacionPromocion.EvaluacionID, idPromocion = objPart.EvaluacionPromocionID, idParticipante = objPart.ParticipanteID, idCiclo = ViewBag.idCiclo })" style="cursor: pointer;"><span class="glyphicon glyphicon-save" aria-hidden="true"></span></a>
                         </td>
                     </tr>
                 }

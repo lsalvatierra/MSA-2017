@@ -83,7 +83,6 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
             return rpta;
         }
 
-
         /// <summary>
         /// 
         /// </summary>
@@ -98,24 +97,54 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
             }
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="p_idPromocion"></param>
+        /// <param name="p_idCiclo"></param>
+        /// <returns></returns>
         static public List<EvaluacionPromocionParticipante> ListaParticipantes(int p_idPromocion, int p_idCiclo)
         {
             List<EvaluacionPromocionParticipante> lista = new List<EvaluacionPromocionParticipante>();
             using (var data = new BDEvaluacionEntities())
             {
                 int idMedicion = data.EvaluacionPromocionMedicion.Where(q => q.EvaluacionPromocionID == p_idPromocion && q.EvaluacionCicloID == p_idCiclo).FirstOrDefault().EvaluacionMedicionID;
-                lista = data.EvaluacionPromocionParticipante.Include(x => x.Participante).Include(x => x.Participante.EvaluacionRespuesta).Where(x => x.EvaluacionPromocionID == p_idPromocion && x.EvaluacionMedicionID == idMedicion && x.EsExterno == false).ToList();
-
+                lista = data.EvaluacionPromocionParticipante.Include(x => x.EvaluacionPromocion).Include(x => x.Participante).Include(x => x.Participante.EvaluacionRespuesta).Where(x => x.EvaluacionPromocionID == p_idPromocion && x.EvaluacionMedicionID == idMedicion && x.EsExterno == false).ToList();
             }
             return lista;
         }
+
+        /// <summary>
+        /// Obtiene el promedio de su resultado del alumno.
+        /// </summary>
+        /// <param name="p_idPromocion">Id Promoción.</param>
+        /// <param name="p_idMedicion">Id Medición.</param>
+        /// <param name="p_idParticipante">Id Participante.</param>
+        /// <returns></returns>
         static public List<sp_PromedioEvaluacion_Result> ObtenerResultadoxParticipante(int p_idPromocion, int p_idMedicion, int p_idParticipante)
         {
            
             using (var data = new BDEvaluacionEntities())
             {
                 return data.sp_PromedioEvaluacion(p_idParticipante, p_idPromocion, p_idMedicion).ToList();
+            }
+        }
+
+
+        /// <summary>
+        /// Obtiene el promedio y desviación standar de la evaluación del participante.
+        /// </summary>
+        /// <param name="p_idEvaluacion">Id evaluación.</param>
+        /// <param name="p_idNivelPadre">Id nivel padre.</param>
+        /// <param name="p_idPromocion">Id Promoción.</param>
+        /// <param name="p_idCiclo">Id ciclo.</param>
+        /// <param name="p_idParticipante">Id Participante.</param>
+        /// <returns></returns>
+        static public List<PromedioEvaluacionxCicloNivel_Result> ObtenerResultadoFinalxParticipante(int p_idEvaluacion, int p_idNivelPadre, int p_idPromocion, int p_idCiclo, int p_idParticipante)
+        {
+            using (var data = new BDEvaluacionEntities())
+            {
+                return data.PromedioEvaluacionxCicloNivel(p_idEvaluacion, p_idNivelPadre, p_idPromocion, p_idCiclo, p_idParticipante).ToList();
             }
         }
     }
