@@ -1,0 +1,59 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>ExportarPDF</title>
+    <script  src="https://cdn.zingchart.com/zingchart.min.js"></script>
+    @*<script>
+    zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
+    ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "ee6b7db5b51705a13dc2339db3edaf6d"];
+    </script>*@
+
+</head>
+<body>
+    <p id="txttitulo">My Fírst Chárt</p>
+    <div id="chartDiv"></div>
+    <script type="text/javascript">        
+            var chartData = {
+                type: "hbar",  // Specify your chart type here.
+                title: {
+                    text: "Un nuevo grafico" // Adds a title to your chart
+                },
+                legend: {}, // Creates an interactive legend
+                "plot": {
+                    "value-box": {
+                        "text": "%v"
+                    },
+                    "tooltip": {
+                        "text": "%v"
+                    }
+                }, "scale-x": {
+                    "values": [
+                      "Mon",
+                      "Wed",
+                      "Fri"
+                    ]
+                },
+                series: [  // Insert your series data here.
+                    {
+                        values: [35, 42, 67, 89],
+                        "text": "apples"
+                    },
+                    {
+                        values: [28, 40, 39, 36],
+                        "text": "oranges"
+                    }
+                ]
+            };
+            zingchart.render({ // Render Method[3]
+                id: "chartDiv",
+                data: chartData,
+                height: 400,
+                width: 600
+        });
+    </script>
+</body>
+</html>
