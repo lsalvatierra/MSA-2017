@@ -157,15 +157,17 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
         /// </summary>
         /// <param name="EvaluacionPromocionID"></param>
         /// <returns></returns>
-        static public List<EvaluacionPromocionParticipante> ListadoParticipante(int EvaluacionPromocionID, int EvaluacionMedicionID, bool EsLink)
+        static public List<EvaluacionPromocionParticipante> ListadoParticipanteLink(int EvaluacionPromocionID, int EvaluacionMedicionID, int EvaluacionCicloID)
         {
             List<EvaluacionPromocionParticipante> lista = new List<EvaluacionPromocionParticipante>();
             using (var data = new BDEvaluacionEntities())
             {
-                lista = EvaluacionPromocionID == -1 && EvaluacionMedicionID == -1 ?
+                //Se debe obtener el ID de la Medición que no es del parámetro, es decir, de la autoevaluación del ciclo correspondiente.
+                int medicionID = data.EvaluacionPromocionMedicion.Where(x => x.EvaluacionPromocionID == EvaluacionPromocionID && x.EvaluacionCicloID == EvaluacionCicloID && x.EvaluacionMedicionID != EvaluacionMedicionID).FirstOrDefault().EvaluacionMedicionID;
+
+                lista = EvaluacionPromocionID == -1 && EvaluacionMedicionID == -1 && EvaluacionCicloID == -1 ?
                         data.EvaluacionPromocionParticipante.Include(x => x.Participante).ToList() :
-                        EsLink ? data.EvaluacionPromocionParticipante.Include(x => x.Participante).Where(x => x.EvaluacionPromocionID == EvaluacionPromocionID && x.EvaluacionMedicionID != EvaluacionMedicionID).ToList() :
-                        data.EvaluacionPromocionParticipante.Include(x => x.Participante).Where(x => x.EvaluacionPromocionID == EvaluacionPromocionID && x.EvaluacionMedicionID == EvaluacionMedicionID).ToList();
+                        data.EvaluacionPromocionParticipante.Include(x => x.Participante).Where(x => x.EvaluacionPromocionID == EvaluacionPromocionID && x.EvaluacionMedicionID == medicionID).ToList();
 
             }
             return lista;

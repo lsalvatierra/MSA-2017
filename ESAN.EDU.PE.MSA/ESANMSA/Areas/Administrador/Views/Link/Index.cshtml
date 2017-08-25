@@ -15,7 +15,8 @@
 <div id="divListadoParticipanteLinksDetalle"></div>
 <input type="hidden" id="hidEvaluacionPromocionID" />
 <input type="hidden" id="hidEvaluacionPromocionCorreo" />
-
+@*<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>*@
+<script src="~/Scripts/jquery/jquery-ui-1.8.24.min.js"></script>
 <script>
 
 
@@ -98,6 +99,8 @@
         var vPromocionID = $("#hidEvaluacionPromocionID").val();
         var vMedicionID = $("#cboMedicionParticipante").val();
         var vEsEvaluado = $('option:selected', this).attr('esevaluado');
+        var vCicloID = $(".cboCicloParticipante").val();
+
         $("#divListadoParticipanteLinksDetalle").html("");
 
         if (vEsEvaluado == "true") {
@@ -106,7 +109,8 @@
                 'type': 'POST',
                 'data': {
                     EvaluacionPromocionID: vPromocionID,
-                    EvaluacionMedicionID: vMedicionID
+                    EvaluacionMedicionID: vMedicionID,
+                    EvaluacionCicloID: vCicloID
                 },
                 'success': function (view) {
                     //process here

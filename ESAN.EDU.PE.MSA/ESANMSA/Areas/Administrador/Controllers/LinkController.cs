@@ -34,9 +34,9 @@ namespace ESANMSA.Areas.Administrador.Controllers
             return Json(new { listamedicion = listado }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult ListadoParticipanteDetalle(int EvaluacionPromocionID, int EvaluacionMedicionID)
+        public ActionResult ListadoParticipanteDetalle(int EvaluacionPromocionID, int EvaluacionMedicionID, int EvaluacionCicloID)
         {
-            ViewBag.ListadoPromocionParticipante = DAPromocion.ListadoParticipante(EvaluacionPromocionID, EvaluacionMedicionID, true);
+            ViewBag.ListadoPromocionParticipante = DAPromocion.ListadoParticipanteLink(EvaluacionPromocionID, EvaluacionMedicionID, EvaluacionCicloID);
             return PartialView();
         }
 
