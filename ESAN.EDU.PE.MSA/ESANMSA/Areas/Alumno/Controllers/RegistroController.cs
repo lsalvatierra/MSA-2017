@@ -6,12 +6,14 @@ using System.Web.Mvc;
 using ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA;
 using ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA;
 using System.Globalization;
+using ESANMSA.Utilitarios;
 
 namespace ESANMSA.Areas.Alumno.Controllers
 {
     public class RegistroController : Controller
     {
         // GET: Alumno/Registro
+        [NoCache]
         public ActionResult Formulario(int idPromocion, int idMedicion,int idEvaluado, bool Externo)
         {
             EvaluacionPromocionMedicion objPromMed = DAParticipante.ObtenerEvaluacionPromocionMedicion(idPromocion, idMedicion);
@@ -22,6 +24,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
             ViewBag.IdMedicion = idMedicion;
             ViewBag.EsExterno = Externo;
             ViewBag.IdEvaluado = idEvaluado;
+            ViewBag.IdTipoDocumento = 4;//Variable del Web.config
             if (Externo)
             {
                 Participante objParticipante = DAParticipante.ObtenerParticipantexID(idEvaluado);
@@ -29,6 +32,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
                 {
                     return RedirectToAction("FormularioError", "Registro", new { area = "Alumno", p_tipoError = 3 });
                 }
+                ViewBag.IdTipoRelacionOtros = 4;//Variable del Web.config
                 ViewBag.lstTipoRelacion = DATipoRelacionParticipante.ListaTipoRelacion();
             }
             if (objPromMed != null)
@@ -70,16 +74,27 @@ namespace ESANMSA.Areas.Alumno.Controllers
                     rptaExiste = 1;
                 }
                 else {
+                    Participante objNuevoParticipante = new Participante
+                    {
+                        ParticipanteID = objParticipante.ParticipanteID,
+                        ParticipanteNombreCompleto = objParticipante.ParticipanteNombreCompleto
+                    };
+                    objNuevoParticipante.EvaluacionPromocionParticipante.Add(new EvaluacionPromocionParticipante {
+                        ParticipanteID = objParticipante.ParticipanteID,
+                        EvaluacionMedicionID = p_idMedicion,
+                        EvaluacionPromocionID = p_idPromocion,
+                        EsExterno = false // Siempre falso por que sólo se verifica a los internos.
+                    });
                     rptaExiste = 0;
-                }
-                Session["Alumno"] = objParticipante;
+                    Session["Alumno"] = objNuevoParticipante;
+                }                
             }
             return Json(new { Existe = rptaExiste });
         }
 
         [HttpPost]
         public JsonResult RegistrarUsuario(int p_idTipoDocumento, string p_nroDocumento, string p_apePaterno, string p_apeMaterno, string p_nombres,
-            int p_idPromocion, int p_idMedicion, bool p_Externo)
+            int p_idPromocion, int p_idMedicion)
         {
             Participante objParticipante = new Participante();
             objParticipante.TipoDocumentoID = p_idTipoDocumento;
@@ -92,41 +107,34 @@ namespace ESANMSA.Areas.Alumno.Controllers
             objParticipante.EvaluacionPromocionParticipante.Add(new EvaluacionPromocionParticipante {
                 EvaluacionMedicionID = p_idMedicion,
                 EvaluacionPromocionID = p_idPromocion,
-                EsExterno = p_Externo
+                EsExterno = false
             });
-            int rptaReg = DAParticipante.RegistrarParticipante(objParticipante);
-            bool rpta = false; 
-            if (rptaReg > 0)
-            {
-                rpta = true;
-                objParticipante.ParticipanteID = rptaReg;
-                Session["Alumno"] = objParticipante;
-            }
-            return Json(new { rpta = rpta });
+            Session["Alumno"] = objParticipante;
+            return Json(new { rpta = true });
         }
 
 
         [HttpPost]
-        public JsonResult RegistrarUsuarioExterno(int p_idPromocion, int p_idMedicion, bool p_Externo, int p_idTipoRelacion)
+        public JsonResult RegistrarUsuarioExterno(int p_idPromocion, int p_idMedicion, int p_idTipoRelacion, string p_TipoRelacion)
         {
             Participante objParticipante = new Participante();
-            objParticipante.TipoRelacionId = p_idTipoRelacion;
+            if (p_idTipoRelacion == 4)
+            {
+                objParticipante.TipoRelacionParticipante = new TipoRelacionParticipante { DescripcionTipoRelacion = p_TipoRelacion, EstadoTipoRelacion = "0" };
+            }
+            else {
+                objParticipante.TipoRelacionId = p_idTipoRelacion;
+            }
+            
             objParticipante.ParticipanteEstado = true;
             objParticipante.EvaluacionPromocionParticipante.Add(new EvaluacionPromocionParticipante
             {
                 EvaluacionMedicionID = p_idMedicion,
                 EvaluacionPromocionID = p_idPromocion,
-                EsExterno = p_Externo
+                EsExterno = true
             });
-            int rptaReg = DAParticipante.RegistrarParticipante(objParticipante);
-            bool rpta = false;
-            if (rptaReg > 0)
-            {
-                rpta = true;
-                objParticipante.ParticipanteID = rptaReg;
-                Session["Alumno"] = objParticipante;
-            }
-            return Json(new { rpta = rpta });
+            Session["Alumno"] = objParticipante;
+            return Json(new { rpta = true });
         }
     }
 }

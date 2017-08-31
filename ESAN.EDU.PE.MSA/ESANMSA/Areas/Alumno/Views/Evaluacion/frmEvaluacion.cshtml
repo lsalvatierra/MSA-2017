@@ -3,6 +3,7 @@
     ViewBag.Title = "Evaluación";
 
     string EsExterno = ((bool)ViewBag.EsExterno).ToString();
+    EvaluacionNivelIntro objNivelIntroduccion = (EvaluacionNivelIntro)ViewBag.objIntroduccion;
 }
 @section Scripts{
 <script src="@Url.Content("~/Scripts/Areas/Alumno/Registro/Index.js")"></script>
@@ -10,7 +11,7 @@
 <script src="@Url.Content("~/Scripts/bootstrap/bootstrap-loading.js")"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        
+        //$("[data-toggle='tooltip']").tooltip();
         $(".btnOpc").on("click", function () {
             $($(this).parent()).find('a').each(function () {
                 $(this).removeClass("btn-primary");
@@ -26,20 +27,20 @@
             );
         });
         $(".btnSiguiente").on("click", function () {
-            var PregContestadas = 0;
-            $("#divEvaluacion a").each(function (index) {
-                if ($(this).hasClass("btn-primary")) {
-                    PregContestadas++;
-                }
-            });
-            if (PregContestadas < parseInt($("#hddCantPreguntasForm").val())) {
-                BootstrapDialog.show({
-                    type: BootstrapDialog.TYPE_DANGER,
-                    title: "Evaluación",
-                    message: "Por favor conteste todas las preguntas."
-                });
-                return false;
-            } else {
+            //var PregContestadas = 0;
+            //$("#divEvaluacion a").each(function (index) {
+            //    if ($(this).hasClass("btn-primary")) {
+            //        PregContestadas++;
+            //    }
+            //});
+            //if (PregContestadas < parseInt($("#hddCantPreguntasForm").val())) {
+            //    BootstrapDialog.show({
+            //        type: BootstrapDialog.TYPE_DANGER,
+            //        title: "Evaluación",
+            //        message: "Por favor conteste todas las preguntas."
+            //    });
+            //    return false;
+            //} else {
                 waitingDialog.show('Cargando', { dialogSize: 'sm', progressType: 'danger' });
                 $.ajax({
                     type: "POST",
@@ -49,7 +50,8 @@
                         idNivelA: $("#hddIdNivelA").val(),
                         idNivelOrdenA: $("#hddIdNivelOrdenA").val(),
                         idNivelOrdenB: $("#hddIdNivelOrdenB").val(),
-                        idNivelOrdenC: $("#hddIdNivelOrdenC").val()
+                        idNivelOrdenC: $("#hddIdNivelOrdenC").val(),
+                        Externo: $("#hddExterno").val()
                     },
                     success: function (data) {
                         waitingDialog.hide();
@@ -58,9 +60,14 @@
                         $('body, html').animate({
                             scrollTop: '0px'
                         }, 300);
+                        $.post(URL_PAGE + "Alumno/Evaluacion/alternativasNivel", { idNivel: $("#hddIdNivelA").val() },
+                            function (result) {
+                                $("#Alternativas").html("");
+                                $("#Alternativas").html(result);
+                            });
                     }
                 });
-            }
+            //}
         });
 
     });
@@ -72,98 +79,148 @@
     .main-header {
 	background: #808080;
 	color: white;
-	height: 205px;	
+	height: 245px;	
 	width: 100%; /* hacemos que la cabecera ocupe el ancho completo de la página */
 	left: 0; /* Posicionamos la cabecera al lado izquierdo */
-	top: 25px; /* Posicionamos la cabecera pegada arriba */
+	top: 10px; /* Posicionamos la cabecera pegada arriba */
 	position: fixed; /* Hacemos que la cabecera tenga una posición fija */
     padding-left: 30px;
     padding-right: 30px;
+    padding-top: 25px;
     overflow: hidden;
     z-index: 3;
+    }
+    .txtPregunta {
+    font-size: 17px;
+    }
+    .txtDefinicion {
+    font-style: italic;
+    }
+    
+.center {
+    margin: 0 auto;
+    width: 80%;
 }
+        .txtLista {
+    font-size: 16px;
+    }
+
 </style>
 }
 <div id="frmEvaluacion">
     <div class="main-header">
-        <div class="page-header">
-            <h1>@ViewBag.NombreEvaluacion</h1>
-            <input type="hidden" value="@ViewBag.IdMedicion" id="hddIdMedicion" />
-            <input type="hidden" value="@ViewBag.IdPromocion" id="hddIdPromocion" />
-            <input type="hidden" value="@EsExterno" id="hddExterno" />
-            <input type="hidden" value="@ViewBag.IdEvaluado" id="hddIdEvaluado" />
-            @if ((bool)ViewBag.EsExterno)
-            {
-                <p class="lead">Evaluando a: @ViewBag.NombresParticipanteEvaluar.</p>
-                
-
-            }
-        </div>
-        @*<div class="row">
-            <div class="col-md-12 ">*@
-                <div id="AvanceEvaluacion">
-                    <div class="progress">
-                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
-                        </div>
-                    </div>
+        <h2>@ViewBag.NombreEvaluacion</h2>
+        <input type="hidden" value="@ViewBag.IdMedicion" id="hddIdMedicion" />
+        <input type="hidden" value="@ViewBag.IdPromocion" id="hddIdPromocion" />
+        <input type="hidden" value="@EsExterno" id="hddExterno" />
+        <input type="hidden" value="@ViewBag.IdEvaluado" id="hddIdEvaluado" />
+        @if ((bool)ViewBag.EsExterno)
+        {
+            <h4>Evaluando a: @ViewBag.NombresParticipanteEvaluar.</h4>
+        }
+        else
+        {
+            <h4>Bienvenido: @ViewBag.NombresParticipanteEvaluar.</h4>
+        }
+        <hr />
+        <div id="AvanceEvaluacion">
+            <div class="progress">
+                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
                 </div>
-            @*</div>
-        </div>*@
+            </div>
+        </div>
+        <div id="Alternativas">
+            <div class="row">
+                <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
+                    @{
+                        string[] lstAlternativas = objNivelIntroduccion.ListaAlternativas.Split('|');
+                        int valor = 0;
+                        foreach (string alter in lstAlternativas)
+                        {
+                            valor++;
+                            <a class="btn btn-primary" style="font-size: 12px; padding-left: 1px; padding-right: 1px;" role="button"><span  class="badge">@valor</span><br />@alter</a>
+                        }
+                    }
+                </div>
+           </div>
+        </div>
     </div>
-    <br /><br /><br /><br /><br /><br /><br /><br />
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
     <div id="divEvaluacion">
-        @{    List<EvaluacionPregunta> lstPreguntas = (List<EvaluacionPregunta>)ViewBag.LstPreguntas;
-            int cntPreguntasForm = lstPreguntas.Count; }
+
         <!--Hiddens para la paginación de las preguntas.-->
         <input type="hidden" value="@ViewBag.IDNivelA" id="hddIdNivelA" />
         <input type="hidden" value="@ViewBag.IDNivelOrdenA" id="hddIdNivelOrdenA" />
         <input type="hidden" value="@ViewBag.IDNivelOrdenB" id="hddIdNivelOrdenB" />
         <input type="hidden" value="@ViewBag.IDNivelOrdenC" id="hddIdNivelOrdenC" />
-        <input type="hidden" value="@cntPreguntasForm" id="hddCantPreguntasForm" />
-        <h2>@ViewBag.NivelA</h2>
-        @if (ViewBag.NivelB != "")
-        {
-            <h3>@ViewBag.NivelB.</h3>
-        }        
+        @*<input type="hidden" value="@cntPreguntasForm" id="hddCantPreguntasForm" />*@
+        <h2>@ViewBag.NivelA</h2>             
         <div class="jumbotron" style="padding: 5px 25px 5px 25px;">
-            @if (ViewBag.NivelC != "")
-            {
-                <h3>@ViewBag.NivelC</h3>
-            }            
-            @foreach (var objPregunta in lstPreguntas)
-            {
-                <p>@objPregunta.EvaluacionPreguntaDescripcion</p>
-                if ((bool)objPregunta.EsInversa)
+            <p style="font-size: 16px;">@Html.Raw(objNivelIntroduccion.ParrafoIntroduccion1)</p>
+            <ul type="1">
+                @if (objNivelIntroduccion.ListaIntroduccion1 != null)
                 {
-                    <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
-                    @foreach (var objAlternativa in objPregunta.EvaluacionAlternativa)
+                    if (objNivelIntroduccion.ListaIntroduccion1 != "")
                     {
-                        //int idAlternativaInverso = Convert.ToInt32(objPregunta.EvaluacionAlternativa.OrderByDescending(q => q.EvaluacionAlternativaDescripcion).FirstOrDefault().EvaluacionAlternativaID);
-                        <a class="btn btn-default btnOpc" data-idPregunta="@objPregunta.EvaluacionPreguntaID" data-idAlternativa="@objAlternativa.EvaluacionAlternativaID" role="button">@objAlternativa.EvaluacionAlternativaDescripcion</a>
+                        string[] lstIntroA = objNivelIntroduccion.ListaIntroduccion1.Split('|');
+                        foreach (string item in lstIntroA)
+                        {
+                            <li class="txtLista">@item</li>
+                        }
                     }
-                    </div>
                 }
-                else
+                    
+            </ul>
+            <p style="font-size: 16px;">@Html.Raw(objNivelIntroduccion.ParrafoIntroduccion2)</p>
+            <ul type="1">
+                @if (objNivelIntroduccion.ListaIntroduccion2 != null)
                 {
-                    <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
-                    @foreach (var objAlternativa in objPregunta.EvaluacionAlternativa)
+                    if (objNivelIntroduccion.ListaIntroduccion2 != "")
                     {
-                        <a class="btn btn-default btnOpc" data-idPregunta="@objPregunta.EvaluacionPreguntaID" data-idAlternativa="@objAlternativa.EvaluacionAlternativaID" role="button">@objAlternativa.EvaluacionAlternativaDescripcion</a>
+                        string[] lstIntroB = objNivelIntroduccion.ListaIntroduccion2.Split('|');
+                        foreach (string item in lstIntroB)
+                        {
+                            <li class="txtLista">@item</li>
+                        }
                     }
-                    </div>
                 }
-            <br />
+            </ul>
+            @{
+                if (objNivelIntroduccion.ParrafoIntroduccion3 != null)
+                {
+                    if (objNivelIntroduccion.ParrafoIntroduccion3 != "")
+                    {
+                        string[] lstParrafoC = objNivelIntroduccion.ParrafoIntroduccion3.Split('|');
+                        foreach (string item in lstParrafoC)
+                        {
+                            <p style="font-size: 16px;">@item</p>
+                        }
+                    }
+                }
             }
+            <div class="row">
+                <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
+                    @{
+                        int valorParrafo = 0;
+                        while (valor > valorParrafo )
+                        {
+                            valorParrafo++;
+                            <a class="btn btn-default" style="font-size: 12px; padding-left: 1px; padding-right: 1px;" role="button"><span class="badge">@valorParrafo</span></a>
+                        }
+                    }
+                </div>
+            </div>
+          
         </div>
         <div class="row">
-            <div class="col-md-1">
+            <div class="col-md-1 col-xs-1">
                 @*<div class="form-group">
                     <button type="button" class="btn btn-success">Anterior</button>
                 </div>*@
             </div>
-            <div class="col-md-10">
+            <div class="col-md-10 col-xs-10">
             </div>
-            <div class="col-md-1">
+            <div class="col-md-1 col-xs-1">
                 <div class="form-group">
                     <button type="button" class="btn btn-success btnSiguiente">Siguiente</button>
                 </div>

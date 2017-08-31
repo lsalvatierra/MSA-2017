@@ -19,6 +19,7 @@
     <form id="frmRegistro" action="@Url.Action("frmEvaluacion","Evaluacion",new { area = "Alumno", idMedicion = IdMedicion, idPromocion = IdPromocion, idEvaluado = IdEvaluado, Externo = Externo })" method="post">
         <input type="hidden" id="hddIdPromocion" value="@ViewBag.IdPromocion" />
         <input type="hidden" id="hddIdMedicion" value="@ViewBag.IdMedicion" />
+        <input type="hidden" id="hddIdTipoDocumento" value="@ViewBag.IdTipoDocumento" />
         <input type="hidden" id="hddExterno" value="@Externo" />
         @if (!(bool)ViewBag.EsExterno)
         {
@@ -92,7 +93,7 @@
         else
         {
             List<TipoRelacionParticipante> lstTipoRelacion = (List<TipoRelacionParticipante>)ViewBag.lstTipoRelacion;
-
+            <input type="hidden" id="hddIdTipoRelacion" value="@ViewBag.IdTipoRelacionOtros" />
             <div class="page-header">
                 <h1>¡Complete su información antes de empezar!</h1>
             </div>
@@ -113,7 +114,14 @@
                                 <div id="xtiporel" class="hide"></div>
                             </div>
                         </div>
-                        <div class="col-md-8">
+                        <div id="divNuevoTipoRel" style="display: none;" class="col-md-4">
+                            <div class="form-group">
+                                <label for="txtOtroTipoRelacion">Tipo Relación:</label>
+                                <input type="text" class="form-control" maxlength="150" id="txtOtroTipoRelacion" placeholder="Ingrese el tipo de relación" name="txtOtroTipoRelacion">
+                                <div id="xotrotiporel" class="hide"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
                             <div style="padding-top: 25px;">
                                 <button type="button" id="btnGuardarEmpezarExterno" class="btn btn-primary">Empezar&nbsp;<i class="fa fa-thumbs-o-up" aria-hidden="true"></i></button>
                             </div>

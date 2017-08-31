@@ -1,0 +1,17 @@
+﻿@{
+    string[] lstAlternativas = ((string)ViewBag.AlternativasNivel).Split('|');
+}
+<div class="row">
+    <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
+        @{
+           lstAlternativas = ((string)ViewBag.AlternativasNivel).Split('|');
+            int valor = 0;
+            foreach (string alter in lstAlternativas)
+            {
+                valor++;
+                <a class="btn btn-primary" style="font-size: 12px; padding-left: 1px; padding-right: 1px;" role="button"><span class="badge">@valor</span><br />@alter</a>
+            }
+        }
+    </div>
+</div>
+

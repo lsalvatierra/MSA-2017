@@ -15,7 +15,7 @@
                 url: URL_PAGE + "Alumno/Registro/VerificarUsuario",
                 cache: false,
                 data: {
-                    p_idTipoDocumento: 4,
+                    p_idTipoDocumento: $("#hddIdTipoDocumento").val(),
                     p_nroDocumento: nroDocumento,
                     p_idPromocion: $("#hddIdPromocion").val(),
                     p_idMedicion: $("#hddIdMedicion").val()
@@ -32,8 +32,7 @@
                     } else if (data.Existe == 0) {
                         $("#frmRegistro").submit();
                         
-                    }
-                    
+                    }                   
                 }
             });
         }
@@ -73,14 +72,13 @@
                 url: URL_PAGE + "Alumno/Registro/RegistrarUsuario",
                 cache: false,
                 data: {
-                    p_idTipoDocumento: 4,
+                    p_idTipoDocumento: $("#hddIdTipoDocumento").val(),
                     p_nroDocumento: nroDocumento,
                     p_apePaterno: apePaterno,
                     p_apeMaterno: apeMaterno,
                     p_nombres: nombres,
                     p_idPromocion: $("#hddIdPromocion").val(),
-                    p_idMedicion: $("#hddIdMedicion").val(),
-                    p_Externo: $("#hddExterno").val()
+                    p_idMedicion: $("#hddIdMedicion").val()
                 },
                 success: function (data) {
                     if (data.rpta) {
@@ -95,8 +93,7 @@
 
         } 
     });
-
-
+    
     $("#btnGuardarEmpezarExterno").on("click", function () {
         var formValidado = true;
         var tipoRelacion = $("#cboTipoRelacion").val();
@@ -106,6 +103,17 @@
             formValidado = false;
         } else
             LimpiarMensajeError("xtiporel");
+
+        if ($("#cboTipoRelacion").val() == $("#hddIdTipoRelacion").val()) {
+            var OtroTipoRelacion = $("#txtOtroTipoRelacion").val();
+            if (OtroTipoRelacion == "") {
+                MostrarMensajeError("xotrotiporel", "Ingrese el tipo de relación.");
+                formValidado = false;
+            } else {
+                LimpiarMensajeError("xotrotiporel");
+            }
+        }
+
         
         if (formValidado) {
 
@@ -117,8 +125,8 @@
                 data: {
                     p_idPromocion: $("#hddIdPromocion").val(),
                     p_idMedicion: $("#hddIdMedicion").val(),
-                    p_Externo: $("#hddExterno").val(),
-                    p_idTipoRelacion: tipoRelacion
+                    p_idTipoRelacion: tipoRelacion,
+                    p_TipoRelacion: $("#txtOtroTipoRelacion").val()
                 },
                 success: function (data) {
                     if (data.rpta) {
@@ -135,6 +143,16 @@
         }
     });
 
+    $("#cboTipoRelacion").on("change", function () {
+        if ($("#cboTipoRelacion").val() == $("#hddIdTipoRelacion").val()) {
+            $("#txtOtroTipoRelacion").val("");
+            $("#divNuevoTipoRel").show();
+        } else {
+            $("#txtOtroTipoRelacion").val("");
+            $("#divNuevoTipoRel").hide();
+        }
+    });
+
     $("#txtApellidoPaterno").keyup(function () {
         if ($("#xapepat").html().length > 0) {
             LimpiarMensajeError("xapepat");
@@ -148,6 +166,11 @@
     $("#txtNombres").keyup(function () {
         if ($("#xnom").html().length > 0) {
             LimpiarMensajeError("xnom");
+        }
+    });
+    $("#txtOtroTipoRelacion").keyup(function () {
+        if ($("#xotrotiporel").html().length > 0) {
+            LimpiarMensajeError("xotrotiporel");
         }
     });
 });
