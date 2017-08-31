@@ -40,7 +40,8 @@
                         idNivelA: $("#hddIdNivelA").val(),
                         idNivelOrdenA: $("#hddIdNivelOrdenA").val(),
                         idNivelOrdenB: $("#hddIdNivelOrdenB").val(),
-                        idNivelOrdenC: $("#hddIdNivelOrdenC").val()
+                        idNivelOrdenC: $("#hddIdNivelOrdenC").val(),
+                        Externo: $("#hddExterno").val()
                     },
                     success: function (data) {
                         waitingDialog.hide();
@@ -49,6 +50,11 @@
                         $('body, html').animate({
                             scrollTop: '0px'
                         }, 300);
+                        $.post(URL_PAGE + "Alumno/Evaluacion/alternativasNivel", { idNivel: $("#hddIdNivelA").val() },
+                         function (result) {
+                             $("#Alternativas").html("");
+                             $("#Alternativas").html(result);
+                         });
                     }
                 });
             }
@@ -64,7 +70,8 @@
                     idNivelOrdenA: $("#hddIdNivelOrdenA").val(),
                     idNivelOrdenB: $("#hddIdNivelOrdenB").val(),
                     idNivelOrdenC: $("#hddIdNivelOrdenC").val(),
-                    cntPregForm: $("#hddCantPreguntasForm").val()
+                    cntPregForm: $("#hddCantPreguntasForm").val(),
+                    Externo: $("#hddExterno").val()
                 },
                 success: function (data) {
                     waitingDialog.hide();
@@ -73,6 +80,11 @@
                     $('body, html').animate({
                         scrollTop: '0px'
                     }, 300);
+                    $.post(URL_PAGE + "Alumno/Evaluacion/alternativasNivel", { idNivel: $("#hddIdNivelA").val() },
+                     function (result) {
+                         $("#Alternativas").html("");
+                         $("#Alternativas").html(result);
+                     });
                 }
             });
         });
@@ -107,35 +119,64 @@
     });
 </script>
 <div id="divEvaluacion">
-    @{    List<EvaluacionPregunta> lstPreguntas = (List<EvaluacionPregunta>)ViewBag.LstPreguntas;
-        List<EvaluacionRespuesta> lstEvaluacionRespuesta = (List<EvaluacionRespuesta>)ViewBag.LstRespuestas;
-        EvaluacionRespuesta objRpta = null;
-        List<EvaluacionAlternativa> lstAlternativaInversa = null;
-        EvaluacionAlternativa objAlternativaInversa = null;
-        int cntPreguntasForm = lstPreguntas.Count; }
-    <!--Hiddens para la paginación de las preguntas.-->
     <input type="hidden" value="@ViewBag.IDNivelA" id="hddIdNivelA" />
     <input type="hidden" value="@ViewBag.IDNivelOrdenA" id="hddIdNivelOrdenA" />
     <input type="hidden" value="@ViewBag.IDNivelOrdenB" id="hddIdNivelOrdenB" />
     <input type="hidden" value="@ViewBag.IDNivelOrdenC" id="hddIdNivelOrdenC" />
+@if (ViewBag.objIntroduccion == null)
+{
+    List<EvaluacionPregunta> lstPreguntas = (List<EvaluacionPregunta>)ViewBag.LstPreguntas;
+    List<EvaluacionRespuesta> lstEvaluacionRespuesta = (List<EvaluacionRespuesta>)ViewBag.LstRespuestas;
+    EvaluacionRespuesta objRpta = null;
+    List<EvaluacionAlternativa> lstAlternativaInversa = null;
+    EvaluacionAlternativa objAlternativaInversa = null;
+    int cntPreguntasForm = lstPreguntas.Count;
+    <!--Hiddens para la paginación de las preguntas.-->
     <input type="hidden" value="@cntPreguntasForm" id="hddCantPreguntasForm" />
     <h2>@ViewBag.NivelA</h2>
-    @if (ViewBag.NivelB != "")
+    if (ViewBag.NivelB != "")
     {
-        <h3>@ViewBag.NivelB.</h3>
-    }
-    
-    <div class="jumbotron" style="padding: 5px 25px 5px 25px;">
-        @if (ViewBag.NivelC != "")
+        <h4>@ViewBag.NivelB.</h4>
+        if (ViewBag.DefNivelB != null)
+        {
+            if (ViewBag.DefNivelB != "")
             {
-            <h3>@ViewBag.NivelC</h3>
-        }        
-        @foreach (var objPregunta in lstPreguntas){
-            objRpta = lstEvaluacionRespuesta.Where(q => q.EvaluacionAlternativa.EvaluacionPreguntaID == objPregunta.EvaluacionPreguntaID).FirstOrDefault();
-            lstAlternativaInversa = objPregunta.EvaluacionAlternativa.OrderByDescending(q => q.EvaluacionAlternativaDescripcion).ToList();           
-            <p>@objPregunta.EvaluacionPreguntaDescripcion</p>
-
-
+                string[] Definicion = ((string)ViewBag.DefNivelB).Split('|');
+                <h4 class="txtDefinicion">
+                    @Definicion[0].ToString()
+                    <br /><br />@Definicion[1].ToString()
+                </h4>
+            }
+        }
+    }
+    <div class="jumbotron" style="padding: 5px 25px 5px 25px;">
+            @if (ViewBag.NivelC != "")
+            {
+                <h4>@ViewBag.NivelC</h4>
+                if (ViewBag.DefNivelC != null)
+                {
+                    if (ViewBag.DefNivelC != "")
+                    {
+                        string[] Definicion = ((string)ViewBag.DefNivelC).Split('|');
+                        <h4 class="txtDefinicion">
+                            @Definicion[0].ToString()
+                            <br /><br />  @Definicion[1].ToString()
+                        </h4>
+                    }
+                }
+            }<br />
+            @foreach (var objPregunta in lstPreguntas)
+            {
+                objRpta = lstEvaluacionRespuesta.Where(q => q.EvaluacionAlternativa.EvaluacionPreguntaID == objPregunta.EvaluacionPreguntaID).FirstOrDefault();
+                lstAlternativaInversa = objPregunta.EvaluacionAlternativa.OrderByDescending(q => q.EvaluacionAlternativaDescripcion).ToList();
+                if ((bool)ViewBag.EsExterno)
+                {
+                    <span class="txtPregunta">@objPregunta.EvaluacionPreguntaPares</span>
+                }
+                else
+                {
+                    <span class="txtPregunta">@objPregunta.EvaluacionPreguntaDescripcion</span>
+                }
                 <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
                     @foreach (var objAlternativa in objPregunta.EvaluacionAlternativa)
                     {
@@ -173,7 +214,7 @@
                             {
                                 objAlternativaInversa = null;
                                 objAlternativaInversa = lstAlternativaInversa.First();
-                                <a class="btn btn-default btnOpc" data-idPregunta="@objPregunta.EvaluacionPreguntaID" data-idAlternativa="@objAlternativaInversa.EvaluacionAlternativaID" role="button">@objAlternativa.EvaluacionAlternativaDescripcion</a>                            
+                                <a class="btn btn-default btnOpc" data-idPregunta="@objPregunta.EvaluacionPreguntaID" data-idAlternativa="@objAlternativaInversa.EvaluacionAlternativaID" role="button">@objAlternativa.EvaluacionAlternativaDescripcion</a>
                                 lstAlternativaInversa.Remove(objAlternativaInversa);
                             }
                             else
@@ -185,10 +226,83 @@
                     }
                 </div>
                 <br />
-        }
-    </div>
+            }
+        </div>
+
+}
+else
+{
+    bool EsExterno = (bool)ViewBag.EsExterno;
+    EvaluacionNivelIntro objNivelIntroduccion = (EvaluacionNivelIntro)ViewBag.objIntroduccion;
+    <input type="hidden" value="0" id="hddCantPreguntasForm" />
+    <h2>@ViewBag.NivelA</h2>
+        <div class="jumbotron" style="padding: 5px 25px 5px 25px;">     
+            @if (objNivelIntroduccion.ParrafoIntroduccionPar1 != null && objNivelIntroduccion.ParrafoIntroduccion1 != null)
+            {
+                <p style="font-size: 16px;">@Html.Raw(EsExterno ? objNivelIntroduccion.ParrafoIntroduccionPar1 : objNivelIntroduccion.ParrafoIntroduccion1)</p>
+            }            
+            @if (objNivelIntroduccion.ListaIntroduccion1 != null && objNivelIntroduccion.ListaIntroduccionPar1 != null)
+            {
+                if (objNivelIntroduccion.ListaIntroduccion1 != "" && objNivelIntroduccion.ListaIntroduccionPar1 != "")
+                {
+                    <ul type="1">
+                        @{string[] lstIntroA = EsExterno ? objNivelIntroduccion.ListaIntroduccionPar1.Split('|') : objNivelIntroduccion.ListaIntroduccion1.Split('|');
+                            foreach (string item in lstIntroA){
+                                <li class="txtLista">@item</li>
+                            }
+                        }
+                    </ul>
+                }
+            }
+             @if (objNivelIntroduccion.ParrafoIntroduccionPar2 != null && objNivelIntroduccion.ParrafoIntroduccion2 != null)
+             {           
+                 <p style="font-size: 16px;">@Html.Raw(EsExterno ? objNivelIntroduccion.ParrafoIntroduccionPar2 : objNivelIntroduccion.ParrafoIntroduccion2)</p>
+             }            
+            @if (objNivelIntroduccion.ListaIntroduccion2 != null && objNivelIntroduccion.ListaIntroduccionPar2 != null)
+            {
+                if (objNivelIntroduccion.ListaIntroduccion2 != "" && objNivelIntroduccion.ListaIntroduccionPar2 != "")
+                {
+                    <ul type="1">
+                    @{
+                        string[] lstIntroB = EsExterno ? objNivelIntroduccion.ListaIntroduccionPar2.Split('|') : objNivelIntroduccion.ListaIntroduccion2.Split('|');
+                        foreach (string item in lstIntroB)
+                        {
+                            <li class="txtLista">@item</li>
+                        }
+                    }
+                    </ul>
+                }
+            }            
+            @{
+                if (objNivelIntroduccion.ParrafoIntroduccion3 != null && objNivelIntroduccion.ParrafoIntroduccionPar3 != null)
+                {
+                    if (objNivelIntroduccion.ParrafoIntroduccion3 != "" && objNivelIntroduccion.ParrafoIntroduccionPar3 != "")
+                    {
+                        string[] lstParrafoC = EsExterno ? objNivelIntroduccion.ParrafoIntroduccionPar3.Split('|') : objNivelIntroduccion.ParrafoIntroduccion3.Split('|');
+                        foreach (string item in lstParrafoC)
+                        {
+                            <p style="font-size: 16px;">@item</p>
+                        }
+                    }
+                }
+            }
+            <div class="row">
+                <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
+                    @{
+                        string[] lstAlternativas = objNivelIntroduccion.ListaAlternativas.Split('|');
+                        int valor = 0;
+                        foreach (string alter in lstAlternativas)
+                        {
+                            valor++;
+                            <a class="btn btn-default" style="font-size: 12px; padding-left: 1px; padding-right: 1px;" role="button"><span class="badge">@valor</span></a>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+}
     <div class="row">
-        <div class="col-md-1">
+        <div class="col-md-1 col-xs-1">
             <div class="form-group">
                 @if ((bool)ViewBag.AnteriorPagEvaluacion)
                 {
@@ -196,9 +310,9 @@
                 }
             </div>
         </div>
-        <div class="col-md-10">
+        <div class="col-md-10 col-xs-10">
         </div>
-        <div class="col-md-1">
+        <div class="col-md-1 col-xs-1">
             @if ((bool)ViewBag.FinalizarEvaluacion)
             {
                 <div class="form-group">
@@ -211,7 +325,6 @@
                     <button type="button" class="btn btn-success btnSiguiente">Siguiente</button>
                 </div>
             }
-            
         </div>
     </div>
 </div>

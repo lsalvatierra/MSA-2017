@@ -18,7 +18,7 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
         {
             using (var data = new BDEvaluacionEntities())
             {
-                return data.TipoRelacionParticipante.ToList();
+                return data.TipoRelacionParticipante.Where(q => q.EstadoTipoRelacion == "1").ToList();
             }
         }
 

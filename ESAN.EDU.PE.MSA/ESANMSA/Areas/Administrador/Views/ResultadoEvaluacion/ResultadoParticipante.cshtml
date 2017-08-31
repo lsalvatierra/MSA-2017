@@ -11,10 +11,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
  <style type="text/css">
+     .divIntroa4 {
+        width: 70em;
+        min-height: 104em;
+        padding: 240px 30px 0px 30px;
+        border: groove;
+    }
     .diva4 {
         width: 70em;
-        min-height: 107em;
-
+        min-height: 105em;
+        /*border: groove;*/
+        padding: 0px 10px 0px 10px;
     }
     .diva4 p {
         font-size: 1.7em;
@@ -34,7 +41,7 @@
         line-height: 1.25em;
         margin: 1.25em 0;
     }
-    h2, h3 {
+    h1, h2, h3 {
         text-align: center;
     }
 </style>
@@ -45,6 +52,21 @@
     <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
 </head>
 <body>
+    <!--Introducción-->
+    <div class="divIntroa4">
+        @{ 
+            Evaluacion objEvaluacion = (Evaluacion)ViewBag.objEvaluacion;
+            Participante objParticipante = (Participante)ViewBag.objParticipante;
+        }
+        <br /><br /><br />
+        <img class="img-responsive" src="~/Content/images/LOGO_ESAN_POSGRADO.png" />
+        <br /><br /><br />
+        <h1><strong>@objEvaluacion.EvaluacionDescripcion</strong></h1>
+        <br /><br /><br /><br />
+        <h2>Preparado para.</h2>
+        <br />
+        <h2>@objParticipante.ParticipanteNombreCompleto</h2>
+    </div>
     <!--PAGINA 1-->
     <div class="diva4">
         <h2><strong>INFORME EVALUACIÓN DE HABILIDADES DE GERENCIALES</strong></h2>
@@ -126,8 +148,7 @@
         </table>
     </div>
     <!--Página gráficos A -->
-    <div class="diva4">
-        <h3><strong>DESVIACIÓN ESTÁNDAR DE HABILIDADES DE TRABAJO EN EQUIPO</strong></h3>
+    <div class="diva4">        
         <table id="tblNivelA" style="display: none;">
             <thead>
                 <tr>
@@ -143,29 +164,6 @@
                 }
             </tbody>
         </table>
-        <table style="margin: 0 auto;" border="1">
-            <thead>
-                <tr>
-                    <th style="padding:5px 5px 5px 5px; text-align: center;">Conductas</th>
-                    <th style="padding:5px 5px 5px 5px; text-align: center;">Desv. Estándar</th>
-                    <th style="padding:5px 5px 5px 5px; text-align: center;">Mínimo</th>
-                    <th style="padding:5px 5px 5px 5px; text-align: center;">Máximo</th>
-
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var obj in lstResultA)
-                {
-                    <tr>
-                        <td style="padding:5px 5px 5px 5px;">@obj.Nivel</td>
-                        <td style="padding:5px 5px 5px 5px; text-align: center;">@obj.DesvEstandard</td>
-                        <td style="padding:5px 5px 5px 5px; text-align: center;">@obj.DesvEstandardMin</td>
-                        <td style="padding:5px 5px 5px 5px; text-align: center;">@obj.DesvEstandardMax</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        <br /><br />
         <h3><strong>HABILIDADES DE TRABAJO EN EQUIPO</strong></h3>
         <div id="chartDiv"></div>
         <script type="text/javascript">
@@ -223,6 +221,30 @@
                 width: "100%"
             });
         </script>
+        <br /><br />
+        <h3><strong>DESVIACIÓN ESTÁNDAR DE HABILIDADES DE TRABAJO EN EQUIPO</strong></h3>
+        <table style="margin: 0 auto;" border="1">
+            <thead>
+                <tr>
+                    <th style="padding:5px 5px 5px 5px; text-align: center;">Conductas</th>
+                    <th style="padding:5px 5px 5px 5px; text-align: center;">Desv. Estándar</th>
+                    <th style="padding:5px 5px 5px 5px; text-align: center;">Mínimo</th>
+                    <th style="padding:5px 5px 5px 5px; text-align: center;">Máximo</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in lstResultA)
+                {
+                    <tr>
+                        <td style="padding:5px 5px 5px 5px;">@obj.Nivel</td>
+                        <td style="padding:5px 5px 5px 5px; text-align: center;">@obj.DesvEstandard</td>
+                        <td style="padding:5px 5px 5px 5px; text-align: center;">@obj.DesvEstandardMin</td>
+                        <td style="padding:5px 5px 5px 5px; text-align: center;">@obj.DesvEstandardMax</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
     <!--PAGINA 3-->
     <div class="diva4">
@@ -278,29 +300,6 @@
 
             </tbody>
         </table>
-        <br />
-        <h3><strong>DESVIACIÓN ESTÁNDAR DE HABILIDADES DE LIDERAZGO</strong></h3>
-        <table style="margin: 0 auto;" border="1">
-            <thead>
-                <tr>
-                    <th style="padding:5px 5px 5px 5px; text-align: center;">Conductas</th>
-                    <th style="padding:5px 5px 5px 5px; text-align: center;">Desv. Estándar</th>
-                    <th style="padding:5px 5px 5px 5px; text-align: center;">Mínimo</th>
-                    <th style="padding:5px 5px 5px 5px; text-align: center;">Máximo</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var obj in lstResultC)
-                {
-                    <tr>
-                        <td style="padding:5px 5px 5px 5px;">@obj.Nivel</td>
-                        <td style="padding:5px 5px 5px 5px; text-align: center;">@obj.DesvEstandard</td>
-                        <td style="padding:5px 5px 5px 5px; text-align: center;">@obj.DesvEstandardMin</td>
-                        <td style="padding:5px 5px 5px 5px; text-align: center;">@obj.DesvEstandardMax</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
     </div>
     <!--Página gráficos C -->
     <div class="diva4">       
@@ -320,7 +319,7 @@
             </tbody>
         </table>
         <h3><strong>HABILIDADES DE LIDERAZGO</strong></h3>
-        <div style="justify-content: center;" id="chartDivNivelC"></div>
+        <div id="chartDivNivelC"></div>
         <script type="text/javascript">
             var listaNivelC = JSON.parse('@Html.Raw(JsonConvert.SerializeObject(lstResultC.OrderByDescending(q => q.IdNivel).ToList()))');
             var dataNivelTexto = [];
@@ -375,6 +374,29 @@
                 width: "100%"
             });
         </script>
+        <br /><br />
+        <h3><strong>DESVIACIÓN ESTÁNDAR DE HABILIDADES DE LIDERAZGO</strong></h3>
+        <table style="margin: 0 auto;" border="1">
+            <thead>
+                <tr>
+                    <th style="padding:5px 5px 5px 5px; text-align: center;">Conductas</th>
+                    <th style="padding:5px 5px 5px 5px; text-align: center;">Desv. Estándar</th>
+                    <th style="padding:5px 5px 5px 5px; text-align: center;">Mínimo</th>
+                    <th style="padding:5px 5px 5px 5px; text-align: center;">Máximo</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in lstResultC)
+                {
+                    <tr>
+                        <td style="padding:5px 5px 5px 5px;">@obj.Nivel</td>
+                        <td style="padding:5px 5px 5px 5px; text-align: center;">@obj.DesvEstandard</td>
+                        <td style="padding:5px 5px 5px 5px; text-align: center;">@obj.DesvEstandardMin</td>
+                        <td style="padding:5px 5px 5px 5px; text-align: center;">@obj.DesvEstandardMax</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
     <!--PAGINA 4-->
     <div class="diva4">
@@ -390,7 +412,6 @@
             </ul>
         </p>
         <p>Los comportamientos incluidos en cada categoría se describen a continuación.</p>
-        <h3><strong>DESVIACIÓN ESTÁNDAR DE PRESENTACIÓN ORAL</strong></h3>
         <table id="tblNivelB" style="display: none;">
             <thead>
                 <tr>
@@ -406,29 +427,8 @@
                 }
             </tbody>
         </table>
-        <table style="margin: 0 auto;" border="1">
-            <thead>
-                <tr>
-                    <th style="padding:5px 5px 5px 5px; text-align: center;">Conductas</th>
-                    <th style="padding:5px 5px 5px 5px; text-align: center;">Desv. Estándar</th>
-                    <th style="padding:5px 5px 5px 5px; text-align: center;">Mínimo</th>
-                    <th style="padding:5px 5px 5px 5px; text-align: center;">Máximo</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var obj in lstResultB)
-                {
-                    <tr>
-                        <td style="padding:5px 5px 5px 5px;">@obj.Nivel</td>
-                        <td style="padding:5px 5px 5px 5px; text-align: center;">@obj.DesvEstandard</td>
-                        <td style="padding:5px 5px 5px 5px; text-align: center;">@obj.DesvEstandardMin</td>
-                        <td style="padding:5px 5px 5px 5px; text-align: center;">@obj.DesvEstandardMax</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
         <h3><strong>HABILIDADES DE PRESENTACIÓN ORAL</strong></h3>
-        <div style="justify-content: center;" id="chartDivNivelB"></div>
+        <div id="chartDivNivelB"></div>
         <script type="text/javascript">
             var listaNivelB = JSON.parse('@Html.Raw(JsonConvert.SerializeObject(lstResultB.OrderByDescending(q => q.IdNivel).ToList()))');
             var dataNivelTexto = [];
@@ -483,6 +483,29 @@
                 width: "100%"
             });
         </script>
+        <br /><br />
+        <h3><strong>DESVIACIÓN ESTÁNDAR DE PRESENTACIÓN ORAL</strong></h3>
+        <table style="margin: 0 auto;" border="1">
+            <thead>
+                <tr>
+                    <th style="padding:5px 5px 5px 5px; text-align: center;">Conductas</th>
+                    <th style="padding:5px 5px 5px 5px; text-align: center;">Desv. Estándar</th>
+                    <th style="padding:5px 5px 5px 5px; text-align: center;">Mínimo</th>
+                    <th style="padding:5px 5px 5px 5px; text-align: center;">Máximo</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var obj in lstResultB)
+                {
+                    <tr>
+                        <td style="padding:5px 5px 5px 5px;">@obj.Nivel</td>
+                        <td style="padding:5px 5px 5px 5px; text-align: center;">@obj.DesvEstandard</td>
+                        <td style="padding:5px 5px 5px 5px; text-align: center;">@obj.DesvEstandardMin</td>
+                        <td style="padding:5px 5px 5px 5px; text-align: center;">@obj.DesvEstandardMax</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
     <!--PAGINA 5-->
     <div class="diva4">

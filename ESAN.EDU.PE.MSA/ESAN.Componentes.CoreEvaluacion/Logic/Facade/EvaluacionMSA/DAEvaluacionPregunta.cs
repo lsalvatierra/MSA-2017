@@ -24,5 +24,22 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
             }
             return lstEvaluacionPreg;
         }
+
+        /// <summary>
+        /// Preguntas a evalular por nivel. 
+        /// </summary>
+        /// <param name="p_idPromocion">Id Promoción.</param>
+        /// <returns>Lista de Preguntas.</returns>
+        public static int CantidadPreguntasxEvalucion(int p_idPromocion)
+        {
+            int cantPreguntas = 0;
+            using (var data = new BDEvaluacionEntities())
+            {
+                int idEvalucion = data.EvaluacionPromocion.Where(q => q.EvaluacionPromocionID == p_idPromocion).FirstOrDefault().EvaluacionID;
+                cantPreguntas = data.EvaluacionPregunta.Where(q => q.EvaluacionNivel.EvaluacionID == idEvalucion).Count();
+            }
+            return cantPreguntas;
+        }
+
     }
 }

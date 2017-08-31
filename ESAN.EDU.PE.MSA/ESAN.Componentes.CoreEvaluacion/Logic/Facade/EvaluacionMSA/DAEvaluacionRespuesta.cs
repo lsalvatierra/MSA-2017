@@ -17,7 +17,7 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
         /// </summary>
         /// <param name="p_lstEvaluacionRpta"></param>
         /// <returns></returns>
-        public static bool RegistrarRespuestaEvaluacion(List<EvaluacionRespuesta> p_lstEvaluacionRpta)
+        public static bool RegistrarRespuestaEvaluacion(List<EvaluacionRespuesta> p_lstEvaluacionRpta, Participante p_objParticipante)
         {
             bool rpta = false;
             using (var data = new BDEvaluacionEntities())
@@ -26,15 +26,34 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
                 using (DbTransaction transacction = data.Database.Connection.BeginTransaction(IsolationLevel.ReadCommitted)) {
                     data.Database.UseTransaction(transacction);
                     try {
-                        foreach (var objEvalRpta in p_lstEvaluacionRpta)
+                        if (p_objParticipante.ParticipanteID > 0)
                         {
-                            data.EvaluacionRespuesta.Add(new EvaluacionRespuesta {
-                                EvaluacionPromocionID = objEvalRpta.EvaluacionPromocionID,
-                                ParticipanteID = objEvalRpta.ParticipanteID,
-                                EvaluacionAlternativaID = objEvalRpta.EvaluacionAlternativaID,
-                                EvaluacionMedicionID = objEvalRpta.EvaluacionMedicionID,
-                                ParticipanteEvaluadoID = objEvalRpta.ParticipanteEvaluadoID
-                            });
+                            data.EvaluacionPromocionParticipante.Add(p_objParticipante.EvaluacionPromocionParticipante.FirstOrDefault());
+                            foreach (var objEvalRpta in p_lstEvaluacionRpta)
+                            {
+                                data.EvaluacionRespuesta.Add(new EvaluacionRespuesta
+                                {
+                                    EvaluacionPromocionID = objEvalRpta.EvaluacionPromocionID,
+                                    ParticipanteID = p_objParticipante.ParticipanteID,
+                                    EvaluacionAlternativaID = objEvalRpta.EvaluacionAlternativaID,
+                                    EvaluacionMedicionID = objEvalRpta.EvaluacionMedicionID,
+                                    ParticipanteEvaluadoID = objEvalRpta.ParticipanteEvaluadoID
+                                });
+                            }
+                        }
+                        else
+                        {
+                            foreach (var objEvalRpta in p_lstEvaluacionRpta)
+                            {
+                                data.EvaluacionRespuesta.Add(new EvaluacionRespuesta
+                                {
+                                    EvaluacionPromocionID = objEvalRpta.EvaluacionPromocionID,
+                                    Participante = p_objParticipante,
+                                    EvaluacionAlternativaID = objEvalRpta.EvaluacionAlternativaID,
+                                    EvaluacionMedicionID = objEvalRpta.EvaluacionMedicionID,
+                                    ParticipanteEvaluadoID = objEvalRpta.ParticipanteEvaluadoID
+                                });
+                            }
                         }
                         data.SaveChanges();
                         transacction.Commit();

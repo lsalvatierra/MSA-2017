@@ -24,7 +24,7 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
             {
                 var promocion = data.EvaluacionPromocion.Find(p_idPromocion);
 
-                lstEvaluacionNivel = data.EvaluacionNivel.Include(a => a.EvaluacionNivel1.Select(b => b.EvaluacionNivel1.Select(c => c.EvaluacionNivel1))).Where(q => q.EvaluacionID == promocion.EvaluacionID && q.EvaluacionNivelPadreID == p_idNivelPadre && q.EvaluacionNivelEstado == true).OrderBy(q => q.EvaluacionNivelOrden).ToList();
+                lstEvaluacionNivel = data.EvaluacionNivel.Include(a => a.EvaluacionNivel1.Select(b => b.EvaluacionNivel1.Select(c => c.EvaluacionNivel1))).Include(x => x.EvaluacionNivelIntro).Where(q => q.EvaluacionID == promocion.EvaluacionID && q.EvaluacionNivelPadreID == p_idNivelPadre && q.EvaluacionNivelEstado == true).OrderBy(q => q.EvaluacionNivelOrden).ToList();
                
                 data.Configuration.LazyLoadingEnabled = false;
             }
