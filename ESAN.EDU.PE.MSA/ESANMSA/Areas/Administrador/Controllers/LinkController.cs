@@ -37,6 +37,8 @@ namespace ESANMSA.Areas.Administrador.Controllers
         public ActionResult ListadoParticipanteDetalle(int EvaluacionPromocionID, int EvaluacionMedicionID, int EvaluacionCicloID)
         {
             ViewBag.ListadoPromocionParticipante = DAPromocion.ListadoParticipanteLink(EvaluacionPromocionID, EvaluacionMedicionID, EvaluacionCicloID);
+            ViewBag.EvaluacionMedicionID = EvaluacionMedicionID;
+            ViewBag.ListadoEvaluadores = DAPromocion.ListadoPersonasEvaluaron(EvaluacionPromocionID, EvaluacionMedicionID);
             return PartialView();
         }
 

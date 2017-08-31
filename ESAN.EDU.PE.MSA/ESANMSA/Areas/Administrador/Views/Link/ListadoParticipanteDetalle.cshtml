@@ -1,13 +1,24 @@
 ﻿@using ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA
 @{
     List<EvaluacionPromocionParticipante> listadoPromocionParticipante = new List<EvaluacionPromocionParticipante>();
+    List<EvaluacionRespuesta> listadoEvaluadoresTodos = new List<EvaluacionRespuesta>();
+    int vEvalMedID = -1;
     if (ViewBag.ListadoPromocionParticipante != null)
     {
         listadoPromocionParticipante = (List<EvaluacionPromocionParticipante>)ViewBag.ListadoPromocionParticipante;
     }
+    if (ViewBag.EvaluacionMedicionID != null)
+    {
+        vEvalMedID = (int)ViewBag.EvaluacionMedicionID;
+    }
+    if (ViewBag.ListadoEvaluadores != null)
+    {
+        listadoEvaluadoresTodos = (List<EvaluacionRespuesta>)ViewBag.ListadoEvaluadores;
+    }
 }
 
-
+@*<label for="myalue" style="vertical-align: middle"></label>*@
+@*<input type="hidden" id="hidMedicionEvaluacionID" value="-1" />*@
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -24,7 +35,7 @@
 
             </th>
             <th>
-                ENV&Iacute;O
+                # EVAL. EXT.
             </th>
         </tr>
     </thead>
@@ -33,7 +44,7 @@
         {
             //string url = HttpContext.Current.Request.Url.AbsoluteUri + "/" + item.ParticipanteID + "/" + item.EvaluacionPromocionID.ToString() + "/" + item.EvaluacionMedicionID;
             //string url = @Url.Action("frmEvaluacion","Evaluacion",new { area = "Alumno", idMedicion = IdMedicion, idPromocion = IdPromocion, idEvaluado = IdEvaluado, Externo = Externo })
-            string url = "http://localhost:60303/" + "/Alumno/Evaluacion/frmEvaluacion?idMedicion=" + item.EvaluacionMedicionID.ToString() + "&idPromocion=" + item.EvaluacionPromocionID.ToString() + "&idEvaluado=0&Externo=false";
+            string url = "http://localhost:60303/" + "/Alumno/Evaluacion/frmEvaluacion?idMedicion=" + vEvalMedID.ToString() + "&idPromocion=" + item.EvaluacionPromocionID.ToString() + "&idEvaluado=" + item.ParticipanteID.ToString() + "&Externo=true";
             <tr>
                 <td>@item.Participante.ParticipanteNroDoc</td>
                 <td>@item.Participante.ParticipanteNombreCompleto</td>
@@ -41,7 +52,6 @@
                     <a href="@url" target="_blank" type="button" class="btn btn-default btnUrlLink" aria-label="Left Align">
                         <span class="glyphicon glyphicon glyphicon-globe" aria-hidden="true"> Link</span>
                     </a>
-
                 </td>
                 <td>
                     <button type="button" class="btn btn-default btnCopiarUrl" aria-label="Left Align" url="@url">
@@ -50,11 +60,10 @@
                 </td>
                 <td>
                     <a href="#" type="button" class="btn btn-default" aria-label="Left Align">
-                        <span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"> @listadoEvaluadoresTodos.Where(x => x.ParticipanteEvaluadoID == item.ParticipanteID).GroupBy(c=>c.ParticipanteID).Distinct().Count()</span>
                     </a>
                 </td>
             </tr>
         }
-
     </tbody>
-</table>
+</table>  
