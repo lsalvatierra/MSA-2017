@@ -6,7 +6,13 @@
         listadoPromocion = (List<EvaluacionPromocion>)ViewBag.ListadoPromocion;
     }
 }
-<table class="table table-bordered">
+<style>
+    tr.clicked {
+      background-color: #abc;
+}
+
+</style>
+<table class="tbListaPromo table table-bordered">
     <thead>
         <tr>
             <th>C&oacute;digo</th>
@@ -31,3 +37,9 @@
         }
     </tbody>
 </table>
+
+<script>
+    $('.tbListaPromo tr').click(function () {
+        $(this).toggleClass("clicked");
+    });
+</script>
