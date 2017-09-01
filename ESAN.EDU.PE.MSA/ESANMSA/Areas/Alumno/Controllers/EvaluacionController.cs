@@ -26,6 +26,13 @@ namespace ESANMSA.Areas.Alumno.Controllers
         {
             if (Session["Alumno"] != null)
             {
+                if (lstEvaluacionRespuesta.Count > 0) {
+                    return RedirectToAction("FormularioError", "Registro", new { area = "Alumno", p_tipoError = 4 });
+                }
+                else if (lstEvaluacion != null)
+                {
+                    return RedirectToAction("FormularioError", "Registro", new { area = "Alumno", p_tipoError = 4 });
+                }
                 cantidadPreguntasEvaluacion = DAEvaluacionPregunta.CantidadPreguntasxEvalucion(idPromocion);
                 lstEvaluacionRespuesta.Clear();
                 cantidadMostradas = 0;
@@ -84,6 +91,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
 
 
         [HttpPost]
+        [NoCache]
         public ActionResult alternativasNivel(int idNivel)
         {
             ViewBag.AlternativasNivel = DAEvaluacionNivelIntro.ObtenerEvaluacionNiveleIntro(idNivel).ListaAlternativas;
@@ -91,40 +99,31 @@ namespace ESANMSA.Areas.Alumno.Controllers
         }
 
         [HttpPost]
+        [NoCache]
         public ActionResult agregarRespuestas(int idMedicion, int idPromocion, int idEvaluado, bool Externo, int idAlternativa, int idPregunta)
         {
             if (Session["Alumno"] != null)
             {
-                //int idParticipante = Convert.ToInt32(((Participante)Session["Alumno"]).ParticipanteID);
                 if (lstEvaluacionRespuesta.Count > 0)
                 {
-                    //EvaluacionRespuesta objEvalRpta = ObtenerRespuesta(idPromocion, idMedicion, idParticipante, idPregunta, idEvaluado, Externo);
                     EvaluacionRespuesta objEvalRpta = ObtenerRespuesta(idPromocion, idMedicion, idPregunta, idEvaluado, Externo);
                     if (Externo)
                     {
                         if (objEvalRpta == null)
-                        {
-                            //AgregarListaDeRespuestas(idPromocion, idMedicion, idAlternativa, idParticipante, idEvaluado, idPregunta);
                             AgregarListaDeRespuestas(idPromocion, idMedicion, idAlternativa, idEvaluado, idPregunta);
-                        }
                         else
                         {
                             lstEvaluacionRespuesta.Remove(objEvalRpta);
-                            //AgregarListaDeRespuestas(idPromocion, idMedicion, idAlternativa, idParticipante, idEvaluado, idPregunta);
                             AgregarListaDeRespuestas(idPromocion, idMedicion, idAlternativa, idEvaluado, idPregunta);
                         }
                     }
                     else
                     {
                         if (objEvalRpta == null)
-                        {
-                            //AgregarListaDeRespuestas(idPromocion, idMedicion, idAlternativa, idParticipante, 0, idPregunta);
                             AgregarListaDeRespuestas(idPromocion, idMedicion, idAlternativa, 0, idPregunta);
-                        }
                         else
                         {
                             lstEvaluacionRespuesta.Remove(objEvalRpta);
-                            //AgregarListaDeRespuestas(idPromocion, idMedicion, idAlternativa, idParticipante, 0, idPregunta);
                             AgregarListaDeRespuestas(idPromocion, idMedicion, idAlternativa, 0, idPregunta);
                         }
                     }
@@ -132,16 +131,20 @@ namespace ESANMSA.Areas.Alumno.Controllers
                 else
                 {
                     if (Externo)
-                    {
-                        //AgregarListaDeRespuestas(idPromocion, idMedicion, idAlternativa, idParticipante, idEvaluado, idPregunta);
                         AgregarListaDeRespuestas(idPromocion, idMedicion, idAlternativa, idEvaluado, idPregunta);
-                    }
                     else
-                    {
-                        //AgregarListaDeRespuestas(idPromocion, idMedicion, idAlternativa, idParticipante, 0, idPregunta);
                         AgregarListaDeRespuestas(idPromocion, idMedicion, idAlternativa, 0, idPregunta);
-                    }
                 }
+            }
+            else {
+                lstEvaluacionRespuesta.Clear();
+                cantidadMostradas = 0;
+                cantidadIniPreg = 0;
+                cantidadResulta = 0;
+                Session.Abandon();
+                Session.Remove("Alumno");
+                return RedirectToAction("Formulario", "Registro", new { area = "Alumno", idPromocion = idPromocion, idMedicion = idMedicion, idEvaluado = idEvaluado, Externo = Externo });
+
             }
             cantidadResulta = lstEvaluacionRespuesta.Count;
             double avance = (cantidadResulta * 100) / cantidadPreguntasEvaluacion;
@@ -308,10 +311,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
                     ViewBag.NivelC = "";
                 }
             }
-            //if (!TieneIntroduccion)
-            //{
                 cantidadMostradas = cantidadMostradas + lstPreguntas.Count;
-            //}
             if (cantidadPreguntasEvaluacion == cantidadMostradas)
             {
                 ViewBag.FinalizarEvaluacion = true;
@@ -331,6 +331,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
 
 
         [HttpPost]
+        [NoCache]
         public ActionResult anteriorPaginaEvaluacion(int idNivelA, int idNivelOrdenA, int idNivelOrdenB, int idNivelOrdenC, int cntPregForm, bool Externo)
         {
             bool TieneIntroduccion = false;
@@ -590,10 +591,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
                     ViewBag.NivelC = "";
                 }
             }
-            //if (!TieneIntroduccion)
-            //{
                 cantidadMostradas = cantidadMostradas - cntPregForm;
-            //}            
             ViewBag.FinalizarEvaluacion = false;
             if (cantidadMostradas == 0)
             {
@@ -628,15 +626,12 @@ namespace ESANMSA.Areas.Alumno.Controllers
         /// <param name="p_idPregunta">Id Pregunta.</param>
         /// <param name="p_idParticipanteEval">Id Participante a Evaluar.</param>
         /// <returns></returns>
-        //private EvaluacionRespuesta ObtenerRespuesta(int p_idPromocion, int p_idMedicion, int p_idParticipante, int p_idPregunta, int p_idParticipanteEval,bool p_Externo) {
         private EvaluacionRespuesta ObtenerRespuesta(int p_idPromocion, int p_idMedicion, int p_idPregunta, int p_idParticipanteEval, bool p_Externo)
         {
             EvaluacionRespuesta objEvaluacionRpta = null;
             if (p_Externo)
-                //objEvaluacionRpta = lstEvaluacionRespuesta.Where(q => q.EvaluacionPromocionID == p_idPromocion && q.EvaluacionMedicionID == p_idMedicion && q.ParticipanteID == p_idParticipante && q.EvaluacionAlternativa.EvaluacionPreguntaID == p_idPregunta && q.ParticipanteEvaluadoID == p_idParticipanteEval).FirstOrDefault();
                 objEvaluacionRpta = lstEvaluacionRespuesta.Where(q => q.EvaluacionPromocionID == p_idPromocion && q.EvaluacionMedicionID == p_idMedicion && q.EvaluacionAlternativa.EvaluacionPreguntaID == p_idPregunta && q.ParticipanteEvaluadoID == p_idParticipanteEval).FirstOrDefault();
             else
-                //objEvaluacionRpta = lstEvaluacionRespuesta.Where(q => q.EvaluacionPromocionID == p_idPromocion && q.EvaluacionMedicionID == p_idMedicion && q.ParticipanteID == p_idParticipante && q.EvaluacionAlternativa.EvaluacionPreguntaID == p_idPregunta).FirstOrDefault();
                 objEvaluacionRpta = lstEvaluacionRespuesta.Where(q => q.EvaluacionPromocionID == p_idPromocion && q.EvaluacionMedicionID == p_idMedicion && q.EvaluacionAlternativa.EvaluacionPreguntaID == p_idPregunta).FirstOrDefault();
             return objEvaluacionRpta;
         }
@@ -649,14 +644,11 @@ namespace ESANMSA.Areas.Alumno.Controllers
         /// <param name="p_idAlternativa"></param>
         /// <param name="p_idParticipante"></param>
         /// <param name="p_idParticipanteEval"></param>
-        //private void AgregarListaDeRespuestas(int p_idPromocion, int p_idMedicion, int p_idAlternativa, int p_idParticipante, int p_idParticipanteEval, int p_idPregunta)
         private void AgregarListaDeRespuestas(int p_idPromocion, int p_idMedicion, int p_idAlternativa, int p_idParticipanteEval, int p_idPregunta)
         {  
             if (p_idParticipanteEval == 0)
-                //lstEvaluacionRespuesta.Add(new EvaluacionRespuesta { EvaluacionPromocionID = p_idPromocion, EvaluacionMedicionID = p_idMedicion, ParticipanteID = p_idParticipante, EvaluacionAlternativaID = p_idAlternativa, EvaluacionAlternativa = new EvaluacionAlternativa { EvaluacionPreguntaID = p_idPregunta } });
                 lstEvaluacionRespuesta.Add(new EvaluacionRespuesta { EvaluacionPromocionID = p_idPromocion, EvaluacionMedicionID = p_idMedicion, EvaluacionAlternativaID = p_idAlternativa, EvaluacionAlternativa = new EvaluacionAlternativa { EvaluacionPreguntaID = p_idPregunta } });
             else
-                //lstEvaluacionRespuesta.Add(new EvaluacionRespuesta { EvaluacionPromocionID = p_idPromocion, EvaluacionMedicionID = p_idMedicion, ParticipanteID = p_idParticipante, EvaluacionAlternativaID = p_idAlternativa, ParticipanteEvaluadoID = p_idParticipanteEval, EvaluacionAlternativa = new EvaluacionAlternativa { EvaluacionPreguntaID = p_idPregunta } });
                 lstEvaluacionRespuesta.Add(new EvaluacionRespuesta { EvaluacionPromocionID = p_idPromocion, EvaluacionMedicionID = p_idMedicion, EvaluacionAlternativaID = p_idAlternativa, ParticipanteEvaluadoID = p_idParticipanteEval, EvaluacionAlternativa = new EvaluacionAlternativa { EvaluacionPreguntaID = p_idPregunta } });
         }
 

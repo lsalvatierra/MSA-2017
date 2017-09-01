@@ -16,21 +16,25 @@
         min-height: 104em;
         padding: 240px 30px 0px 30px;
         border: groove;
+        color:black;
     }
     .diva4 {
         width: 70em;
-        min-height: 105em;
-        /*border: groove;*/
-        padding: 0px 10px 0px 10px;
+        min-height: 105em;        
+        border: groove;
+        padding: 0px 5px 0px 5px;
+         color:black;
     }
     .diva4 p {
-        font-size: 1.7em;
+        font-size: 1.65em;
+       
         line-height: 1.6em;
         margin: 1.2em 0;
         text-align: justify;
     }
     .diva4 ul {
-        font-size: 1.7em;
+        font-size: 1.65em;
+        
         line-height: 1.6em;
         margin: 1.2em 0;
         text-align: justify;
@@ -38,10 +42,12 @@
 
     .diva4 table {
         font-size: 1.65em;
+       
         line-height: 1.25em;
         margin: 1.25em 0;
     }
     h1, h2, h3 {
+       
         text-align: center;
     }
 </style>
@@ -62,10 +68,15 @@
         <img class="img-responsive" src="~/Content/images/LOGO_ESAN_POSGRADO.png" />
         <br /><br /><br />
         <h1><strong>@objEvaluacion.EvaluacionDescripcion</strong></h1>
+        <h1><strong>Informe personal.</strong></h1>
         <br /><br /><br /><br />
-        <h2>Preparado para.</h2>
+        <h2>Nombre:</h2>
         <br />
         <h2>@objParticipante.ParticipanteNombreCompleto</h2>
+        <br /><br />
+        <h2>Fecha:</h2>
+        <br />
+        <h2>@DateTime.Now.ToShortDateString()</h2>
     </div>
     <!--PAGINA 1-->
     <div class="diva4">

@@ -6,12 +6,12 @@
     EvaluacionNivelIntro objNivelIntroduccion = (EvaluacionNivelIntro)ViewBag.objIntroduccion;
 }
 @section Scripts{
-<script src="@Url.Content("~/Scripts/Areas/Alumno/Registro/Index.js")"></script>
 <script src="@Url.Content("~/Scripts/bootstrap/dialog/bootstrap-dialog.js")"></script>
 <script src="@Url.Content("~/Scripts/bootstrap/bootstrap-loading.js")"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         //$("[data-toggle='tooltip']").tooltip();
+
         $(".btnOpc").on("click", function () {
             $($(this).parent()).find('a').each(function () {
                 $(this).removeClass("btn-primary");
@@ -27,20 +27,7 @@
             );
         });
         $(".btnSiguiente").on("click", function () {
-            //var PregContestadas = 0;
-            //$("#divEvaluacion a").each(function (index) {
-            //    if ($(this).hasClass("btn-primary")) {
-            //        PregContestadas++;
-            //    }
-            //});
-            //if (PregContestadas < parseInt($("#hddCantPreguntasForm").val())) {
-            //    BootstrapDialog.show({
-            //        type: BootstrapDialog.TYPE_DANGER,
-            //        title: "Evaluación",
-            //        message: "Por favor conteste todas las preguntas."
-            //    });
-            //    return false;
-            //} else {
+           
                 waitingDialog.show('Cargando', { dialogSize: 'sm', progressType: 'danger' });
                 $.ajax({
                     type: "POST",
@@ -67,7 +54,6 @@
                             });
                     }
                 });
-            //}
         });
 
     });
@@ -147,7 +133,6 @@
     </div>
     <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
     <div id="divEvaluacion">
-
         <!--Hiddens para la paginación de las preguntas.-->
         <input type="hidden" value="@ViewBag.IDNivelA" id="hddIdNivelA" />
         <input type="hidden" value="@ViewBag.IDNivelOrdenA" id="hddIdNivelOrdenA" />
@@ -213,14 +198,11 @@
           
         </div>
         <div class="row">
-            <div class="col-md-1 col-xs-1">
-                @*<div class="form-group">
-                    <button type="button" class="btn btn-success">Anterior</button>
-                </div>*@
+            <div class="col-md-4 col-xs-4">
             </div>
-            <div class="col-md-10 col-xs-10">
+            <div class="col-md-4 col-xs-4">
             </div>
-            <div class="col-md-1 col-xs-1">
+            <div  class="col-md-4 col-xs-4 text-right">
                 <div class="form-group">
                     <button type="button" class="btn btn-success btnSiguiente">Siguiente</button>
                 </div>

@@ -7,6 +7,8 @@ using ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA;
 using ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA;
 using System.Globalization;
 using ESANMSA.Utilitarios;
+using System.Web.Configuration;
+using System.Configuration;
 
 namespace ESANMSA.Areas.Alumno.Controllers
 {
@@ -24,7 +26,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
             ViewBag.IdMedicion = idMedicion;
             ViewBag.EsExterno = Externo;
             ViewBag.IdEvaluado = idEvaluado;
-            ViewBag.IdTipoDocumento = 4;//Variable del Web.config
+            ViewBag.IdTipoDocumento = Convert.ToInt32(ConfigurationManager.AppSettings["IdTipoDocumentoDefault"].ToString());//Variable del Web.config
             if (Externo)
             {
                 Participante objParticipante = DAParticipante.ObtenerParticipantexID(idEvaluado);
@@ -32,12 +34,12 @@ namespace ESANMSA.Areas.Alumno.Controllers
                 {
                     return RedirectToAction("FormularioError", "Registro", new { area = "Alumno", p_tipoError = 3 });
                 }
-                ViewBag.IdTipoRelacionOtros = 4;//Variable del Web.config
+                ViewBag.IdTipoRelacionOtros = Convert.ToInt32(ConfigurationManager.AppSettings["IdTipoRelacionOtro"].ToString());//Variable del Web.config
                 ViewBag.lstTipoRelacion = DATipoRelacionParticipante.ListaTipoRelacion();
             }
             if (objPromMed != null)
             {
-                if (fechaActual > fechaIniMed && fechaActual < fechaFinMed) {
+                if (fechaActual >= fechaIniMed && fechaActual <= fechaFinMed) {
 
                     return View();
                 }
@@ -54,6 +56,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
                 case 1: mensajeError = "No se encuentra en el rango de fechas para la evaluación."; break;
                 case 2: mensajeError = "No existe evaluación."; break;
                 case 3: mensajeError = "No existe el participante a evalular."; break;
+                case 4: mensajeError = "Ud. ya está encuentra realizando la evaluación desde otra ventana del navegador."; break;
                 default: mensajeError = "Error desconocido."; break;
             }
             ViewBag.mensajeError = mensajeError;
@@ -118,7 +121,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
         public JsonResult RegistrarUsuarioExterno(int p_idPromocion, int p_idMedicion, int p_idTipoRelacion, string p_TipoRelacion)
         {
             Participante objParticipante = new Participante();
-            if (p_idTipoRelacion == 4)
+            if (p_idTipoRelacion == Convert.ToInt32(ConfigurationManager.AppSettings["IdTipoRelacionOtro"].ToString())) // Variable de Web.config
             {
                 objParticipante.TipoRelacionParticipante = new TipoRelacionParticipante { DescripcionTipoRelacion = p_TipoRelacion, EstadoTipoRelacion = "0" };
             }
