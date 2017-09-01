@@ -17,9 +17,15 @@
 <input type="hidden" id="hidEvaluacionPromocionCorreo" />
 @*<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>*@
 <script src="~/Scripts/jquery/jquery-ui-1.8.24.min.js"></script>
+<script src="~/Scripts/Datatable/js/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/Datatable/js/dataTables.jqueryui.min.js"></script>
+<script src="~/Scripts/Datatable/js/dataTables.bootstrap.min.js"></script>
+<link href="~/Scripts/Datatable/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="~/Scripts/Datatable/css/dataTables.jqueryui.min.css" rel="stylesheet" />
+<link href="~/Scripts/Datatable/css/dataTables.bootstrap.min.css" rel="stylesheet" />
 <script>
 
-
+  
 
     CargarListado();
 
@@ -39,6 +45,7 @@
         var vPromocionID = $(this).attr("idpromo");
         $("#hidEvaluacionPromocionID").val(vPromocionID);
         $("#hidEvaluacionPromocionCorreo").val($(this).attr("correo"));
+        $("#divListadoParticipanteLinksDetalle").html("");
         $.ajax({
             'url': URL_PAGE + 'Administrador/Link/ListadoParticipante',
             'type': 'POST',
@@ -104,6 +111,9 @@
         $("#divListadoParticipanteLinksDetalle").html("");
 
         if (vEsEvaluado == "true") {
+            $('#lblRutaLink').hide();
+            //$("#lblRutaLink").html("XXXXXXXXXXXXXXXXXXX");
+            //$('#lblRutaLink').attr('href', 'http://example.com');
             $.ajax({
                 'url': URL_PAGE + 'Administrador/Link/ListadoParticipanteDetalle',
                 'type': 'POST',
@@ -115,14 +125,19 @@
                 'success': function (view) {
                     //process here
                     $("#divListadoParticipanteLinksDetalle").html(view);
-
                 }
             });
+        } else {
+            
+            $('#lblRutaLink').show();            
+            var url = "http://localhost:60303/" + "/Alumno/Evaluacion/frmEvaluacion?idMedicion=" + vMedicionID + "&idPromocion=" + vPromocionID + "&idEvaluado=0&Externo=false";
+            $('#lblRutaLink').attr('href', url);
+            //$("#lblRutaLink").html(url);
         }
     });
 
     $(document).on('click', '#btnEnviarCorreo', function () {
-        if (confirm("Se enviará un correo al siguiente destinatario: " + $("#hidEvaluacionPromocionCorreo").val() + " \n asdasd")) {
+        if (confirm("Se enviará un correo al siguiente destinatario: " + $("#hidEvaluacionPromocionCorreo").val() + " \n\n ¿Esta seguro de realizar el envío masivo?")) {
             alert("Enviando....");
         }
     });

@@ -144,6 +144,7 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
         {
             using (var data = new BDEvaluacionEntities())
             {
+                //data.PromedioEvaluacionxCicloNivel(p_idEvaluacion, p_idNivelPadre, p_idPromocion, p_idCiclo, p_idParticipante).ToList();
                 return data.PromedioEvaluacionxCicloNivel(p_idEvaluacion, p_idNivelPadre, p_idPromocion, p_idCiclo, p_idParticipante).ToList();
             }
         }

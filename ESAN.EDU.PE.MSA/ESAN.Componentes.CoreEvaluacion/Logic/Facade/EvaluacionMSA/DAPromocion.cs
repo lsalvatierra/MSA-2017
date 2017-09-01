@@ -182,5 +182,17 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
 
             }
         }
+
+        static public List<EvaluacionRespuesta> ListadoPersonasEvaluaron(int EvaluacionPromocionID, int EvaluacionMedicionID)
+        {
+            List<EvaluacionRespuesta> lista = new List<EvaluacionRespuesta>();
+            using (var data = new BDEvaluacionEntities())
+            {
+                lista = EvaluacionPromocionID == -1 && EvaluacionMedicionID == -1 ? data.EvaluacionRespuesta.ToList()
+                                                    : data.EvaluacionRespuesta.Where(x => x.EvaluacionPromocionID == EvaluacionPromocionID && x.EvaluacionMedicionID == EvaluacionMedicionID).ToList();
+            }
+            return lista;
+        }
+
     }
 }

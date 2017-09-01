@@ -6,12 +6,15 @@
         listadoPromocion = (List<EvaluacionPromocion>)ViewBag.ListadoPromocion;
     }
 }
-<style>
+<script>
+    $(".tbListaPromo").DataTable();
+</script>
+@*<style>
     tr.clicked {
       background-color: #abc;
 }
 
-</style>
+</style>*@
 <table class="tbListaPromo table table-bordered">
     <thead>
         <tr>
