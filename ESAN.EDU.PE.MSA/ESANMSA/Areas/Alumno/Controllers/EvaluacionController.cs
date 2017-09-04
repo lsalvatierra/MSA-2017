@@ -26,13 +26,13 @@ namespace ESANMSA.Areas.Alumno.Controllers
         {
             if (Session["Alumno"] != null)
             {
-                if (lstEvaluacionRespuesta.Count > 0) {
-                    return RedirectToAction("FormularioError", "Registro", new { area = "Alumno", p_tipoError = 4 });
-                }
-                else if (lstEvaluacion != null)
-                {
-                    return RedirectToAction("FormularioError", "Registro", new { area = "Alumno", p_tipoError = 4 });
-                }
+                //if (lstEvaluacionRespuesta.Count > 0) {
+                //    return RedirectToAction("FormularioError", "Registro", new { area = "Alumno", p_tipoError = 4 });
+                //}
+                //else if (lstEvaluacion != null)
+                //{
+                //    return RedirectToAction("FormularioError", "Registro", new { area = "Alumno", p_tipoError = 4 });
+                //}
                 cantidadPreguntasEvaluacion = DAEvaluacionPregunta.CantidadPreguntasxEvalucion(idPromocion);
                 lstEvaluacionRespuesta.Clear();
                 cantidadMostradas = 0;
@@ -136,16 +136,16 @@ namespace ESANMSA.Areas.Alumno.Controllers
                         AgregarListaDeRespuestas(idPromocion, idMedicion, idAlternativa, 0, idPregunta);
                 }
             }
-            else {
-                lstEvaluacionRespuesta.Clear();
-                cantidadMostradas = 0;
-                cantidadIniPreg = 0;
-                cantidadResulta = 0;
-                Session.Abandon();
-                Session.Remove("Alumno");
-                return RedirectToAction("Formulario", "Registro", new { area = "Alumno", idPromocion = idPromocion, idMedicion = idMedicion, idEvaluado = idEvaluado, Externo = Externo });
+            //else {
+            //    lstEvaluacionRespuesta.Clear();
+            //    cantidadMostradas = 0;
+            //    cantidadIniPreg = 0;
+            //    cantidadResulta = 0;
+            //    Session.Abandon();
+            //    Session.Remove("Alumno");
+            //    return RedirectToAction("Formulario", "Registro", new { area = "Alumno", idPromocion = idPromocion, idMedicion = idMedicion, idEvaluado = idEvaluado, Externo = Externo });
 
-            }
+            //}
             cantidadResulta = lstEvaluacionRespuesta.Count;
             double avance = (cantidadResulta * 100) / cantidadPreguntasEvaluacion;
             ViewBag.avanceEvaluacion = avance;
