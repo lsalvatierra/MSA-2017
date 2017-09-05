@@ -15,7 +15,7 @@ namespace ESANMSA.Areas.Administrador.Controllers
     {
         // GET: Administrador/ResultadoEvaluacion
 
-        //[NoCache]
+        [NoCache]
         public ActionResult frmPromociones()
         {
             if (Session["Usuario"] != null)

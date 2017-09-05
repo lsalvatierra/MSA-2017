@@ -2,7 +2,8 @@
 @{
     ViewBag.Title = "Evaluación";
 
-    string EsExterno = ((bool)ViewBag.EsExterno).ToString();
+    string Externo = ((bool)ViewBag.EsExterno).ToString();
+    bool EsExterno = (bool)ViewBag.EsExterno;
     EvaluacionNivelIntro objNivelIntroduccion = (EvaluacionNivelIntro)ViewBag.objIntroduccion;
 }
 @section Scripts{
@@ -98,9 +99,9 @@
         <h2>@ViewBag.NombreEvaluacion</h2>
         <input type="hidden" value="@ViewBag.IdMedicion" id="hddIdMedicion" />
         <input type="hidden" value="@ViewBag.IdPromocion" id="hddIdPromocion" />
-        <input type="hidden" value="@EsExterno" id="hddExterno" />
+        <input type="hidden" value="@Externo" id="hddExterno" />
         <input type="hidden" value="@ViewBag.IdEvaluado" id="hddIdEvaluado" />
-        @if ((bool)ViewBag.EsExterno)
+        @if (EsExterno)
         {
             <h4>Evaluando a: @ViewBag.NombresParticipanteEvaluar.</h4>
         }
@@ -141,41 +142,49 @@
         @*<input type="hidden" value="@cntPreguntasForm" id="hddCantPreguntasForm" />*@
         <h2>@ViewBag.NivelA</h2>             
         <div class="jumbotron" style="padding: 5px 25px 5px 25px;">
-            <p style="font-size: 16px;">@Html.Raw(objNivelIntroduccion.ParrafoIntroduccion1)</p>
+            @if (objNivelIntroduccion.ParrafoIntroduccionPar1 != null && objNivelIntroduccion.ParrafoIntroduccion1 != null)
+            {
+                <p style="font-size: 16px;">@Html.Raw(EsExterno ? objNivelIntroduccion.ParrafoIntroduccionPar1 : objNivelIntroduccion.ParrafoIntroduccion1)</p>
+            } 
             <ul type="1">
-                @if (objNivelIntroduccion.ListaIntroduccion1 != null)
+                @if (objNivelIntroduccion.ListaIntroduccion1 != null && objNivelIntroduccion.ListaIntroduccionPar1 != null)
                 {
-                    if (objNivelIntroduccion.ListaIntroduccion1 != "")
+                    if (objNivelIntroduccion.ListaIntroduccion1 != "" && objNivelIntroduccion.ListaIntroduccionPar1 != "")
                     {
-                        string[] lstIntroA = objNivelIntroduccion.ListaIntroduccion1.Split('|');
+                        string[] lstIntroA = EsExterno ? objNivelIntroduccion.ListaIntroduccionPar1.Split('|') : objNivelIntroduccion.ListaIntroduccion1.Split('|');
                         foreach (string item in lstIntroA)
                         {
                             <li class="txtLista">@item</li>
                         }
                     }
-                }
-                    
+                }   
             </ul>
-            <p style="font-size: 16px;">@Html.Raw(objNivelIntroduccion.ParrafoIntroduccion2)</p>
-            <ul type="1">
-                @if (objNivelIntroduccion.ListaIntroduccion2 != null)
+            @if (objNivelIntroduccion.ParrafoIntroduccionPar2 != null && objNivelIntroduccion.ParrafoIntroduccion2 != null)
+            {
+                <p style="font-size: 16px;">@Html.Raw(EsExterno ? objNivelIntroduccion.ParrafoIntroduccionPar2 : objNivelIntroduccion.ParrafoIntroduccion2)</p>
+            }
+            
+            @if (objNivelIntroduccion.ListaIntroduccion2 != null && objNivelIntroduccion.ListaIntroduccionPar2 != null)
+            {
+                if (objNivelIntroduccion.ListaIntroduccion2 != "" && objNivelIntroduccion.ListaIntroduccionPar2 != "")
                 {
-                    if (objNivelIntroduccion.ListaIntroduccion2 != "")
-                    {
-                        string[] lstIntroB = objNivelIntroduccion.ListaIntroduccion2.Split('|');
-                        foreach (string item in lstIntroB)
-                        {
-                            <li class="txtLista">@item</li>
+                    <ul type="1">
+                        @{
+                            string[] lstIntroB = EsExterno ? objNivelIntroduccion.ListaIntroduccionPar2.Split('|') : objNivelIntroduccion.ListaIntroduccion2.Split('|');
+                            foreach (string item in lstIntroB)
+                            {
+                                <li class="txtLista">@item</li>
+                            }
                         }
-                    }
-                }
-            </ul>
+                    </ul>
+                                }
+                            } 
             @{
-                if (objNivelIntroduccion.ParrafoIntroduccion3 != null)
+                if (objNivelIntroduccion.ParrafoIntroduccion3 != null && objNivelIntroduccion.ParrafoIntroduccionPar3 != null)
                 {
-                    if (objNivelIntroduccion.ParrafoIntroduccion3 != "")
+                    if (objNivelIntroduccion.ParrafoIntroduccion3 != "" && objNivelIntroduccion.ParrafoIntroduccionPar3 != "")
                     {
-                        string[] lstParrafoC = objNivelIntroduccion.ParrafoIntroduccion3.Split('|');
+                        string[] lstParrafoC = EsExterno ? objNivelIntroduccion.ParrafoIntroduccionPar3.Split('|') : objNivelIntroduccion.ParrafoIntroduccion3.Split('|');
                         foreach (string item in lstParrafoC)
                         {
                             <p style="font-size: 16px;">@item</p>
