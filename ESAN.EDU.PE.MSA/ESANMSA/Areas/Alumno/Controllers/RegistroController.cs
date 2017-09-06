@@ -76,30 +76,36 @@ namespace ESANMSA.Areas.Alumno.Controllers
         public JsonResult VerificarUsuario(int p_idTipoDocumento, string p_nroDocumento, int p_idPromocion, int p_idMedicion)
         {
             int rptaExiste =-1;
-            Participante objParticipante = DAParticipante.ObtenerParticipante(p_idTipoDocumento, p_nroDocumento);
-            if(objParticipante != null)
-            {
-                int rptaParticipante = DAParticipante.ObtenerParticipantePromocionYRespuestas(Convert.ToInt32(objParticipante.ParticipanteID), p_idPromocion, p_idMedicion);
-                if (rptaParticipante == 1)
+            if (DAPromocionMedicionCicloParticipante.ExisteParticipantePromocionCicloMedicion(p_idPromocion, p_idMedicion, p_nroDocumento)) {
+                Participante objParticipante = DAParticipante.ObtenerParticipante(p_idTipoDocumento, p_nroDocumento);
+                if (objParticipante != null)
                 {
-                    rptaExiste = 1;
-                }
-                else {
-                    Participante objNuevoParticipante = new Participante
+                    int rptaParticipante = DAParticipante.ObtenerParticipantePromocionYRespuestas(Convert.ToInt32(objParticipante.ParticipanteID), p_idPromocion, p_idMedicion);
+                    if (rptaParticipante == 1)
                     {
-                        ParticipanteID = objParticipante.ParticipanteID,
-                        ParticipanteNombreCompleto = objParticipante.ParticipanteNombreCompleto
-                    };
-                    objNuevoParticipante.EvaluacionPromocionParticipante.Add(new EvaluacionPromocionParticipante {
-                        ParticipanteID = objParticipante.ParticipanteID,
-                        EvaluacionMedicionID = p_idMedicion,
-                        EvaluacionPromocionID = p_idPromocion,
-                        EsExterno = false // Siempre falso por que sólo se verifica a los internos.
-                    });
-                    rptaExiste = 0;
-                    Session["Alumno"] = objNuevoParticipante;
-                }                
-            }
+                        rptaExiste = 1;
+                    }
+                    else
+                    {
+                        Participante objNuevoParticipante = new Participante
+                        {
+                            ParticipanteID = objParticipante.ParticipanteID,
+                            ParticipanteNombreCompleto = objParticipante.ParticipanteNombreCompleto
+                        };
+                        objNuevoParticipante.EvaluacionPromocionParticipante.Add(new EvaluacionPromocionParticipante
+                        {
+                            ParticipanteID = objParticipante.ParticipanteID,
+                            EvaluacionMedicionID = p_idMedicion,
+                            EvaluacionPromocionID = p_idPromocion,
+                            EsExterno = false // Siempre falso por que sólo se verifica a los internos.
+                        });
+                        rptaExiste = 0;
+                        Session["Alumno"] = objNuevoParticipante;
+                    }
+                }
+            }else
+                rptaExiste = -2;
+           
             return Json(new { Existe = rptaExiste });
         }
 
