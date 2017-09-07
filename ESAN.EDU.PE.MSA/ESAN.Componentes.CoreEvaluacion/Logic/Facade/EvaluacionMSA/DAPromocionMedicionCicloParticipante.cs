@@ -26,5 +26,26 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
                 return data.PromocionMedicionCicloParticipante.Where(q => q.EvaluacionPromocionID == p_idPromocion && q.EvaluacionCicloID == idciclo && q.EvaluacionMedicionID == p_idMedicion && q.ParticipanteNroDoc == p_nroDocumento).Count() > 0 ? true : false;
             }
         }
+
+        /// <summary>
+        /// Listado de participantes de la promoción por medición
+        /// </summary>
+        /// <param name="p_idPromocion">Id promoción</param>
+        /// <param name="p_idMedicion">Id Medición.</param>
+        /// <returns>List<PromocionMedicionCicloParticipante></returns>
+        public static List<PromocionMedicionCicloParticipante> Listado(int p_idPromocion, int p_idMedicion)
+        {
+            using (var data = new BDEvaluacionEntities())
+            {
+                return data.PromocionMedicionCicloParticipante.Where(x => x.EvaluacionPromocionID == p_idPromocion && x.EvaluacionMedicionID == p_idMedicion && x.Estado == true).ToList();
+            }
+
+        }
+
+
+
+
     }
+
+
 }

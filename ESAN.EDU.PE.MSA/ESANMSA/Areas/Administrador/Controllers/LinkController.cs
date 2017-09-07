@@ -45,44 +45,41 @@ namespace ESANMSA.Areas.Administrador.Controllers
             return PartialView();
         }
         [HttpPost]
-        public JsonResult EnviarMail(string destinatario)
+        public JsonResult EnviarMail(int EvaluacionPromocionID, int EvaluacionMedicionID, bool EsEvaluado)
         {
-            //var alumno = (Alumno)Session["Alumno"];
-            //var alumnoCompleto = FC.Actor.ObtenerActor(alumno.IdActor);
-            //List<string> listaCorreos = new List<string>();
-            //listaCorreos.Add(alumnoCompleto.Usuario + "@ue.edu.pe");
-            //if (!string.IsNullOrEmpty(alumnoCompleto.EMail))
-            //{
-            //    listaCorreos.Add(alumnoCompleto.EMail);
-            //}
+            //Se obtiene el listado de alumnos para el envío de correo
+            //String[] correos = new string[4];
+            //correos[0] = "lchang@esan.edu.pe";
+            //correos[1] = "1302177@esan.edu.pe";
+            //correos[2] = "luis.chang@outlook.com";
+            //correos[3] = "lchang86@gmail.com";
 
-            //if (!string.IsNullOrEmpty(alumnoCompleto.EMailAdicional))
-            //{
-            //    listaCorreos.Add(alumnoCompleto.EMailAdicional);
-            //}
+            List<PromocionMedicionCicloParticipante> listadoParticipantes = DAPromocionMedicionCicloParticipante.Listado(EvaluacionPromocionID, EvaluacionMedicionID);
 
-            //if (!string.IsNullOrEmpty(alumnoCompleto.EMailOpcional))
-            //{
-            //    listaCorreos.Add(alumnoCompleto.EMailOpcional);
-            //}
-            //listaCorreos.Add("lsalvatierra@esan.edu.pe");
-            ViewBag.Email = "elcorreo@esan.edu.pe";
-            using (EmailProvider provider = EmailFactory.GetEmailProvider(
+            //ViewBag.Email = "elcorreo@esan.edu.pe";
+            string evaluado = string.Empty;
+            string link = string.Empty;
+            string rutaCorreo = EsEvaluado ? "~/Areas/Administrador/Views/Link/EmailExterno.cshtml" : "~/Areas/Administrador/Views/Link/Email.cshtml";
+            foreach (PromocionMedicionCicloParticipante participante in listadoParticipantes)
+            {
+                using (EmailProvider provider = EmailFactory.GetEmailProvider(
                                             EmailFactory.Providers.Default,
                                             ConfigurationManager.AppSettings["EnvioMailCompromisoAlumno"]))
-            {
-                //foreach (string email in listaCorreos)
-                //{
-                //    provider.AgregarDireccion(TipoDirecciones.To, email);
-                //}
-                provider.AgregarDireccion(TipoDirecciones.To, destinatario);
-                provider.Enviar(
-                    HttpUtility.HtmlDecode(
-                        General.RenderPartialViewToString(this,
-                            "~/Areas/Administrador/Views/Link/Email.cshtml"
-                             , ViewBag))
-                    , true
-                    , System.Net.Mail.MailPriority.Normal);
+                {
+                    evaluado = EsEvaluado ? "&amp;idEvaluado=" + 0 + " &amp;Externo=true" : "&amp;idEvaluado=0&amp;Externo=False";
+                    link = "http://msa.esan.edu.pe/Alumno/Registro/Formulario?idPromocion=" + EvaluacionPromocionID.ToString() +
+                                  "&amp;idMedicion=" + EvaluacionMedicionID.ToString() + evaluado;
+                    ViewBag.LinkEval = link;
+                    ViewBag.LinkVideo = participante.DireccionVideo;
+                    provider.AgregarDireccion(TipoDirecciones.To, participante.ParticipanteNroDoc + "@esan.edu.pe");
+                    provider.Enviar(
+                        HttpUtility.HtmlDecode(
+                            General.RenderPartialViewToString(this,
+                                rutaCorreo
+                                 , ViewBag))
+                        , true
+                        , System.Net.Mail.MailPriority.Normal);
+                }
             }
 
             return Json(new { listamedicion = "" }, JsonRequestBehavior.AllowGet);

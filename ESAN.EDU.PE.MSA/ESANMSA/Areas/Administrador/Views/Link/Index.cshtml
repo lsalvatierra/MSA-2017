@@ -139,13 +139,23 @@
     });
 
     $(document).on('click', '#btnEnviarCorreo', function () {
+        var vPromocionID = $("#hidEvaluacionPromocionID").val();
+        var vMedicionID = $("#cboMedicionParticipante").val();
+        var vEsEvaluado = $('option:selected', ".cboMedicionParticipante").attr('esevaluado');
+
+        //alert(vPromocionID);
+        //alert(vMedicionID);
+        //alert(vEsEvaluado);
+        //return false;
         if (confirm("Se enviará un correo al siguiente destinatario: " + $("#hidEvaluacionPromocionCorreo").val() + " \n\n ¿Esta seguro de realizar el envío masivo?")) {
             //alert("Enviando....");
             $.ajax({
                 'url': URL_PAGE + 'Administrador/Link/EnviarMail',
                 'type': 'POST',
                 'data': {
-                    destinatario: $("#hidEvaluacionPromocionCorreo").val()
+                    EvaluacionPromocionID: vPromocionID,
+                    EvaluacionMedicionID: vMedicionID,
+                    EsEvaluado: vEsEvaluado
                 },
                 'success': function (view) {
                     //process here
