@@ -72,7 +72,9 @@ namespace ESANMSA.Areas.Administrador.Controllers
                                   "&amp;idMedicion=" + EvaluacionMedicionID.ToString() + evaluado;
                     ViewBag.LinkEval = link;
                     ViewBag.LinkVideo = participante.DireccionVideo;
-                    provider.AgregarDireccion(TipoDirecciones.To, participante.ParticipanteNroDoc + "@esan.edu.pe");
+
+                    provider.AgregarDireccion(TipoDirecciones.To, ConfigurationManager.AppSettings["EsPrueba"] == "1" ? "1302177@esan.edu.pe" : participante.ParticipanteNroDoc + "@esan.edu.pe");
+
                     provider.Enviar(
                         HttpUtility.HtmlDecode(
                             General.RenderPartialViewToString(this,
