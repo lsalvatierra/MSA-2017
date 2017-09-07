@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ESAN.Componentes.CoreEvaluacion.Models.General.EvaluacionMSA;
+using System.Data.Entity;
+
 
 
 namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
@@ -37,13 +39,11 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
         {
             using (var data = new BDEvaluacionEntities())
             {
-                return data.PromocionMedicionCicloParticipante.Where(x => x.EvaluacionPromocionID == p_idPromocion && x.EvaluacionMedicionID == p_idMedicion && x.Estado == true).ToList();
+                return data.PromocionMedicionCicloParticipante.Where(x => x.EvaluacionPromocionID == p_idPromocion && 
+                                                                     x.EvaluacionMedicionID == p_idMedicion && x.Estado == true).ToList();
             }
 
         }
-
-
-
 
     }
 

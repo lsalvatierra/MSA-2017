@@ -66,7 +66,8 @@ namespace ESANMSA.Areas.Administrador.Controllers
                                             EmailFactory.Providers.Default,
                                             ConfigurationManager.AppSettings["EnvioMailCompromisoAlumno"]))
                 {
-                    evaluado = EsEvaluado ? "&amp;idEvaluado=" + 0 + " &amp;Externo=true" : "&amp;idEvaluado=0&amp;Externo=False";
+                    int participanteID = (int)DAParticipante.ObtenerParticipante(Convert.ToInt32(ConfigurationManager.AppSettings["IdTipoDocumentoDefault"].ToString()), participante.ParticipanteNroDoc).ParticipanteID;
+                    evaluado = EsEvaluado ? "&amp;idEvaluado=" + participanteID + " &amp;Externo=true" : "&amp;idEvaluado=0&amp;Externo=False";
                     link = "http://msa.esan.edu.pe/Alumno/Registro/Formulario?idPromocion=" + EvaluacionPromocionID.ToString() +
                                   "&amp;idMedicion=" + EvaluacionMedicionID.ToString() + evaluado;
                     ViewBag.LinkEval = link;
