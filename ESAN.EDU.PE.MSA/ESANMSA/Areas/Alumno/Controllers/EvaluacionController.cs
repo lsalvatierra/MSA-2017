@@ -12,13 +12,6 @@ namespace ESANMSA.Areas.Alumno.Controllers
 {
     public class EvaluacionController : Controller
     {
-        private Evaluacion objEvaluacion;
-        private static List<EvaluacionNivel> lstEvaluacion;
-        private static List<EvaluacionRespuesta> lstEvaluacionRespuesta = new List<EvaluacionRespuesta>();
-        private static int cantidadPreguntasEvaluacion = 0;
-        private static int cantidadMostradas = 0;
-        private static int cantidadIniPreg = 0;
-        private static int cantidadResulta = 0;
 
         // GET: Alumno/Evaluacion
 
@@ -27,17 +20,17 @@ namespace ESANMSA.Areas.Alumno.Controllers
         {
             if (Session["Alumno"] != null)
             {
-                lstEvaluacionRespuesta.Clear();
-                cantidadMostradas = 0;
-                cantidadIniPreg = 0;
-                cantidadResulta = 0;
-                objEvaluacion = DAEvaluacion.ObtenerEvaluacion(idPromocion);
+                InicializarVariablesSesiones();
+                Evaluacion objEvaluacion = DAEvaluacion.ObtenerEvaluacion(idPromocion);
                 ViewBag.NombreEvaluacion = objEvaluacion.EvaluacionDescripcion;
                 ViewBag.IdMedicion = idMedicion;
                 ViewBag.IdPromocion = idPromocion;
                 ViewBag.EsExterno = Externo;
                 ViewBag.IdEvaluado = idEvaluado;
                 Participante objParticipante = null;
+                List<EvaluacionNivel> lstEvaluacion;
+                int cantidadPreguntasEvaluacion = 0;
+                List<EvaluacionRespuesta> lstEvaluacionRespuesta = new List<EvaluacionRespuesta>();
                 if (Externo)
                 {
                     objParticipante = DAParticipante.ObtenerParticipantexID(idEvaluado);
@@ -67,6 +60,13 @@ namespace ESANMSA.Areas.Alumno.Controllers
                 //De la evaluación se extrae los primeros objetos para esta primera pagina
                 if (lstEvaluacion.FirstOrDefault() != null)
                 {
+                    //Cargamos en sesión la Evaluación para utilizarla en el controlador.
+                    Session["LstEvaluacion"] = lstEvaluacion;
+                    Session["cantidadPreguntasEvaluacion"] = cantidadPreguntasEvaluacion;
+                    //Session["cantidadMostradas"] = 0;
+                    //Session["cantidadIniPreg"] = 0;
+                    //Session["cantidadResulta"] = 0;
+                    Session["lstEvaluacionRespuesta"] = lstEvaluacionRespuesta;
                     ViewBag.NivelA = lstEvaluacion.FirstOrDefault().EvaluacionNivelDescripcion;
                     ViewBag.IDNivelA = lstEvaluacion.FirstOrDefault().EvaluacionNivelID;
                     ViewBag.IDNivelOrdenA = lstEvaluacion.FirstOrDefault().EvaluacionNivelOrden;
@@ -103,7 +103,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
         {
             if (Session["Alumno"] != null)
             {
-                if (lstEvaluacionRespuesta.Count > 0)
+                if (((List<EvaluacionRespuesta>)Session["lstEvaluacionRespuesta"]).Count > 0)
                 {
                     EvaluacionRespuesta objEvalRpta = ObtenerRespuesta(idPromocion, idMedicion, idPregunta, idEvaluado, Externo);
                     if (Externo)
@@ -112,7 +112,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
                             AgregarListaDeRespuestas(idPromocion, idMedicion, idAlternativa, idEvaluado, idPregunta);
                         else
                         {
-                            lstEvaluacionRespuesta.Remove(objEvalRpta);
+                            ((List<EvaluacionRespuesta>)Session["lstEvaluacionRespuesta"]).Remove(objEvalRpta);
                             AgregarListaDeRespuestas(idPromocion, idMedicion, idAlternativa, idEvaluado, idPregunta);
                         }
                     }
@@ -122,7 +122,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
                             AgregarListaDeRespuestas(idPromocion, idMedicion, idAlternativa, 0, idPregunta);
                         else
                         {
-                            lstEvaluacionRespuesta.Remove(objEvalRpta);
+                            ((List<EvaluacionRespuesta>)Session["lstEvaluacionRespuesta"]).Remove(objEvalRpta);
                             AgregarListaDeRespuestas(idPromocion, idMedicion, idAlternativa, 0, idPregunta);
                         }
                     }
@@ -145,8 +145,8 @@ namespace ESANMSA.Areas.Alumno.Controllers
             //    return RedirectToAction("Formulario", "Registro", new { area = "Alumno", idPromocion = idPromocion, idMedicion = idMedicion, idEvaluado = idEvaluado, Externo = Externo });
 
             //}
-            cantidadResulta = lstEvaluacionRespuesta.Count;
-            double avance = (cantidadResulta * 100) / cantidadPreguntasEvaluacion;
+            Session["cantidadResulta"] = ((List<EvaluacionRespuesta>)Session["lstEvaluacionRespuesta"]).Count;
+            double avance = ((int)Session["cantidadResulta"] * 100) / (int)Session["cantidadPreguntasEvaluacion"];
             ViewBag.avanceEvaluacion = avance;
             return PartialView("_PartialPorcentajeAvance");
         }
@@ -157,7 +157,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
             bool TieneIntroduccion = false;
             List<EvaluacionPregunta> lstPreguntas = new List<EvaluacionPregunta>();
             //De la evaluación se extrae los siguientes objetos para esta  página de la evaluación.
-            EvaluacionNivel objNivelA = lstEvaluacion.Where(q => q.EvaluacionNivelID == idNivelA).FirstOrDefault();
+            EvaluacionNivel objNivelA = ((List<EvaluacionNivel>)Session["LstEvaluacion"]).Where(q => q.EvaluacionNivelID == idNivelA).FirstOrDefault();
             EvaluacionNivel objNivelB = null, objNivelC = null;            
             if (objNivelA != null)
             {
@@ -195,7 +195,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
                             }
                             else {
                                 //Si no existe, se actualiza el Nivel A agregando 1 al número de orden.
-                                objNivelA = lstEvaluacion.Where(q => q.EvaluacionNivelOrden == idNivelOrdenA + 1).FirstOrDefault();
+                                objNivelA = ((List<EvaluacionNivel>)Session["LstEvaluacion"]).Where(q => q.EvaluacionNivelOrden == idNivelOrdenA + 1).FirstOrDefault();
                                 if (objNivelA != null)
                                 {
                                     TieneIntroduccion = true;
@@ -215,7 +215,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
                                 else {
                                     // NUEVA VALIDACIÓN PARA OTROS EXTERNOS
                                     //Si no existe, se actualiza el Nivel A agregando 2 al número de orden.
-                                    objNivelA = lstEvaluacion.Where(q => q.EvaluacionNivelOrden == idNivelOrdenA + 2).FirstOrDefault();
+                                    objNivelA = ((List<EvaluacionNivel>)Session["LstEvaluacion"]).Where(q => q.EvaluacionNivelOrden == idNivelOrdenA + 2).FirstOrDefault();
                                     TieneIntroduccion = true;
                                     //Si existe el Nivel A, se extrae el primer elemento del Nivel B.
                                     objNivelB = objNivelA.EvaluacionNivel1.Where(q => q.EvaluacionNivelPadreID == objNivelA.EvaluacionNivelID && q.EvaluacionNivelOrden == 1).FirstOrDefault();
@@ -254,7 +254,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
                     }
                     else {
                         //Si no existe, se actualiza el Nivel A agregando 1 al número de orden.
-                        objNivelA = lstEvaluacion.Where(q => q.EvaluacionNivelOrden == idNivelOrdenA + 1).FirstOrDefault();
+                        objNivelA = ((List<EvaluacionNivel>)Session["LstEvaluacion"]).Where(q => q.EvaluacionNivelOrden == idNivelOrdenA + 1).FirstOrDefault();
                         if (objNivelA != null)
                         {
                             TieneIntroduccion = true;
@@ -275,7 +275,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
                         {
                             // NUEVA VALIDACIÓN PARA OTROS EXTERNOS
                             //Si no existe, se actualiza el Nivel A agregando 2 al número de orden.
-                            objNivelA = lstEvaluacion.Where(q => q.EvaluacionNivelOrden == idNivelOrdenA + 2).FirstOrDefault();
+                            objNivelA = ((List<EvaluacionNivel>)Session["LstEvaluacion"]).Where(q => q.EvaluacionNivelOrden == idNivelOrdenA + 2).FirstOrDefault();
                             TieneIntroduccion = true;
                             //Si existe el Nivel A, se extrae el primer elemento del Nivel B.
                             objNivelB = objNivelA.EvaluacionNivel1.Where(q => q.EvaluacionNivelPadreID == objNivelA.EvaluacionNivelID && q.EvaluacionNivelOrden == 1).FirstOrDefault();
@@ -347,20 +347,20 @@ namespace ESANMSA.Areas.Alumno.Controllers
                     ViewBag.NivelC = "";
                 }
             }
-                cantidadMostradas = cantidadMostradas + lstPreguntas.Count;
-            if (cantidadPreguntasEvaluacion == cantidadMostradas)
+            Session["cantidadMostradas"] = (int)Session["cantidadMostradas"] + lstPreguntas.Count;
+            if ((int)Session["cantidadPreguntasEvaluacion"] == (int)Session["cantidadMostradas"])
             {
                 ViewBag.FinalizarEvaluacion = true;
             }
             else {
                 ViewBag.FinalizarEvaluacion = false;
             }
-            if (cantidadIniPreg == 0)
+            if ((int)Session["cantidadIniPreg"] == 0)
             {
-                cantidadIniPreg = lstPreguntas.Count;
+                Session["cantidadIniPreg"] = lstPreguntas.Count;
             }
             ViewBag.AnteriorPagEvaluacion = true;
-            ViewBag.LstRespuestas = lstEvaluacionRespuesta;
+            ViewBag.LstRespuestas = ((List<EvaluacionRespuesta>)Session["lstEvaluacionRespuesta"]);
             ViewBag.LstPreguntas = lstPreguntas;
             return PartialView("_PartialSiguientePaginaEval");
         }
@@ -372,7 +372,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
             bool TieneIntroduccion = false;
             List<EvaluacionPregunta> lstPreguntas = new List<EvaluacionPregunta>();
             //De la evaluación se extrae los siguientes objetos para esta  página de la evaluación.
-            EvaluacionNivel objNivelA = lstEvaluacion.Where(q => q.EvaluacionNivelID == idNivelA).FirstOrDefault();
+            EvaluacionNivel objNivelA = ((List<EvaluacionNivel>)Session["LstEvaluacion"]).Where(q => q.EvaluacionNivelID == idNivelA).FirstOrDefault();
             EvaluacionNivel objNivelB = null, objNivelC = null;
             if (objNivelA != null)
             {
@@ -410,7 +410,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
                             else
                             {
                                 //Si no existe, se actualiza el Nivel A quitando 1 al número de orden.
-                                objNivelA = lstEvaluacion.Where(q => q.EvaluacionNivelOrden == idNivelOrdenA - 1).FirstOrDefault();                                
+                                objNivelA = ((List<EvaluacionNivel>)Session["LstEvaluacion"]).Where(q => q.EvaluacionNivelOrden == idNivelOrdenA - 1).FirstOrDefault();                                
                                 if (objNivelA != null)
                                 {
                                     //Si cntPregForm = 0 Indica que el formulario es introducción                            
@@ -441,7 +441,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
                                     }
                                     else {
                                         //Si cntPregForm > 0 Indica que tiene preguntas y se va obtener la INTRO.      
-                                        objNivelA = lstEvaluacion.Where(q => q.EvaluacionNivelOrden == idNivelOrdenA).FirstOrDefault();
+                                        objNivelA = ((List<EvaluacionNivel>)Session["LstEvaluacion"]).Where(q => q.EvaluacionNivelOrden == idNivelOrdenA).FirstOrDefault();
                                         TieneIntroduccion = true;
                                         //Si existe el Nivel A, se extrae el primer elemento del Nivel B.
                                         objNivelB = objNivelA.EvaluacionNivel1.Where(q => q.EvaluacionNivelPadreID == objNivelA.EvaluacionNivelID).OrderBy(x => x.EvaluacionNivelOrden).FirstOrDefault();
@@ -458,7 +458,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
                                 } else {
                                     //  NUEVA VALIDACIÓN PARA OTROS EXTERNOS
                                     //Si no existe, se actualiza el Nivel A quitando 2 al número de orden.
-                                    objNivelA = lstEvaluacion.Where(q => q.EvaluacionNivelOrden == idNivelOrdenA - 2).FirstOrDefault();
+                                    objNivelA = ((List<EvaluacionNivel>)Session["LstEvaluacion"]).Where(q => q.EvaluacionNivelOrden == idNivelOrdenA - 2).FirstOrDefault();
                                     if (objNivelA != null)
                                     {
                                         //Si cntPregForm = 0 Indica que el formulario es introducción                            
@@ -490,7 +490,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
                                         else
                                         {
                                             //Si cntPregForm > 0 Indica que tiene preguntas y se va obtener la INTRO.      
-                                            objNivelA = lstEvaluacion.Where(q => q.EvaluacionNivelOrden == idNivelOrdenA).FirstOrDefault();
+                                            objNivelA = ((List<EvaluacionNivel>)Session["LstEvaluacion"]).Where(q => q.EvaluacionNivelOrden == idNivelOrdenA).FirstOrDefault();
                                             TieneIntroduccion = true;
                                             //Si existe el Nivel A, se extrae el primer elemento del Nivel B.
                                             objNivelB = objNivelA.EvaluacionNivel1.Where(q => q.EvaluacionNivelPadreID == objNivelA.EvaluacionNivelID).OrderBy(x => x.EvaluacionNivelOrden).FirstOrDefault();
@@ -507,7 +507,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
                                     }
                                     else {
                                         //Si no existe se recupera el nivel actual.
-                                        objNivelA = lstEvaluacion.Where(q => q.EvaluacionNivelID == idNivelA).FirstOrDefault();
+                                        objNivelA = ((List<EvaluacionNivel>)Session["LstEvaluacion"]).Where(q => q.EvaluacionNivelID == idNivelA).FirstOrDefault();
                                         if (objNivelA != null)
                                         {
                                             TieneIntroduccion = true;
@@ -551,7 +551,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
                     else
                     {
                         //Si no existe, se actualiza el Nivel A quitando 1 al número de orden.
-                        objNivelA = lstEvaluacion.Where(q => q.EvaluacionNivelOrden == idNivelOrdenA - 1).FirstOrDefault();                        
+                        objNivelA = ((List<EvaluacionNivel>)Session["LstEvaluacion"]).Where(q => q.EvaluacionNivelOrden == idNivelOrdenA - 1).FirstOrDefault();                        
                         if (objNivelA != null)
                         {
                             if (cntPregForm == 0)
@@ -581,7 +581,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
                                 }
                             }
                             else {
-                                objNivelA = lstEvaluacion.Where(q => q.EvaluacionNivelOrden == idNivelOrdenA).FirstOrDefault();
+                                objNivelA = ((List<EvaluacionNivel>)Session["LstEvaluacion"]).Where(q => q.EvaluacionNivelOrden == idNivelOrdenA).FirstOrDefault();
                                 TieneIntroduccion = true;
                                 //Si existe el Nivel A, se extrae el primer elemento del Nivel B.
                                 objNivelB = objNivelA.EvaluacionNivel1.Where(q => q.EvaluacionNivelPadreID == objNivelA.EvaluacionNivelID).OrderByDescending(x => x.EvaluacionNivelOrden).FirstOrDefault();
@@ -598,7 +598,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
                             }
                         } else {
                             //Si no existe, se actualiza el Nivel A quitando 1 al número de orden.
-                            objNivelA = lstEvaluacion.Where(q => q.EvaluacionNivelOrden == idNivelOrdenA - 2).FirstOrDefault();
+                            objNivelA = ((List<EvaluacionNivel>)Session["LstEvaluacion"]).Where(q => q.EvaluacionNivelOrden == idNivelOrdenA - 2).FirstOrDefault();
                             if (objNivelA != null)
                             {
                                 if (cntPregForm == 0)
@@ -629,7 +629,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
                                 }
                                 else
                                 {
-                                    objNivelA = lstEvaluacion.Where(q => q.EvaluacionNivelOrden == idNivelOrdenA).FirstOrDefault();
+                                    objNivelA = ((List<EvaluacionNivel>)Session["LstEvaluacion"]).Where(q => q.EvaluacionNivelOrden == idNivelOrdenA).FirstOrDefault();
                                     TieneIntroduccion = true;
                                     //Si existe el Nivel A, se extrae el primer elemento del Nivel B.
                                     objNivelB = objNivelA.EvaluacionNivel1.Where(q => q.EvaluacionNivelPadreID == objNivelA.EvaluacionNivelID).OrderByDescending(x => x.EvaluacionNivelOrden).FirstOrDefault();
@@ -646,7 +646,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
                                 }
                             }
                             else {
-                                objNivelA = lstEvaluacion.Where(q => q.EvaluacionNivelID == idNivelA).FirstOrDefault();
+                                objNivelA = ((List<EvaluacionNivel>)Session["LstEvaluacion"]).Where(q => q.EvaluacionNivelID == idNivelA).FirstOrDefault();
                                 if (objNivelA != null)
                                 {
                                     TieneIntroduccion = true;
@@ -727,9 +727,9 @@ namespace ESANMSA.Areas.Alumno.Controllers
                     ViewBag.NivelC = "";
                 }
             }
-                cantidadMostradas = cantidadMostradas - cntPregForm;
+            Session["cantidadMostradas"] = (int)Session["cantidadMostradas"] - cntPregForm;
             ViewBag.FinalizarEvaluacion = false;
-            if (cantidadMostradas == 0)
+            if ((int)Session["cantidadMostradas"] == 0)
             {
                 ViewBag.AnteriorPagEvaluacion = false;                
             }
@@ -737,7 +737,7 @@ namespace ESANMSA.Areas.Alumno.Controllers
             {
                 ViewBag.AnteriorPagEvaluacion = true;
             }
-            ViewBag.LstRespuestas = lstEvaluacionRespuesta;
+            ViewBag.LstRespuestas = ((List<EvaluacionRespuesta>)Session["lstEvaluacionRespuesta"]);
             ViewBag.LstPreguntas = lstPreguntas;
             return PartialView("_PartialSiguientePaginaEval");
         }
@@ -746,9 +746,15 @@ namespace ESANMSA.Areas.Alumno.Controllers
         [HttpPost]
         public ActionResult finalizarEvaluacion()
         {
-            ViewBag.rptaRegEvaluacion = DAEvaluacionRespuesta.RegistrarRespuestaEvaluacion(lstEvaluacionRespuesta, (Participante)Session["Alumno"]);
-            Session.Abandon();
+            ViewBag.rptaRegEvaluacion = DAEvaluacionRespuesta.RegistrarRespuestaEvaluacion(((List<EvaluacionRespuesta>)Session["lstEvaluacionRespuesta"]), (Participante)Session["Alumno"]);
             Session.Remove("Alumno");
+            Session.Remove("LstEvaluacion");
+            Session.Remove("cantidadPreguntasEvaluacion");
+            Session.Remove("cantidadMostradas");
+            Session.Remove("cantidadIniPreg");
+            Session.Remove("cantidadResulta");
+            Session.Remove("lstEvaluacionRespuesta");
+            Session.Abandon();
             return PartialView("_PartialFinEvaluacion");
         }
 
@@ -765,9 +771,9 @@ namespace ESANMSA.Areas.Alumno.Controllers
         {
             EvaluacionRespuesta objEvaluacionRpta = null;
             if (p_Externo)
-                objEvaluacionRpta = lstEvaluacionRespuesta.Where(q => q.EvaluacionPromocionID == p_idPromocion && q.EvaluacionMedicionID == p_idMedicion && q.EvaluacionAlternativa.EvaluacionPreguntaID == p_idPregunta && q.ParticipanteEvaluadoID == p_idParticipanteEval).FirstOrDefault();
+                objEvaluacionRpta = ((List<EvaluacionRespuesta>)Session["lstEvaluacionRespuesta"]).Where(q => q.EvaluacionPromocionID == p_idPromocion && q.EvaluacionMedicionID == p_idMedicion && q.EvaluacionAlternativa.EvaluacionPreguntaID == p_idPregunta && q.ParticipanteEvaluadoID == p_idParticipanteEval).FirstOrDefault();
             else
-                objEvaluacionRpta = lstEvaluacionRespuesta.Where(q => q.EvaluacionPromocionID == p_idPromocion && q.EvaluacionMedicionID == p_idMedicion && q.EvaluacionAlternativa.EvaluacionPreguntaID == p_idPregunta).FirstOrDefault();
+                objEvaluacionRpta = ((List<EvaluacionRespuesta>)Session["lstEvaluacionRespuesta"]).Where(q => q.EvaluacionPromocionID == p_idPromocion && q.EvaluacionMedicionID == p_idMedicion && q.EvaluacionAlternativa.EvaluacionPreguntaID == p_idPregunta).FirstOrDefault();
             return objEvaluacionRpta;
         }
 
@@ -782,9 +788,18 @@ namespace ESANMSA.Areas.Alumno.Controllers
         private void AgregarListaDeRespuestas(int p_idPromocion, int p_idMedicion, int p_idAlternativa, int p_idParticipanteEval, int p_idPregunta)
         {  
             if (p_idParticipanteEval == 0)
-                lstEvaluacionRespuesta.Add(new EvaluacionRespuesta { EvaluacionPromocionID = p_idPromocion, EvaluacionMedicionID = p_idMedicion, EvaluacionAlternativaID = p_idAlternativa, EvaluacionAlternativa = new EvaluacionAlternativa { EvaluacionPreguntaID = p_idPregunta } });
+                ((List<EvaluacionRespuesta>)Session["lstEvaluacionRespuesta"]).Add(new EvaluacionRespuesta { EvaluacionPromocionID = p_idPromocion, EvaluacionMedicionID = p_idMedicion, EvaluacionAlternativaID = p_idAlternativa, EvaluacionAlternativa = new EvaluacionAlternativa { EvaluacionPreguntaID = p_idPregunta } });
             else
-                lstEvaluacionRespuesta.Add(new EvaluacionRespuesta { EvaluacionPromocionID = p_idPromocion, EvaluacionMedicionID = p_idMedicion, EvaluacionAlternativaID = p_idAlternativa, ParticipanteEvaluadoID = p_idParticipanteEval, EvaluacionAlternativa = new EvaluacionAlternativa { EvaluacionPreguntaID = p_idPregunta } });
+                ((List<EvaluacionRespuesta>)Session["lstEvaluacionRespuesta"]).Add(new EvaluacionRespuesta { EvaluacionPromocionID = p_idPromocion, EvaluacionMedicionID = p_idMedicion, EvaluacionAlternativaID = p_idAlternativa, ParticipanteEvaluadoID = p_idParticipanteEval, EvaluacionAlternativa = new EvaluacionAlternativa { EvaluacionPreguntaID = p_idPregunta } });
+        }
+
+        private void InicializarVariablesSesiones() {
+            Session["LstEvaluacion"] = null;
+            Session["cantidadPreguntasEvaluacion"] = null;
+            Session["cantidadMostradas"] = 0;
+            Session["cantidadIniPreg"] = 0;
+            Session["cantidadResulta"] = 0;
+            Session["lstEvaluacionRespuesta"] = null;
         }
 
 
