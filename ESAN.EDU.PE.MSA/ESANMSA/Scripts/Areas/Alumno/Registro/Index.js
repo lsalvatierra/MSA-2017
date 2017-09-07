@@ -22,17 +22,23 @@
                 },
                 success: function (data) {                   
                     if (data.Existe == -1) {
+                        $("#lblmensaje").text("");
                         $("#divExisteEval").fadeOut("fast");
                         $("#divRegistrar").fadeIn("slow");
                         waitingDialog.hide();
                     } else if (data.Existe == 1) {
+                        $("#lblmensaje").text("Usted ya realizó la evaluación.");
                         $("#divRegistrar").fadeOut("fast");
                         $("#divExisteEval").fadeIn("slow");
                         waitingDialog.hide();
                     } else if (data.Existe == 0) {
                         $("#frmRegistro").submit();
-                        
-                    }                   
+                    } else {
+                        $("#lblmensaje").text("El código no está registrado para hacer la evaluación.");
+                        $("#divRegistrar").fadeOut("fast");
+                        $("#divExisteEval").fadeIn("slow");
+                        waitingDialog.hide();
+                    }
                 }
             });
         }

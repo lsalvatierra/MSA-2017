@@ -41,5 +41,22 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
             return cantPreguntas;
         }
 
+
+        /// <summary>
+        /// Se obtiene la cantidad de preguntas excluyendo algunos niveles.
+        /// </summary>
+        /// <param name="p_idPromocion">Id Promoción.</param>
+        /// <returns>Lista de Preguntas.</returns>
+        public static int CantidadPreguntasxEvalucionOtros(int p_idPromocion, long?[] p_idNivelesExcluir)
+        {
+            int cantPreguntas = 0;
+            using (var data = new BDEvaluacionEntities())
+            {
+                int idEvalucion = data.EvaluacionPromocion.Where(q => q.EvaluacionPromocionID == p_idPromocion).FirstOrDefault().EvaluacionID;
+                cantPreguntas = data.EvaluacionPregunta.Where(q => q.EvaluacionNivel.EvaluacionID == idEvalucion && !p_idNivelesExcluir.Contains(q.EvaluacionNivelID)).Count();
+            }
+            return cantPreguntas;
+        }
+
     }
 }

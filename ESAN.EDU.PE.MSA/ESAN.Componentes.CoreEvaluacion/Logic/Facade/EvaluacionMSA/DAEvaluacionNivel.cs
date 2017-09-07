@@ -31,5 +31,25 @@ namespace ESAN.Componentes.CoreEvaluacion.Logic.Facade.EvaluacionMSA
             return lstEvaluacionNivel;
         }
 
+
+        /// <summary>
+        /// Lista de Niveles de evaluación excluyendo niveles.
+        /// </summary>
+        /// <param name="p_idPromocion">Id Promoción.</param>
+        /// <param name="p_idNivelPadre">Id Nivel padre.</param>
+        /// <param name="p_idNivelExcluir">Ids Niveles a excluir.</param>
+        /// <returns>Lista de niveles de evaluaciones.</returns>
+        public static List<EvaluacionNivel> ListaNivelesxEvaluacionParaOtros(int p_idPromocion, int p_idNivelPadre, long[] p_idNivelExcluir)
+        {
+            List<EvaluacionNivel> lstEvaluacionNivel = null;
+            using (var data = new BDEvaluacionEntities())
+            {
+                var promocion = data.EvaluacionPromocion.Find(p_idPromocion);
+                lstEvaluacionNivel = data.EvaluacionNivel.Include(a => a.EvaluacionNivel1.Select(b => b.EvaluacionNivel1.Select(c => c.EvaluacionNivel1))).Include(x => x.EvaluacionNivelIntro).Where(q => q.EvaluacionID == promocion.EvaluacionID && q.EvaluacionNivelPadreID == p_idNivelPadre && q.EvaluacionNivelEstado == true && !p_idNivelExcluir.Contains(q.EvaluacionNivelID)).OrderBy(q => q.EvaluacionNivelOrden).ToList();
+                //data.Configuration.LazyLoadingEnabled = false;
+            }
+            return lstEvaluacionNivel;
+        }
+
     }
 }
