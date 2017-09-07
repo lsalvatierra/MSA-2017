@@ -44,7 +44,7 @@
         {
             //string url = HttpContext.Current.Request.Url.AbsoluteUri + "/" + item.ParticipanteID + "/" + item.EvaluacionPromocionID.ToString() + "/" + item.EvaluacionMedicionID;
             //string url = @Url.Action("frmEvaluacion","Evaluacion",new { area = "Alumno", idMedicion = IdMedicion, idPromocion = IdPromocion, idEvaluado = IdEvaluado, Externo = Externo })
-            string url = "http://localhost:60303/" + "/Alumno/Evaluacion/frmEvaluacion?idMedicion=" + vEvalMedID.ToString() + "&idPromocion=" + item.EvaluacionPromocionID.ToString() + "&idEvaluado=" + item.ParticipanteID.ToString() + "&Externo=true";
+            string url = "http://msa.esan.edu.pe/Alumno/Evaluacion/frmEvaluacion?idMedicion=" + vEvalMedID.ToString() + "&idPromocion=" + item.EvaluacionPromocionID.ToString() + "&idEvaluado=" + item.ParticipanteID.ToString() + "&Externo=true";
             <tr>
                 <td>@item.Participante.ParticipanteNroDoc</td>
                 <td>@item.Participante.ParticipanteNombreCompleto</td>
