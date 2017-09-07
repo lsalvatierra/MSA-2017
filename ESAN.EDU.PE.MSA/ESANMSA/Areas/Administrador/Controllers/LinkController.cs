@@ -66,6 +66,7 @@ namespace ESANMSA.Areas.Administrador.Controllers
             //    listaCorreos.Add(alumnoCompleto.EMailOpcional);
             //}
             //listaCorreos.Add("lsalvatierra@esan.edu.pe");
+            ViewBag.Email = "elcorreo@esan.edu.pe";
             using (EmailProvider provider = EmailFactory.GetEmailProvider(
                                             EmailFactory.Providers.Default,
                                             ConfigurationManager.AppSettings["EnvioMailCompromisoAlumno"]))
