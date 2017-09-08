@@ -2,13 +2,20 @@
 @{
     ViewBag.Title = "Generación de links";
 }
-@*<script src="~/Scripts/Areas/Administrador/Promocion.js"></script>*@
-<h2>Listado de Promociones</h2>
-@*<input type="button" id="btnNuevaPromocion" class="btnNuevaPromocion btn btn-primary" value="Nuevo Registro" />*@
+<br />
+<div class="alert alert-info" role="alert">
+    <h4>
+        Listado de <strong>promociones</strong>
+    </h4>
+</div>
 <hr />
 <div id="divListadoPromocionLinks"></div>
 <hr />
-<h2>Generación de links</h2>
+<div class="alert alert-info" role="alert">
+    <h4>
+        Generar <strong>links</strong>
+    </h4>
+</div>
 <hr />
 <div id="divListadoParticipanteLinks"></div>
 <hr />
@@ -27,7 +34,7 @@
 <link href="~/Content/themes/base/jquery.ui.datepicker.css" rel="stylesheet" />
 <script>
 
-  
+
 
     CargarListado();
 
@@ -97,7 +104,6 @@
                             esevaluado: state.EsEvaluado
                         }).html(state.EvaluacionMedicionDescripcion + " (" + vFecIni + " - " + vFecFin + ")").appendTo($select);
                     }
-
                 });
             }
         });
@@ -114,8 +120,7 @@
 
         if (vEsEvaluado == "true") {
             $('#lblRutaLink').hide();
-            //$("#lblRutaLink").html("XXXXXXXXXXXXXXXXXXX");
-            //$('#lblRutaLink').attr('href', 'http://example.com');
+
             $.ajax({
                 'url': URL_PAGE + 'Administrador/Link/ListadoParticipanteDetalle',
                 'type': 'POST',
@@ -130,11 +135,10 @@
                 }
             });
         } else {
-            
-            $('#lblRutaLink').show();            
+
+            $('#lblRutaLink').show();
             var url = "http://msa.esan.edu.pe/Alumno/Evaluacion/frmEvaluacion?idMedicion=" + vMedicionID + "&idPromocion=" + vPromocionID + "&idEvaluado=0&Externo=false";
             $('#lblRutaLink').attr('href', url);
-            //$("#lblRutaLink").html(url);
         }
     });
 
@@ -143,12 +147,8 @@
         var vMedicionID = $("#cboMedicionParticipante").val();
         var vEsEvaluado = $('option:selected', ".cboMedicionParticipante").attr('esevaluado');
 
-        //alert(vPromocionID);
-        //alert(vMedicionID);
-        //alert(vEsEvaluado);
-        //return false;
-        if (confirm("Se enviará un correo al siguiente destinatario: " + $("#hidEvaluacionPromocionCorreo").val() + " \n\n ¿Esta seguro de realizar el envío masivo?")) {
-            //alert("Enviando....");
+        if (confirm("Se enviará un correo a cada integrante de la promoción... \n\n\n\n\n ¿Esta seguro de realizar el envío masivo?")) {
+
             $.ajax({
                 'url': URL_PAGE + 'Administrador/Link/EnviarMail',
                 'type': 'POST',
@@ -158,8 +158,6 @@
                     EsEvaluado: vEsEvaluado
                 },
                 'success': function (view) {
-                    //process here
-                    //$("#divListadoPromocionLinks").html(view);
                     alert("Enviado...");
                 }
             });

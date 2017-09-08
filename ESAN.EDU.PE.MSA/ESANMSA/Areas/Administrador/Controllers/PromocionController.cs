@@ -13,7 +13,14 @@ namespace ESANMSA.Areas.Administrador.Controllers
         // GET: Administrador/Promocion
         public ActionResult Index()
         {
-            return View();
+            if (Session["Usuario"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Acceso", new { area = "Seguridad" });
+            }
         }
 
         public ActionResult FormPromocion()

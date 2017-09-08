@@ -8,12 +8,29 @@
 <link href="~/Content/themes/base/jquery.ui.datepicker.css" rel="stylesheet" />
 <link href="~/Content/themes/base/jquery.ui.theme.css" rel="stylesheet" />
 <link href="~/Content/themes/base/jquery.ui.core.css" rel="stylesheet" />
-<h2>Administración de promociones</h2>
-<input type="button" id="btnNuevaPromocion" class="btnNuevaPromocion btn btn-primary" value="Nuevo Registro" />
+
+<script src="~/Scripts/Datatable/js/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/Datatable/js/dataTables.jqueryui.min.js"></script>
+<script src="~/Scripts/Datatable/js/dataTables.bootstrap.min.js"></script>
+<link href="~/Scripts/Datatable/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="~/Scripts/Datatable/css/dataTables.jqueryui.min.css" rel="stylesheet" />
+<link href="~/Scripts/Datatable/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+<link href="~/Content/themes/base/jquery.ui.all.css" rel="stylesheet" />
+<link href="~/Content/themes/base/jquery.ui.datepicker.css" rel="stylesheet" />
+<br />
+<div class="alert alert-info" role="alert">
+    <h4>
+        Parametrizar <strong>promociones</strong>  <input type="button" id="btnNuevaPromocion" class="btnNuevaPromocion btn btn-primary" value="Nuevo Registro" />
+    </h4>
+</div>
+
 <hr />
 <div id="divListadoPromocion"></div>
-<hr />
-<h2>Mediciones</h2>
+<div class="alert alert-info" role="alert">
+    <h4>
+        <strong>Mediciones</strong> <label id="lblMedicionSeleccion" class=""></label>
+    </h4>
+</div>
 <hr />
 <div id="divListadoMedicion"></div>
 
@@ -39,7 +56,7 @@
 
 <script>
 
-    
+
     CargarListado();
 
     function CargarListado() {
@@ -119,6 +136,8 @@
 
     $(document).on('click', '.btnConfigurarMedicion', function () {
         var vPromocionID = $(this).attr("idPromo");
+        var vNomPromo = $(this).attr("nomPromo");
+        $("#lblMedicionSeleccion").text("(" + vNomPromo + ")")
         //alert(vPromocionID);
         //return false;
         $.ajax({
