@@ -10,12 +10,12 @@
     $(".tbListaPromo").DataTable();
 </script>
 @*<style>
-    tr.clicked {
-      background-color: #abc;
-}
+        tr.clicked {
+          background-color: #abc;
+    }
 
-</style>*@
-<table class="tbListaPromo table table-bordered">
+    </style>*@
+<table class="tbListaPromo table table-bordered display">
     <thead>
         <tr>
             <th>C&oacute;digo</th>
@@ -35,7 +35,15 @@
                 <td>@item.EvaluacionPromocionFecIni.Value.ToShortDateString() - @item.EvaluacionPromocionFecFin.Value.ToShortDateString()</td>
                 <td>@item.EvaluacionPromocionCiclo.Count() - @item.EvaluacionPromocionMedicion.Count()</td>
                 <td>@item.EvaluacionPromocionParticipante.Count() </td>
-                <td> <input type="button" class="btnVisualizarParticipantes btn btn-success" value="Visualizar participantes" idPromo="@item.EvaluacionPromocionID" correo="@item.EvaluacionPromocionCorreo" /></td>
+                <td>
+                    @*<a href="btnVisualizarParticipantes" idPromo="@item.EvaluacionPromocionID" correo="@item.EvaluacionPromocionCorreo">
+                <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+            </a>*@
+
+                    <button class="btnVisualizarParticipantes btn btn-success" idPromo="@item.EvaluacionPromocionID" correo="@item.EvaluacionPromocionCorreo">
+                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true">Ver</span>
+                    </button>
+                </td>
             </tr>
         }
     </tbody>

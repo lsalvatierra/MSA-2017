@@ -6,14 +6,19 @@
         listadoPromocion = (List<EvaluacionPromocion>)ViewBag.ListadoPromocion;
     }
 }
-<table class="table table-bordered">
+
+<script>
+    $(".tbListaPromoAdm").DataTable();
+</script>
+
+<table class="tbListaPromoAdm table table-bordered display">
     <thead>
         <tr>
             <th>C&oacute;digo</th>
             <th>Nombre de la Promoci&oacute;n</th>
             <th>Fecha Inicio - Fecha Fin</th>
             <th># Ciclos - # Mediciones</th>
-            <th>Asignar Medici&oacute;n</th>
+            <th>Medici&oacute;n</th>
         </tr>
     </thead>
     <tbody>
@@ -24,7 +29,7 @@
                 <td>@item.EvaluacionPromocionDescripcion</td>
                 <td>@item.EvaluacionPromocionFecIni.Value.ToShortDateString() - @item.EvaluacionPromocionFecFin.Value.ToShortDateString()</td>
                 <td>@item.EvaluacionPromocionCiclo.Count() - @item.EvaluacionPromocionMedicion.Count()</td>
-                <td> <input type="button" class="btnConfigurarMedicion btn btn-success" value="Configurar Medición" idPromo="@item.EvaluacionPromocionID" /></td>
+                <td> <input type="button" class="btnConfigurarMedicion btn btn-success" value="Configurar" idPromo="@item.EvaluacionPromocionID" nomPromo="@item.EvaluacionPromocionDescripcion"/></td>
             </tr>
         }
     </tbody>

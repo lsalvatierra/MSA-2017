@@ -16,7 +16,14 @@ namespace ESANMSA.Areas.Administrador.Controllers
         // GET: Administrador/Link
         public ActionResult Index()
         {
-            return View();
+            if (Session["Usuario"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Acceso", new { area = "Seguridad" });
+            }
         }
 
         public ActionResult ListadoPromocion()
@@ -45,47 +52,57 @@ namespace ESANMSA.Areas.Administrador.Controllers
             return PartialView();
         }
         [HttpPost]
-        public JsonResult EnviarMail(string destinatario)
+        public JsonResult EnviarMail(int EvaluacionPromocionID, int EvaluacionMedicionID, bool EsEvaluado)
         {
-            //var alumno = (Alumno)Session["Alumno"];
-            //var alumnoCompleto = FC.Actor.ObtenerActor(alumno.IdActor);
-            //List<string> listaCorreos = new List<string>();
-            //listaCorreos.Add(alumnoCompleto.Usuario + "@ue.edu.pe");
-            //if (!string.IsNullOrEmpty(alumnoCompleto.EMail))
-            //{
-            //    listaCorreos.Add(alumnoCompleto.EMail);
-            //}
+            //Se obtiene el listado de alumnos para el envío de correo
+            List<PromocionMedicionCicloParticipante> listadoParticipantes = DAPromocionMedicionCicloParticipante.Listado(EvaluacionPromocionID, EvaluacionMedicionID);
 
-            //if (!string.IsNullOrEmpty(alumnoCompleto.EMailAdicional))
-            //{
-            //    listaCorreos.Add(alumnoCompleto.EMailAdicional);
-            //}
+            string evaluado = "&idEvaluado=0&Externo=False";
+            string link = string.Empty;
+            string rutaCorreo = EsEvaluado ? "~/Areas/Administrador/Views/Link/EmailExterno.cshtml" : "~/Areas/Administrador/Views/Link/Email.cshtml";
+            int participanteID = 0;
+            string msjeExito = "Se enviaron los correos a cada participante";
 
-            //if (!string.IsNullOrEmpty(alumnoCompleto.EMailOpcional))
-            //{
-            //    listaCorreos.Add(alumnoCompleto.EMailOpcional);
-            //}
-            //listaCorreos.Add("lsalvatierra@esan.edu.pe");
-            ViewBag.Email = "elcorreo@esan.edu.pe";
-            using (EmailProvider provider = EmailFactory.GetEmailProvider(
-                                            EmailFactory.Providers.Default,
-                                            ConfigurationManager.AppSettings["EnvioMailCompromisoAlumno"]))
+            try
             {
-                //foreach (string email in listaCorreos)
-                //{
-                //    provider.AgregarDireccion(TipoDirecciones.To, email);
-                //}
-                provider.AgregarDireccion(TipoDirecciones.To, destinatario);
-                provider.Enviar(
-                    HttpUtility.HtmlDecode(
-                        General.RenderPartialViewToString(this,
-                            "~/Areas/Administrador/Views/Link/Email.cshtml"
-                             , ViewBag))
-                    , true
-                    , System.Net.Mail.MailPriority.Normal);
+                foreach (PromocionMedicionCicloParticipante participante in listadoParticipantes)
+                {
+                    using (EmailProvider provider = EmailFactory.GetEmailProvider(
+                                                EmailFactory.Providers.Default,
+                                                ConfigurationManager.AppSettings["EnvioMailCompromisoAlumno"]))
+                    {
+                        if (EsEvaluado)
+                        {
+                            participanteID = (int)DAParticipante.ObtenerParticipante(Convert.ToInt32(ConfigurationManager.AppSettings["IdTipoDocumentoDefault"].ToString()), participante.ParticipanteNroDoc).ParticipanteID;
+                            evaluado = "&idEvaluado=" + participanteID + "&Externo=true";
+                        }
+
+                        link = "http://msa.esan.edu.pe/Alumno/Registro/Formulario?idPromocion=" + EvaluacionPromocionID.ToString() +
+                                      "&idMedicion=" + EvaluacionMedicionID.ToString() + evaluado;
+                        ViewBag.LinkEval = link;
+                        ViewBag.LinkVideo = participante.DireccionVideo;
+
+                        provider.AgregarDireccion(TipoDirecciones.To, ConfigurationManager.AppSettings["EsPrueba"] == "1" ? ConfigurationManager.AppSettings["CorreoPrueba"] : participante.ParticipanteNroDoc + ConfigurationManager.AppSettings["DominioCorreoEnvio"]);
+
+                        provider.Enviar(
+                            HttpUtility.HtmlDecode(
+                                General.RenderPartialViewToString(this,
+                                    rutaCorreo
+                                     , ViewBag))
+                            , true
+                            , System.Net.Mail.MailPriority.Normal);
+                    }
+                }
+            }
+            catch 
+            {
+                msjeExito = "A ocurrido un error al enviar el correo.";
             }
 
-            return Json(new { listamedicion = "" }, JsonRequestBehavior.AllowGet);
+
+           
+
+            return Json(new { exito = msjeExito}, JsonRequestBehavior.AllowGet);
         }
 
 
