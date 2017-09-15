@@ -55,44 +55,54 @@ namespace ESANMSA.Areas.Administrador.Controllers
         public JsonResult EnviarMail(int EvaluacionPromocionID, int EvaluacionMedicionID, bool EsEvaluado)
         {
             //Se obtiene el listado de alumnos para el envío de correo
-            //String[] correos = new string[4];
-            //correos[0] = "lchang@esan.edu.pe";
-            //correos[1] = "1302177@esan.edu.pe";
-            //correos[2] = "luis.chang@outlook.com";
-            //correos[3] = "lchang86@gmail.com";
-
             List<PromocionMedicionCicloParticipante> listadoParticipantes = DAPromocionMedicionCicloParticipante.Listado(EvaluacionPromocionID, EvaluacionMedicionID);
 
-            //ViewBag.Email = "elcorreo@esan.edu.pe";
-            string evaluado = string.Empty;
+            string evaluado = "&idEvaluado=0&Externo=False";
             string link = string.Empty;
             string rutaCorreo = EsEvaluado ? "~/Areas/Administrador/Views/Link/EmailExterno.cshtml" : "~/Areas/Administrador/Views/Link/Email.cshtml";
-            foreach (PromocionMedicionCicloParticipante participante in listadoParticipantes)
+            int participanteID = 0;
+            string msjeExito = "Se enviaron los correos a cada participante";
+
+            try
             {
-                using (EmailProvider provider = EmailFactory.GetEmailProvider(
-                                            EmailFactory.Providers.Default,
-                                            ConfigurationManager.AppSettings["EnvioMailCompromisoAlumno"]))
+                foreach (PromocionMedicionCicloParticipante participante in listadoParticipantes)
                 {
-                    int participanteID = (int)DAParticipante.ObtenerParticipante(Convert.ToInt32(ConfigurationManager.AppSettings["IdTipoDocumentoDefault"].ToString()), participante.ParticipanteNroDoc).ParticipanteID;
-                    evaluado = EsEvaluado ? "&idEvaluado=" + participanteID + "&Externo=true" : "&idEvaluado=0&Externo=False";
-                    link = "http://msa.esan.edu.pe/Alumno/Registro/Formulario?idPromocion=" + EvaluacionPromocionID.ToString() +
-                                  "&idMedicion=" + EvaluacionMedicionID.ToString() + evaluado;
-                    ViewBag.LinkEval = link;
-                    ViewBag.LinkVideo = participante.DireccionVideo;
+                    using (EmailProvider provider = EmailFactory.GetEmailProvider(
+                                                EmailFactory.Providers.Default,
+                                                ConfigurationManager.AppSettings["EnvioMailCompromisoAlumno"]))
+                    {
+                        if (EsEvaluado)
+                        {
+                            participanteID = (int)DAParticipante.ObtenerParticipante(Convert.ToInt32(ConfigurationManager.AppSettings["IdTipoDocumentoDefault"].ToString()), participante.ParticipanteNroDoc).ParticipanteID;
+                            evaluado = "&idEvaluado=" + participanteID + "&Externo=true";
+                        }
 
-                    provider.AgregarDireccion(TipoDirecciones.To, ConfigurationManager.AppSettings["EsPrueba"] == "1" ? "1302177@esan.edu.pe" : participante.ParticipanteNroDoc + "@esan.edu.pe");
+                        link = "http://msa.esan.edu.pe/Alumno/Registro/Formulario?idPromocion=" + EvaluacionPromocionID.ToString() +
+                                      "&idMedicion=" + EvaluacionMedicionID.ToString() + evaluado;
+                        ViewBag.LinkEval = link;
+                        ViewBag.LinkVideo = participante.DireccionVideo;
 
-                    provider.Enviar(
-                        HttpUtility.HtmlDecode(
-                            General.RenderPartialViewToString(this,
-                                rutaCorreo
-                                 , ViewBag))
-                        , true
-                        , System.Net.Mail.MailPriority.Normal);
+                        provider.AgregarDireccion(TipoDirecciones.To, ConfigurationManager.AppSettings["EsPrueba"] == "1" ? ConfigurationManager.AppSettings["CorreoPrueba"] : participante.ParticipanteNroDoc + ConfigurationManager.AppSettings["DominioCorreoEnvio"]);
+
+                        provider.Enviar(
+                            HttpUtility.HtmlDecode(
+                                General.RenderPartialViewToString(this,
+                                    rutaCorreo
+                                     , ViewBag))
+                            , true
+                            , System.Net.Mail.MailPriority.Normal);
+                    }
                 }
             }
+            catch 
+            {
+                msjeExito = "A ocurrido un error al enviar el correo.";
+            }
 
-            return Json(new { listamedicion = "" }, JsonRequestBehavior.AllowGet);
+
+           
+
+            return Json(new { exito = msjeExito}, JsonRequestBehavior.AllowGet);
         }
 
 

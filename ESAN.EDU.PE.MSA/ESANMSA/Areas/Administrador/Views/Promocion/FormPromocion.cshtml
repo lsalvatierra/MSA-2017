@@ -34,7 +34,7 @@
         <div class="col-sm-6">
             @*<input type="password" class="form-control" id="inputPassword" placeholder="Password">*@
             <select class="cboEvaluacion">
-                <option id="-1">SELECCIONE</option>
+                <option value="-1">SELECCIONE</option>
                 @foreach (Evaluacion item in listadoEvaluacion)
                 {
                     <option value="@item.EvaluacionID">@item.EvaluacionDescripcion</option>

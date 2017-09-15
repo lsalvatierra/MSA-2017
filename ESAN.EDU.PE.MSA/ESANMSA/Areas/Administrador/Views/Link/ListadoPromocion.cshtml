@@ -36,11 +36,13 @@
                 <td>@item.EvaluacionPromocionCiclo.Count() - @item.EvaluacionPromocionMedicion.Count()</td>
                 <td>@item.EvaluacionPromocionParticipante.Count() </td>
                 <td>
-                        <a href="btnVisualizarParticipantes" idPromo="@item.EvaluacionPromocionID" correo="@item.EvaluacionPromocionCorreo">
-                            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-                        </a>
-                
-                @*<input type="button" class="btnVisualizarParticipantes glyphicon glyphicon-eye-open" value="" idPromo="@item.EvaluacionPromocionID" correo="@item.EvaluacionPromocionCorreo" />*@
+                    @*<a href="btnVisualizarParticipantes" idPromo="@item.EvaluacionPromocionID" correo="@item.EvaluacionPromocionCorreo">
+                <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+            </a>*@
+
+                    <button class="btnVisualizarParticipantes btn btn-success" idPromo="@item.EvaluacionPromocionID" correo="@item.EvaluacionPromocionCorreo">
+                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true">Ver</span>
+                    </button>
                 </td>
             </tr>
         }

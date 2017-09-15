@@ -147,7 +147,7 @@
         var vMedicionID = $("#cboMedicionParticipante").val();
         var vEsEvaluado = $('option:selected', ".cboMedicionParticipante").attr('esevaluado');
 
-        if (confirm("Se enviará un correo a cada integrante de la promoción... \n\n\n\n\n ¿Esta seguro de realizar el envío masivo?")) {
+        if (confirm("Se enviará un correo a cada integrante de la promoción... \n\n ¿Esta seguro de realizar el envío masivo?")) {
 
             $.ajax({
                 'url': URL_PAGE + 'Administrador/Link/EnviarMail',
@@ -157,8 +157,9 @@
                     EvaluacionMedicionID: vMedicionID,
                     EsEvaluado: vEsEvaluado
                 },
-                'success': function (view) {
-                    alert("Enviado...");
+                'success': function (data) {
+                    alert(data.exito);
+                    //alert("Enviado...");
                 }
             });
         }
