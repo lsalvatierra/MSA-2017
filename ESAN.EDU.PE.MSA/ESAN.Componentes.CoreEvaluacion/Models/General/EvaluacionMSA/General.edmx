@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="BDEvaluacionModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="BDEvaluacionModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Evaluacion">
           <Key>
             <PropertyRef Name="EvaluacionID" />
@@ -20,6 +20,7 @@
           <Property Name="EvaluacionAlternativaID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="EvaluacionPreguntaID" Type="bigint" />
           <Property Name="EvaluacionAlternativaDescripcion" Type="nvarchar(max)" />
+          <Property Name="EvaluacionAlternativaValor" Type="int" />
         </EntityType>
         <EntityType Name="EvaluacionCiclo">
           <Key>
@@ -51,6 +52,26 @@
           <Property Name="EvaluacionNivelOrden" Type="int" />
           <Property Name="EvaluacionNivelTipoCalificacion" Type="int" />
           <Property Name="EvaluacionNivelEstado" Type="bit" />
+          <Property Name="EvaluacionNivelDefinicion" Type="nvarchar(max)" />
+          <Property Name="EvaluacionNivelDefinicionPar" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="EvaluacionNivelIntro">
+          <Key>
+            <PropertyRef Name="EvaluacionNivelIntroID" />
+          </Key>
+          <Property Name="EvaluacionNivelIntroID" Type="bigint" Nullable="false" />
+          <Property Name="EvaluacionNivelID" Type="bigint" Nullable="false" />
+          <Property Name="ParrafoIntroduccion1" Type="varchar(max)" />
+          <Property Name="ListaIntroduccion1" Type="varchar(max)" />
+          <Property Name="ParrafoIntroduccion2" Type="varchar(max)" />
+          <Property Name="ListaIntroduccion2" Type="varchar(max)" />
+          <Property Name="ParrafoIntroduccion3" Type="varchar(max)" />
+          <Property Name="ListaAlternativas" Type="varchar(max)" />
+          <Property Name="ParrafoIntroduccionPar1" Type="varchar(max)" />
+          <Property Name="ListaIntroduccionPar1" Type="varchar(max)" />
+          <Property Name="ParrafoIntroduccionPar2" Type="varchar(max)" />
+          <Property Name="ListaIntroduccionPar2" Type="varchar(max)" />
+          <Property Name="ParrafoIntroduccionPar3" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="EvaluacionParticipante">
           <Key>
@@ -68,6 +89,7 @@
           <Property Name="EvaluacionNivelID" Type="bigint" />
           <Property Name="EvaluacionPreguntaDescripcion" Type="nvarchar(max)" />
           <Property Name="EsInversa" Type="bit" />
+          <Property Name="EvaluacionPreguntaPares" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="EvaluacionPromocion">
           <Key>
@@ -106,6 +128,7 @@
           <Property Name="EvaluacionPromMedicionFecIni" Type="datetime" />
           <Property Name="EvaluacionPromMedicionFecFin" Type="datetime" />
           <Property Name="EvaluacionMedicionDescripcion" Type="varchar" MaxLength="200" />
+          <Property Name="EsEvaluado" Type="bit" />
         </EntityType>
         <EntityType Name="EvaluacionPromocionParticipante">
           <Key>
@@ -131,6 +154,15 @@
           <Property Name="EvaluacionMedicionID" Type="int" Nullable="false" />
           <Property Name="ParticipanteEvaluadoID" Type="bigint" />
         </EntityType>
+        <EntityType Name="EvaluacionUsuario">
+          <Key>
+            <PropertyRef Name="UsuarioID" />
+          </Key>
+          <Property Name="UsuarioID" Type="int" Nullable="false" />
+          <Property Name="CodUsuario" Type="varchar" MaxLength="50" />
+          <Property Name="PassUsuario" Type="varchar" MaxLength="50" />
+          <Property Name="TipoRol" Type="char" MaxLength="2" />
+        </EntityType>
         <EntityType Name="Participante">
           <Key>
             <PropertyRef Name="ParticipanteID" />
@@ -148,16 +180,20 @@
           <Property Name="ParticipanteTelefono" Type="varchar" MaxLength="100" />
           <Property Name="ParticipanteTelefonoOpcional" Type="varchar" MaxLength="100" />
           <Property Name="ParticipanteEstado" Type="bit" />
+          <Property Name="TipoRelacionId" Type="int" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
+        <EntityType Name="PromocionMedicionCicloParticipante">
           <Key>
-            <PropertyRef Name="diagram_id" />
+            <PropertyRef Name="PromocionMedicionParticipanteID" />
           </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
+          <Property Name="PromocionMedicionParticipanteID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EvaluacionPromocionID" Type="int" Nullable="false" />
+          <Property Name="EvaluacionCicloID" Type="bigint" Nullable="false" />
+          <Property Name="EvaluacionMedicionID" Type="int" Nullable="false" />
+          <Property Name="ParticipanteNroDoc" Type="varchar" MaxLength="50" />
+          <Property Name="DireccionVideo" Type="nvarchar(max)" />
+          <Property Name="Estado" Type="bit" />
+          <Property Name="ParticipanteCorreo" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="TipoDocumento">
           <Key>
@@ -168,6 +204,74 @@
           <Property Name="TipoDocumentoDescripcion" Type="varchar" MaxLength="100" />
           <Property Name="TipoDocumentoEstado" Type="bit" />
         </EntityType>
+        <EntityType Name="TipoRelacionParticipante">
+          <Key>
+            <PropertyRef Name="TipoRelacionId" />
+          </Key>
+          <Property Name="TipoRelacionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DescripcionTipoRelacion" Type="varchar" MaxLength="150" />
+          <Property Name="EstadoTipoRelacion" Type="char" MaxLength="1" />
+        </EntityType>
+        <Association Name="FK__Evaluacio__Evalu__33D4B598">
+          <End Role="EvaluacionNivel" Type="Self.EvaluacionNivel" Multiplicity="1" />
+          <End Role="EvaluacionNivelIntro" Type="Self.EvaluacionNivelIntro" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EvaluacionNivel">
+              <PropertyRef Name="EvaluacionNivelID" />
+            </Principal>
+            <Dependent Role="EvaluacionNivelIntro">
+              <PropertyRef Name="EvaluacionNivelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Participa__TipoR__4316F928">
+          <End Role="TipoRelacionParticipante" Type="Self.TipoRelacionParticipante" Multiplicity="0..1" />
+          <End Role="Participante" Type="Self.Participante" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoRelacionParticipante">
+              <PropertyRef Name="TipoRelacionId" />
+            </Principal>
+            <Dependent Role="Participante">
+              <PropertyRef Name="TipoRelacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Promocion__Evalu__534D60F1">
+          <End Role="EvaluacionPromocion" Type="Self.EvaluacionPromocion" Multiplicity="1" />
+          <End Role="PromocionMedicionCicloParticipante" Type="Self.PromocionMedicionCicloParticipante" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EvaluacionPromocion">
+              <PropertyRef Name="EvaluacionPromocionID" />
+            </Principal>
+            <Dependent Role="PromocionMedicionCicloParticipante">
+              <PropertyRef Name="EvaluacionPromocionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Promocion__Evalu__5441852A">
+          <End Role="EvaluacionCiclo" Type="Self.EvaluacionCiclo" Multiplicity="1" />
+          <End Role="PromocionMedicionCicloParticipante" Type="Self.PromocionMedicionCicloParticipante" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EvaluacionCiclo">
+              <PropertyRef Name="EvaluacionCicloID" />
+            </Principal>
+            <Dependent Role="PromocionMedicionCicloParticipante">
+              <PropertyRef Name="EvaluacionCicloID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Promocion__Evalu__5535A963">
+          <End Role="EvaluacionMedicion" Type="Self.EvaluacionMedicion" Multiplicity="1" />
+          <End Role="PromocionMedicionCicloParticipante" Type="Self.PromocionMedicionCicloParticipante" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EvaluacionMedicion">
+              <PropertyRef Name="EvaluacionMedicionID" />
+            </Principal>
+            <Dependent Role="PromocionMedicionCicloParticipante">
+              <PropertyRef Name="EvaluacionMedicionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_EvaluacionAlternativa_EvaluacionPregunta">
           <End Role="EvaluacionPregunta" Type="Self.EvaluacionPregunta" Multiplicity="0..1" />
           <End Role="EvaluacionAlternativa" Type="Self.EvaluacionAlternativa" Multiplicity="*" />
@@ -420,12 +524,25 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="PromedioEvaluacionxCicloNivel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdEvaluacion" Type="int" Mode="In" />
+          <Parameter Name="IdNivelPadre" Type="int" Mode="In" />
+          <Parameter Name="IdPromocion" Type="int" Mode="In" />
+          <Parameter Name="IdCiclo" Type="int" Mode="In" />
+          <Parameter Name="IdParticipante" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_PromedioEvaluacion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdParticipanteEvaluar" Type="int" Mode="In" />
+          <Parameter Name="IdPromocion" Type="int" Mode="In" />
+          <Parameter Name="IdMedicion" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="BDEvaluacionModelStoreContainer">
           <EntitySet Name="Evaluacion" EntityType="Self.Evaluacion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EvaluacionAlternativa" EntityType="Self.EvaluacionAlternativa" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EvaluacionCiclo" EntityType="Self.EvaluacionCiclo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EvaluacionMedicion" EntityType="Self.EvaluacionMedicion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EvaluacionNivel" EntityType="Self.EvaluacionNivel" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EvaluacionNivelIntro" EntityType="Self.EvaluacionNivelIntro" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EvaluacionParticipante" EntityType="Self.EvaluacionParticipante" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EvaluacionPregunta" EntityType="Self.EvaluacionPregunta" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EvaluacionPromocion" EntityType="Self.EvaluacionPromocion" Schema="dbo" store:Type="Tables" />
@@ -433,9 +550,31 @@
           <EntitySet Name="EvaluacionPromocionMedicion" EntityType="Self.EvaluacionPromocionMedicion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EvaluacionPromocionParticipante" EntityType="Self.EvaluacionPromocionParticipante" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EvaluacionRespuesta" EntityType="Self.EvaluacionRespuesta" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EvaluacionUsuario" EntityType="Self.EvaluacionUsuario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Participante" EntityType="Self.Participante" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PromocionMedicionCicloParticipante" EntityType="Self.PromocionMedicionCicloParticipante" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TipoDocumento" EntityType="Self.TipoDocumento" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoRelacionParticipante" EntityType="Self.TipoRelacionParticipante" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Evaluacio__Evalu__33D4B598" Association="Self.FK__Evaluacio__Evalu__33D4B598">
+            <End Role="EvaluacionNivel" EntitySet="EvaluacionNivel" />
+            <End Role="EvaluacionNivelIntro" EntitySet="EvaluacionNivelIntro" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Participa__TipoR__4316F928" Association="Self.FK__Participa__TipoR__4316F928">
+            <End Role="TipoRelacionParticipante" EntitySet="TipoRelacionParticipante" />
+            <End Role="Participante" EntitySet="Participante" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Promocion__Evalu__534D60F1" Association="Self.FK__Promocion__Evalu__534D60F1">
+            <End Role="EvaluacionPromocion" EntitySet="EvaluacionPromocion" />
+            <End Role="PromocionMedicionCicloParticipante" EntitySet="PromocionMedicionCicloParticipante" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Promocion__Evalu__5441852A" Association="Self.FK__Promocion__Evalu__5441852A">
+            <End Role="EvaluacionCiclo" EntitySet="EvaluacionCiclo" />
+            <End Role="PromocionMedicionCicloParticipante" EntitySet="PromocionMedicionCicloParticipante" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Promocion__Evalu__5535A963" Association="Self.FK__Promocion__Evalu__5535A963">
+            <End Role="EvaluacionMedicion" EntitySet="EvaluacionMedicion" />
+            <End Role="PromocionMedicionCicloParticipante" EntitySet="PromocionMedicionCicloParticipante" />
+          </AssociationSet>
           <AssociationSet Name="FK_EvaluacionAlternativa_EvaluacionPregunta" Association="Self.FK_EvaluacionAlternativa_EvaluacionPregunta">
             <End Role="EvaluacionPregunta" EntitySet="EvaluacionPregunta" />
             <End Role="EvaluacionAlternativa" EntitySet="EvaluacionAlternativa" />
@@ -525,6 +664,142 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BDEvaluacionModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="BDEvaluacionEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Evaluacion" EntityType="BDEvaluacionModel.Evaluacion" />
+          <EntitySet Name="EvaluacionAlternativa" EntityType="BDEvaluacionModel.EvaluacionAlternativa" />
+          <EntitySet Name="EvaluacionCiclo" EntityType="BDEvaluacionModel.EvaluacionCiclo" />
+          <EntitySet Name="EvaluacionMedicion" EntityType="BDEvaluacionModel.EvaluacionMedicion" />
+          <EntitySet Name="EvaluacionNivel" EntityType="BDEvaluacionModel.EvaluacionNivel" />
+          <EntitySet Name="EvaluacionNivelIntro" EntityType="BDEvaluacionModel.EvaluacionNivelIntro" />
+          <EntitySet Name="EvaluacionParticipante" EntityType="BDEvaluacionModel.EvaluacionParticipante" />
+          <EntitySet Name="EvaluacionPregunta" EntityType="BDEvaluacionModel.EvaluacionPregunta" />
+          <EntitySet Name="EvaluacionPromocion" EntityType="BDEvaluacionModel.EvaluacionPromocion" />
+          <EntitySet Name="EvaluacionPromocionCiclo" EntityType="BDEvaluacionModel.EvaluacionPromocionCiclo" />
+          <EntitySet Name="EvaluacionPromocionMedicion" EntityType="BDEvaluacionModel.EvaluacionPromocionMedicion" />
+          <EntitySet Name="EvaluacionPromocionParticipante" EntityType="BDEvaluacionModel.EvaluacionPromocionParticipante" />
+          <EntitySet Name="EvaluacionRespuesta" EntityType="BDEvaluacionModel.EvaluacionRespuesta" />
+          <EntitySet Name="EvaluacionUsuario" EntityType="BDEvaluacionModel.EvaluacionUsuario" />
+          <EntitySet Name="Participante" EntityType="BDEvaluacionModel.Participante" />
+          <EntitySet Name="TipoDocumento" EntityType="BDEvaluacionModel.TipoDocumento" />
+          <EntitySet Name="TipoRelacionParticipante" EntityType="BDEvaluacionModel.TipoRelacionParticipante" />
+          <AssociationSet Name="FK_EvaluacionCiclo_Evaluacion" Association="BDEvaluacionModel.FK_EvaluacionCiclo_Evaluacion">
+            <End Role="Evaluacion" EntitySet="Evaluacion" />
+            <End Role="EvaluacionCiclo" EntitySet="EvaluacionCiclo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EvaluacionNivel_Evaluacion" Association="BDEvaluacionModel.FK_EvaluacionNivel_Evaluacion">
+            <End Role="Evaluacion" EntitySet="Evaluacion" />
+            <End Role="EvaluacionNivel" EntitySet="EvaluacionNivel" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EvaluacionPromocion_Evaluacion" Association="BDEvaluacionModel.FK_EvaluacionPromocion_Evaluacion">
+            <End Role="Evaluacion" EntitySet="Evaluacion" />
+            <End Role="EvaluacionPromocion" EntitySet="EvaluacionPromocion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EvaluacionAlternativa_EvaluacionPregunta" Association="BDEvaluacionModel.FK_EvaluacionAlternativa_EvaluacionPregunta">
+            <End Role="EvaluacionPregunta" EntitySet="EvaluacionPregunta" />
+            <End Role="EvaluacionAlternativa" EntitySet="EvaluacionAlternativa" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EvaluacionRespuesta_EvaluacionAlternativa" Association="BDEvaluacionModel.FK_EvaluacionRespuesta_EvaluacionAlternativa">
+            <End Role="EvaluacionAlternativa" EntitySet="EvaluacionAlternativa" />
+            <End Role="EvaluacionRespuesta" EntitySet="EvaluacionRespuesta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EvaluacionMedicion_EvaluacionCiclo" Association="BDEvaluacionModel.FK_EvaluacionMedicion_EvaluacionCiclo">
+            <End Role="EvaluacionCiclo" EntitySet="EvaluacionCiclo" />
+            <End Role="EvaluacionMedicion" EntitySet="EvaluacionMedicion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EvaluacionPromocionCiclo_EvaluacionCiclo" Association="BDEvaluacionModel.FK_EvaluacionPromocionCiclo_EvaluacionCiclo">
+            <End Role="EvaluacionCiclo" EntitySet="EvaluacionCiclo" />
+            <End Role="EvaluacionPromocionCiclo" EntitySet="EvaluacionPromocionCiclo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EvaluacionPromocionMedicion_EvaluacionCiclo" Association="BDEvaluacionModel.FK_EvaluacionPromocionMedicion_EvaluacionCiclo">
+            <End Role="EvaluacionCiclo" EntitySet="EvaluacionCiclo" />
+            <End Role="EvaluacionPromocionMedicion" EntitySet="EvaluacionPromocionMedicion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EvaluacionPromocionMedicion_EvaluacionMedicion" Association="BDEvaluacionModel.FK_EvaluacionPromocionMedicion_EvaluacionMedicion">
+            <End Role="EvaluacionMedicion" EntitySet="EvaluacionMedicion" />
+            <End Role="EvaluacionPromocionMedicion" EntitySet="EvaluacionPromocionMedicion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EvaluacionPromocionParticipante_EvaluacionMedicion" Association="BDEvaluacionModel.FK_EvaluacionPromocionParticipante_EvaluacionMedicion">
+            <End Role="EvaluacionMedicion" EntitySet="EvaluacionMedicion" />
+            <End Role="EvaluacionPromocionParticipante" EntitySet="EvaluacionPromocionParticipante" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EvaluacionRespuesta_EvaluacionMedicion" Association="BDEvaluacionModel.FK_EvaluacionRespuesta_EvaluacionMedicion">
+            <End Role="EvaluacionMedicion" EntitySet="EvaluacionMedicion" />
+            <End Role="EvaluacionRespuesta" EntitySet="EvaluacionRespuesta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Evaluacio__Evalu__5DCAEF64" Association="BDEvaluacionModel.FK__Evaluacio__Evalu__5DCAEF64">
+            <End Role="EvaluacionNivel" EntitySet="EvaluacionNivel" />
+            <End Role="EvaluacionNivelIntro" EntitySet="EvaluacionNivelIntro" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EvaluacionNivel_EvaluacionNivel" Association="BDEvaluacionModel.FK_EvaluacionNivel_EvaluacionNivel">
+            <End Role="EvaluacionNivel" EntitySet="EvaluacionNivel" />
+            <End Role="EvaluacionNivel1" EntitySet="EvaluacionNivel" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EvaluacionPregunta_EvaluacionNivel" Association="BDEvaluacionModel.FK_EvaluacionPregunta_EvaluacionNivel">
+            <End Role="EvaluacionNivel" EntitySet="EvaluacionNivel" />
+            <End Role="EvaluacionPregunta" EntitySet="EvaluacionPregunta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EvaluacionPromocionCiclo_EvaluacionPromocion" Association="BDEvaluacionModel.FK_EvaluacionPromocionCiclo_EvaluacionPromocion">
+            <End Role="EvaluacionPromocion" EntitySet="EvaluacionPromocion" />
+            <End Role="EvaluacionPromocionCiclo" EntitySet="EvaluacionPromocionCiclo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EvaluacionPromocionMedicion_EvaluacionPromocion" Association="BDEvaluacionModel.FK_EvaluacionPromocionMedicion_EvaluacionPromocion">
+            <End Role="EvaluacionPromocion" EntitySet="EvaluacionPromocion" />
+            <End Role="EvaluacionPromocionMedicion" EntitySet="EvaluacionPromocionMedicion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EvaluacionPromocionParticipante_EvaluacionPromocion" Association="BDEvaluacionModel.FK_EvaluacionPromocionParticipante_EvaluacionPromocion">
+            <End Role="EvaluacionPromocion" EntitySet="EvaluacionPromocion" />
+            <End Role="EvaluacionPromocionParticipante" EntitySet="EvaluacionPromocionParticipante" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EvaluacionRespuesta_EvaluacionPromocion" Association="BDEvaluacionModel.FK_EvaluacionRespuesta_EvaluacionPromocion">
+            <End Role="EvaluacionPromocion" EntitySet="EvaluacionPromocion" />
+            <End Role="EvaluacionRespuesta" EntitySet="EvaluacionRespuesta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EvaluacionPromocionParticipante_Participante" Association="BDEvaluacionModel.FK_EvaluacionPromocionParticipante_Participante">
+            <End Role="Participante" EntitySet="Participante" />
+            <End Role="EvaluacionPromocionParticipante" EntitySet="EvaluacionPromocionParticipante" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EvaluacionRespuesta_Participante" Association="BDEvaluacionModel.FK_EvaluacionRespuesta_Participante">
+            <End Role="Participante" EntitySet="Participante" />
+            <End Role="EvaluacionRespuesta" EntitySet="EvaluacionRespuesta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EvaluacionRespuesta_Participante1" Association="BDEvaluacionModel.FK_EvaluacionRespuesta_Participante1">
+            <End Role="Participante" EntitySet="Participante" />
+            <End Role="EvaluacionRespuesta" EntitySet="EvaluacionRespuesta" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Participa__TipoR__3F466844" Association="BDEvaluacionModel.FK__Participa__TipoR__3F466844">
+            <End Role="TipoRelacionParticipante" EntitySet="TipoRelacionParticipante" />
+            <End Role="Participante" EntitySet="Participante" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Participante_TipoDocumento" Association="BDEvaluacionModel.FK_Participante_TipoDocumento">
+            <End Role="TipoDocumento" EntitySet="TipoDocumento" />
+            <End Role="Participante" EntitySet="Participante" />
+          </AssociationSet>
+          <FunctionImport Name="PromedioEvaluacionxCicloNivel" ReturnType="Collection(BDEvaluacionModel.PromedioEvaluacionxCicloNivel_Result)">
+            <Parameter Name="IdEvaluacion" Mode="In" Type="Int32" />
+            <Parameter Name="IdNivelPadre" Mode="In" Type="Int32" />
+            <Parameter Name="IdPromocion" Mode="In" Type="Int32" />
+            <Parameter Name="IdCiclo" Mode="In" Type="Int32" />
+            <Parameter Name="IdParticipante" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_PromedioEvaluacion" ReturnType="Collection(BDEvaluacionModel.sp_PromedioEvaluacion_Result)">
+            <Parameter Name="IdParticipanteEvaluar" Mode="In" Type="Int32" />
+            <Parameter Name="IdPromocion" Mode="In" Type="Int32" />
+            <Parameter Name="IdMedicion" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="PromocionMedicionCicloParticipante" EntityType="BDEvaluacionModel.PromocionMedicionCicloParticipante" />
+          <AssociationSet Name="FK__Promocion__Evalu__70DDC3D8" Association="BDEvaluacionModel.FK__Promocion__Evalu__70DDC3D8">
+            <End Role="EvaluacionCiclo" EntitySet="EvaluacionCiclo" />
+            <End Role="PromocionMedicionCicloParticipante" EntitySet="PromocionMedicionCicloParticipante" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Promocion__Evalu__71D1E811" Association="BDEvaluacionModel.FK__Promocion__Evalu__71D1E811">
+            <End Role="EvaluacionMedicion" EntitySet="EvaluacionMedicion" />
+            <End Role="PromocionMedicionCicloParticipante" EntitySet="PromocionMedicionCicloParticipante" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Promocion__Evalu__6FE99F9F" Association="BDEvaluacionModel.FK__Promocion__Evalu__6FE99F9F">
+            <End Role="EvaluacionPromocion" EntitySet="EvaluacionPromocion" />
+            <End Role="PromocionMedicionCicloParticipante" EntitySet="PromocionMedicionCicloParticipante" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="Evaluacion">
           <Key>
             <PropertyRef Name="EvaluacionID" />
@@ -532,9 +807,9 @@
           <Property Name="EvaluacionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="EvaluacionDescripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="EvaluacionEstado" Type="Boolean" />
-          <NavigationProperty Name="EvaluacionCiclo" Relationship="Self.FK_EvaluacionCiclo_Evaluacion" FromRole="Evaluacion" ToRole="EvaluacionCiclo" />
-          <NavigationProperty Name="EvaluacionNivel" Relationship="Self.FK_EvaluacionNivel_Evaluacion" FromRole="Evaluacion" ToRole="EvaluacionNivel" />
-          <NavigationProperty Name="EvaluacionPromocion" Relationship="Self.FK_EvaluacionPromocion_Evaluacion" FromRole="Evaluacion" ToRole="EvaluacionPromocion" />
+          <NavigationProperty Name="EvaluacionCiclo" Relationship="BDEvaluacionModel.FK_EvaluacionCiclo_Evaluacion" FromRole="Evaluacion" ToRole="EvaluacionCiclo" />
+          <NavigationProperty Name="EvaluacionNivel" Relationship="BDEvaluacionModel.FK_EvaluacionNivel_Evaluacion" FromRole="Evaluacion" ToRole="EvaluacionNivel" />
+          <NavigationProperty Name="EvaluacionPromocion" Relationship="BDEvaluacionModel.FK_EvaluacionPromocion_Evaluacion" FromRole="Evaluacion" ToRole="EvaluacionPromocion" />
         </EntityType>
         <EntityType Name="EvaluacionAlternativa">
           <Key>
@@ -543,8 +818,9 @@
           <Property Name="EvaluacionAlternativaID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="EvaluacionPreguntaID" Type="Int64" />
           <Property Name="EvaluacionAlternativaDescripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="EvaluacionPregunta" Relationship="Self.FK_EvaluacionAlternativa_EvaluacionPregunta" FromRole="EvaluacionAlternativa" ToRole="EvaluacionPregunta" />
-          <NavigationProperty Name="EvaluacionRespuesta" Relationship="Self.FK_EvaluacionRespuesta_EvaluacionAlternativa" FromRole="EvaluacionAlternativa" ToRole="EvaluacionRespuesta" />
+          <Property Name="EvaluacionAlternativaValor" Type="Int32" />
+          <NavigationProperty Name="EvaluacionPregunta" Relationship="BDEvaluacionModel.FK_EvaluacionAlternativa_EvaluacionPregunta" FromRole="EvaluacionAlternativa" ToRole="EvaluacionPregunta" />
+          <NavigationProperty Name="EvaluacionRespuesta" Relationship="BDEvaluacionModel.FK_EvaluacionRespuesta_EvaluacionAlternativa" FromRole="EvaluacionAlternativa" ToRole="EvaluacionRespuesta" />
         </EntityType>
         <EntityType Name="EvaluacionCiclo">
           <Key>
@@ -555,10 +831,11 @@
           <Property Name="EvaluacionCicloNro" Type="Int32" Nullable="false" />
           <Property Name="EvaluacionCicloDescripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="EvaluacionCicloEstado" Type="Boolean" />
-          <NavigationProperty Name="Evaluacion" Relationship="Self.FK_EvaluacionCiclo_Evaluacion" FromRole="EvaluacionCiclo" ToRole="Evaluacion" />
-          <NavigationProperty Name="EvaluacionMedicion" Relationship="Self.FK_EvaluacionMedicion_EvaluacionCiclo" FromRole="EvaluacionCiclo" ToRole="EvaluacionMedicion" />
-          <NavigationProperty Name="EvaluacionPromocionCiclo" Relationship="Self.FK_EvaluacionPromocionCiclo_EvaluacionCiclo" FromRole="EvaluacionCiclo" ToRole="EvaluacionPromocionCiclo" />
+          <NavigationProperty Name="Evaluacion" Relationship="BDEvaluacionModel.FK_EvaluacionCiclo_Evaluacion" FromRole="EvaluacionCiclo" ToRole="Evaluacion" />
+          <NavigationProperty Name="EvaluacionMedicion" Relationship="BDEvaluacionModel.FK_EvaluacionMedicion_EvaluacionCiclo" FromRole="EvaluacionCiclo" ToRole="EvaluacionMedicion" />
+          <NavigationProperty Name="EvaluacionPromocionCiclo" Relationship="BDEvaluacionModel.FK_EvaluacionPromocionCiclo_EvaluacionCiclo" FromRole="EvaluacionCiclo" ToRole="EvaluacionPromocionCiclo" />
           <NavigationProperty Name="EvaluacionPromocionMedicion" Relationship="BDEvaluacionModel.FK_EvaluacionPromocionMedicion_EvaluacionCiclo" FromRole="EvaluacionCiclo" ToRole="EvaluacionPromocionMedicion" />
+          <NavigationProperty Name="PromocionMedicionCicloParticipante" Relationship="BDEvaluacionModel.FK__Promocion__Evalu__70DDC3D8" FromRole="EvaluacionCiclo" ToRole="PromocionMedicionCicloParticipante" />
         </EntityType>
         <EntityType Name="EvaluacionMedicion">
           <Key>
@@ -568,10 +845,11 @@
           <Property Name="EvaluacionCicloID" Type="Int64" Nullable="false" />
           <Property Name="EvaluacionMedicionDescripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="EvaluacionMedicionEstado" Type="Boolean" />
-          <NavigationProperty Name="EvaluacionCiclo" Relationship="Self.FK_EvaluacionMedicion_EvaluacionCiclo" FromRole="EvaluacionMedicion" ToRole="EvaluacionCiclo" />
-          <NavigationProperty Name="EvaluacionRespuesta" Relationship="Self.FK_EvaluacionRespuesta_EvaluacionMedicion" FromRole="EvaluacionMedicion" ToRole="EvaluacionRespuesta" />
+          <NavigationProperty Name="EvaluacionCiclo" Relationship="BDEvaluacionModel.FK_EvaluacionMedicion_EvaluacionCiclo" FromRole="EvaluacionMedicion" ToRole="EvaluacionCiclo" />
           <NavigationProperty Name="EvaluacionPromocionMedicion" Relationship="BDEvaluacionModel.FK_EvaluacionPromocionMedicion_EvaluacionMedicion" FromRole="EvaluacionMedicion" ToRole="EvaluacionPromocionMedicion" />
           <NavigationProperty Name="EvaluacionPromocionParticipante" Relationship="BDEvaluacionModel.FK_EvaluacionPromocionParticipante_EvaluacionMedicion" FromRole="EvaluacionMedicion" ToRole="EvaluacionPromocionParticipante" />
+          <NavigationProperty Name="EvaluacionRespuesta" Relationship="BDEvaluacionModel.FK_EvaluacionRespuesta_EvaluacionMedicion" FromRole="EvaluacionMedicion" ToRole="EvaluacionRespuesta" />
+          <NavigationProperty Name="PromocionMedicionCicloParticipante" Relationship="BDEvaluacionModel.FK__Promocion__Evalu__71D1E811" FromRole="EvaluacionMedicion" ToRole="PromocionMedicionCicloParticipante" />
         </EntityType>
         <EntityType Name="EvaluacionNivel">
           <Key>
@@ -584,10 +862,32 @@
           <Property Name="EvaluacionNivelOrden" Type="Int32" />
           <Property Name="EvaluacionNivelTipoCalificacion" Type="Int32" />
           <Property Name="EvaluacionNivelEstado" Type="Boolean" />
-          <NavigationProperty Name="Evaluacion" Relationship="Self.FK_EvaluacionNivel_Evaluacion" FromRole="EvaluacionNivel" ToRole="Evaluacion" />
-          <NavigationProperty Name="EvaluacionNivel1" Relationship="Self.FK_EvaluacionNivel_EvaluacionNivel" FromRole="EvaluacionNivel" ToRole="EvaluacionNivel1" />
-          <NavigationProperty Name="EvaluacionNivel2" Relationship="Self.FK_EvaluacionNivel_EvaluacionNivel" FromRole="EvaluacionNivel1" ToRole="EvaluacionNivel" />
-          <NavigationProperty Name="EvaluacionPregunta" Relationship="Self.FK_EvaluacionPregunta_EvaluacionNivel" FromRole="EvaluacionNivel" ToRole="EvaluacionPregunta" />
+          <Property Name="EvaluacionNivelDefinicion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EvaluacionNivelDefinicionPar" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Evaluacion" Relationship="BDEvaluacionModel.FK_EvaluacionNivel_Evaluacion" FromRole="EvaluacionNivel" ToRole="Evaluacion" />
+          <NavigationProperty Name="EvaluacionNivelIntro" Relationship="BDEvaluacionModel.FK__Evaluacio__Evalu__5DCAEF64" FromRole="EvaluacionNivel" ToRole="EvaluacionNivelIntro" />
+          <NavigationProperty Name="EvaluacionNivel1" Relationship="BDEvaluacionModel.FK_EvaluacionNivel_EvaluacionNivel" FromRole="EvaluacionNivel" ToRole="EvaluacionNivel1" />
+          <NavigationProperty Name="EvaluacionNivel2" Relationship="BDEvaluacionModel.FK_EvaluacionNivel_EvaluacionNivel" FromRole="EvaluacionNivel1" ToRole="EvaluacionNivel" />
+          <NavigationProperty Name="EvaluacionPregunta" Relationship="BDEvaluacionModel.FK_EvaluacionPregunta_EvaluacionNivel" FromRole="EvaluacionNivel" ToRole="EvaluacionPregunta" />
+        </EntityType>
+        <EntityType Name="EvaluacionNivelIntro">
+          <Key>
+            <PropertyRef Name="EvaluacionNivelIntroID" />
+          </Key>
+          <Property Name="EvaluacionNivelIntroID" Type="Int64" Nullable="false" />
+          <Property Name="EvaluacionNivelID" Type="Int64" Nullable="false" />
+          <Property Name="ParrafoIntroduccion1" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ListaIntroduccion1" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ParrafoIntroduccion2" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ListaIntroduccion2" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ParrafoIntroduccion3" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ListaAlternativas" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ParrafoIntroduccionPar1" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ListaIntroduccionPar1" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ParrafoIntroduccionPar2" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ListaIntroduccionPar2" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ParrafoIntroduccionPar3" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EvaluacionNivel" Relationship="BDEvaluacionModel.FK__Evaluacio__Evalu__5DCAEF64" FromRole="EvaluacionNivelIntro" ToRole="EvaluacionNivel" />
         </EntityType>
         <EntityType Name="EvaluacionParticipante">
           <Key>
@@ -605,8 +905,9 @@
           <Property Name="EvaluacionNivelID" Type="Int64" />
           <Property Name="EvaluacionPreguntaDescripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="EsInversa" Type="Boolean" />
-          <NavigationProperty Name="EvaluacionAlternativa" Relationship="Self.FK_EvaluacionAlternativa_EvaluacionPregunta" FromRole="EvaluacionPregunta" ToRole="EvaluacionAlternativa" />
-          <NavigationProperty Name="EvaluacionNivel" Relationship="Self.FK_EvaluacionPregunta_EvaluacionNivel" FromRole="EvaluacionPregunta" ToRole="EvaluacionNivel" />
+          <Property Name="EvaluacionPreguntaPares" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="EvaluacionAlternativa" Relationship="BDEvaluacionModel.FK_EvaluacionAlternativa_EvaluacionPregunta" FromRole="EvaluacionPregunta" ToRole="EvaluacionAlternativa" />
+          <NavigationProperty Name="EvaluacionNivel" Relationship="BDEvaluacionModel.FK_EvaluacionPregunta_EvaluacionNivel" FromRole="EvaluacionPregunta" ToRole="EvaluacionNivel" />
         </EntityType>
         <EntityType Name="EvaluacionPromocion">
           <Key>
@@ -616,15 +917,16 @@
           <Property Name="EvaluacionID" Type="Int32" Nullable="false" />
           <Property Name="EvaluacionPromocionCodigo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="EvaluacionPromocionDescripcion" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="EvaluacionPromocionCorreo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="EvaluacionPromocionFecIni" Type="DateTime" Precision="3" />
           <Property Name="EvaluacionPromocionFecFin" Type="DateTime" Precision="3" />
           <Property Name="EvaluacionPromocionEstado" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Evaluacion" Relationship="Self.FK_EvaluacionPromocion_Evaluacion" FromRole="EvaluacionPromocion" ToRole="Evaluacion" />
-          <NavigationProperty Name="EvaluacionPromocionCiclo" Relationship="Self.FK_EvaluacionPromocionCiclo_EvaluacionPromocion" FromRole="EvaluacionPromocion" ToRole="EvaluacionPromocionCiclo" />
-          <NavigationProperty Name="EvaluacionRespuesta" Relationship="Self.FK_EvaluacionRespuesta_EvaluacionPromocion" FromRole="EvaluacionPromocion" ToRole="EvaluacionRespuesta" />
-          <Property Name="EvaluacionPromocionCorreo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Evaluacion" Relationship="BDEvaluacionModel.FK_EvaluacionPromocion_Evaluacion" FromRole="EvaluacionPromocion" ToRole="Evaluacion" />
+          <NavigationProperty Name="EvaluacionPromocionCiclo" Relationship="BDEvaluacionModel.FK_EvaluacionPromocionCiclo_EvaluacionPromocion" FromRole="EvaluacionPromocion" ToRole="EvaluacionPromocionCiclo" />
           <NavigationProperty Name="EvaluacionPromocionMedicion" Relationship="BDEvaluacionModel.FK_EvaluacionPromocionMedicion_EvaluacionPromocion" FromRole="EvaluacionPromocion" ToRole="EvaluacionPromocionMedicion" />
           <NavigationProperty Name="EvaluacionPromocionParticipante" Relationship="BDEvaluacionModel.FK_EvaluacionPromocionParticipante_EvaluacionPromocion" FromRole="EvaluacionPromocion" ToRole="EvaluacionPromocionParticipante" />
+          <NavigationProperty Name="EvaluacionRespuesta" Relationship="BDEvaluacionModel.FK_EvaluacionRespuesta_EvaluacionPromocion" FromRole="EvaluacionPromocion" ToRole="EvaluacionRespuesta" />
+          <NavigationProperty Name="PromocionMedicionCicloParticipante" Relationship="BDEvaluacionModel.FK__Promocion__Evalu__6FE99F9F" FromRole="EvaluacionPromocion" ToRole="PromocionMedicionCicloParticipante" />
         </EntityType>
         <EntityType Name="EvaluacionPromocionCiclo">
           <Key>
@@ -635,10 +937,41 @@
           <Property Name="EvaluacionCicloID" Type="Int64" Nullable="false" />
           <Property Name="EvaluacionPromCicloFecIni" Type="DateTime" Precision="3" />
           <Property Name="EvaluacionPromCicloFecFin" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="EvaluacionCiclo" Relationship="Self.FK_EvaluacionPromocionCiclo_EvaluacionCiclo" FromRole="EvaluacionPromocionCiclo" ToRole="EvaluacionCiclo" />
-          <NavigationProperty Name="EvaluacionPromocion" Relationship="Self.FK_EvaluacionPromocionCiclo_EvaluacionPromocion" FromRole="EvaluacionPromocionCiclo" ToRole="EvaluacionPromocion" />
           <Property Name="EvaluacionCicloNro" Type="Int32" />
           <Property Name="EvaluacionCicloDescripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EvaluacionCiclo" Relationship="BDEvaluacionModel.FK_EvaluacionPromocionCiclo_EvaluacionCiclo" FromRole="EvaluacionPromocionCiclo" ToRole="EvaluacionCiclo" />
+          <NavigationProperty Name="EvaluacionPromocion" Relationship="BDEvaluacionModel.FK_EvaluacionPromocionCiclo_EvaluacionPromocion" FromRole="EvaluacionPromocionCiclo" ToRole="EvaluacionPromocion" />
+        </EntityType>
+        <EntityType Name="EvaluacionPromocionMedicion">
+          <Key>
+            <PropertyRef Name="EvaluacionPromocionID" />
+            <PropertyRef Name="EvaluacionCicloID" />
+            <PropertyRef Name="EvaluacionMedicionID" />
+          </Key>
+          <Property Name="EvaluacionPromocionID" Type="Int32" Nullable="false" />
+          <Property Name="EvaluacionCicloID" Type="Int64" Nullable="false" />
+          <Property Name="EvaluacionMedicionID" Type="Int32" Nullable="false" />
+          <Property Name="EvaluacionPromMedicionFecIni" Type="DateTime" Precision="3" />
+          <Property Name="EvaluacionPromMedicionFecFin" Type="DateTime" Precision="3" />
+          <Property Name="EvaluacionMedicionDescripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="EsEvaluado" Type="Boolean" />
+          <NavigationProperty Name="EvaluacionCiclo" Relationship="BDEvaluacionModel.FK_EvaluacionPromocionMedicion_EvaluacionCiclo" FromRole="EvaluacionPromocionMedicion" ToRole="EvaluacionCiclo" />
+          <NavigationProperty Name="EvaluacionMedicion" Relationship="BDEvaluacionModel.FK_EvaluacionPromocionMedicion_EvaluacionMedicion" FromRole="EvaluacionPromocionMedicion" ToRole="EvaluacionMedicion" />
+          <NavigationProperty Name="EvaluacionPromocion" Relationship="BDEvaluacionModel.FK_EvaluacionPromocionMedicion_EvaluacionPromocion" FromRole="EvaluacionPromocionMedicion" ToRole="EvaluacionPromocion" />
+        </EntityType>
+        <EntityType Name="EvaluacionPromocionParticipante">
+          <Key>
+            <PropertyRef Name="EvaluacionPromocionID" />
+            <PropertyRef Name="ParticipanteID" />
+            <PropertyRef Name="EvaluacionMedicionID" />
+          </Key>
+          <Property Name="EvaluacionPromocionID" Type="Int32" Nullable="false" />
+          <Property Name="ParticipanteID" Type="Int64" Nullable="false" />
+          <Property Name="EvaluacionMedicionID" Type="Int32" Nullable="false" />
+          <Property Name="EsExterno" Type="Boolean" />
+          <NavigationProperty Name="EvaluacionMedicion" Relationship="BDEvaluacionModel.FK_EvaluacionPromocionParticipante_EvaluacionMedicion" FromRole="EvaluacionPromocionParticipante" ToRole="EvaluacionMedicion" />
+          <NavigationProperty Name="EvaluacionPromocion" Relationship="BDEvaluacionModel.FK_EvaluacionPromocionParticipante_EvaluacionPromocion" FromRole="EvaluacionPromocionParticipante" ToRole="EvaluacionPromocion" />
+          <NavigationProperty Name="Participante" Relationship="BDEvaluacionModel.FK_EvaluacionPromocionParticipante_Participante" FromRole="EvaluacionPromocionParticipante" ToRole="Participante" />
         </EntityType>
         <EntityType Name="EvaluacionRespuesta">
           <Key>
@@ -652,21 +985,44 @@
           <Property Name="EvaluacionAlternativaID" Type="Int64" Nullable="false" />
           <Property Name="EvaluacionMedicionID" Type="Int32" Nullable="false" />
           <Property Name="ParticipanteEvaluadoID" Type="Int64" />
-          <NavigationProperty Name="EvaluacionAlternativa" Relationship="Self.FK_EvaluacionRespuesta_EvaluacionAlternativa" FromRole="EvaluacionRespuesta" ToRole="EvaluacionAlternativa" />
-          <NavigationProperty Name="EvaluacionMedicion" Relationship="Self.FK_EvaluacionRespuesta_EvaluacionMedicion" FromRole="EvaluacionRespuesta" ToRole="EvaluacionMedicion" />
-          <NavigationProperty Name="EvaluacionPromocion" Relationship="Self.FK_EvaluacionRespuesta_EvaluacionPromocion" FromRole="EvaluacionRespuesta" ToRole="EvaluacionPromocion" />
+          <NavigationProperty Name="EvaluacionAlternativa" Relationship="BDEvaluacionModel.FK_EvaluacionRespuesta_EvaluacionAlternativa" FromRole="EvaluacionRespuesta" ToRole="EvaluacionAlternativa" />
+          <NavigationProperty Name="EvaluacionMedicion" Relationship="BDEvaluacionModel.FK_EvaluacionRespuesta_EvaluacionMedicion" FromRole="EvaluacionRespuesta" ToRole="EvaluacionMedicion" />
+          <NavigationProperty Name="EvaluacionPromocion" Relationship="BDEvaluacionModel.FK_EvaluacionRespuesta_EvaluacionPromocion" FromRole="EvaluacionRespuesta" ToRole="EvaluacionPromocion" />
           <NavigationProperty Name="Participante" Relationship="BDEvaluacionModel.FK_EvaluacionRespuesta_Participante" FromRole="EvaluacionRespuesta" ToRole="Participante" />
           <NavigationProperty Name="Participante1" Relationship="BDEvaluacionModel.FK_EvaluacionRespuesta_Participante1" FromRole="EvaluacionRespuesta" ToRole="Participante" />
-          </EntityType>
-        <EntityType Name="sysdiagrams">
+        </EntityType>
+        <EntityType Name="EvaluacionUsuario">
           <Key>
-            <PropertyRef Name="diagram_id" />
+            <PropertyRef Name="UsuarioID" />
           </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="UsuarioID" Type="Int32" Nullable="false" />
+          <Property Name="CodUsuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PassUsuario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TipoRol" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Participante">
+          <Key>
+            <PropertyRef Name="ParticipanteID" />
+          </Key>
+          <Property Name="ParticipanteID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ParticipanteApePaterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ParticipanteApeMaterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ParticipanteNombres" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ParticipanteNombreCompleto" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="TipoDocumentoID" Type="Int32" />
+          <Property Name="ParticipanteNroDoc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ParticipanteFecNac" Type="DateTime" Precision="3" />
+          <Property Name="ParticipanteEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ParticipanteEmailOpcional" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ParticipanteTelefono" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ParticipanteTelefonoOpcional" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ParticipanteEstado" Type="Boolean" />
+          <Property Name="TipoRelacionId" Type="Int32" />
+          <NavigationProperty Name="EvaluacionPromocionParticipante" Relationship="BDEvaluacionModel.FK_EvaluacionPromocionParticipante_Participante" FromRole="Participante" ToRole="EvaluacionPromocionParticipante" />
+          <NavigationProperty Name="EvaluacionRespuesta" Relationship="BDEvaluacionModel.FK_EvaluacionRespuesta_Participante" FromRole="Participante" ToRole="EvaluacionRespuesta" />
+          <NavigationProperty Name="EvaluacionRespuesta1" Relationship="BDEvaluacionModel.FK_EvaluacionRespuesta_Participante1" FromRole="Participante" ToRole="EvaluacionRespuesta" />
+          <NavigationProperty Name="TipoRelacionParticipante" Relationship="BDEvaluacionModel.FK__Participa__TipoR__3F466844" FromRole="Participante" ToRole="TipoRelacionParticipante" />
+          <NavigationProperty Name="TipoDocumento" Relationship="BDEvaluacionModel.FK_Participante_TipoDocumento" FromRole="Participante" ToRole="TipoDocumento" />
         </EntityType>
         <EntityType Name="TipoDocumento">
           <Key>
@@ -678,9 +1034,18 @@
           <Property Name="TipoDocumentoEstado" Type="Boolean" />
           <NavigationProperty Name="Participante" Relationship="BDEvaluacionModel.FK_Participante_TipoDocumento" FromRole="TipoDocumento" ToRole="Participante" />
         </EntityType>
+        <EntityType Name="TipoRelacionParticipante">
+          <Key>
+            <PropertyRef Name="TipoRelacionId" />
+          </Key>
+          <Property Name="TipoRelacionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DescripcionTipoRelacion" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="EstadoTipoRelacion" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Participante" Relationship="BDEvaluacionModel.FK__Participa__TipoR__3F466844" FromRole="TipoRelacionParticipante" ToRole="Participante" />
+        </EntityType>
         <Association Name="FK_EvaluacionCiclo_Evaluacion">
-          <End Role="Evaluacion" Type="Self.Evaluacion" Multiplicity="1" />
-          <End Role="EvaluacionCiclo" Type="Self.EvaluacionCiclo" Multiplicity="*" />
+          <End Type="BDEvaluacionModel.Evaluacion" Role="Evaluacion" Multiplicity="1" />
+          <End Type="BDEvaluacionModel.EvaluacionCiclo" Role="EvaluacionCiclo" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Evaluacion">
               <PropertyRef Name="EvaluacionID" />
@@ -691,8 +1056,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_EvaluacionNivel_Evaluacion">
-          <End Role="Evaluacion" Type="Self.Evaluacion" Multiplicity="0..1" />
-          <End Role="EvaluacionNivel" Type="Self.EvaluacionNivel" Multiplicity="*" />
+          <End Type="BDEvaluacionModel.Evaluacion" Role="Evaluacion" Multiplicity="0..1" />
+          <End Type="BDEvaluacionModel.EvaluacionNivel" Role="EvaluacionNivel" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Evaluacion">
               <PropertyRef Name="EvaluacionID" />
@@ -703,8 +1068,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_EvaluacionPromocion_Evaluacion">
-          <End Role="Evaluacion" Type="Self.Evaluacion" Multiplicity="1" />
-          <End Role="EvaluacionPromocion" Type="Self.EvaluacionPromocion" Multiplicity="*" />
+          <End Type="BDEvaluacionModel.Evaluacion" Role="Evaluacion" Multiplicity="1" />
+          <End Type="BDEvaluacionModel.EvaluacionPromocion" Role="EvaluacionPromocion" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Evaluacion">
               <PropertyRef Name="EvaluacionID" />
@@ -715,8 +1080,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_EvaluacionAlternativa_EvaluacionPregunta">
-          <End Role="EvaluacionPregunta" Type="Self.EvaluacionPregunta" Multiplicity="0..1" />
-          <End Role="EvaluacionAlternativa" Type="Self.EvaluacionAlternativa" Multiplicity="*" />
+          <End Type="BDEvaluacionModel.EvaluacionPregunta" Role="EvaluacionPregunta" Multiplicity="0..1" />
+          <End Type="BDEvaluacionModel.EvaluacionAlternativa" Role="EvaluacionAlternativa" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="EvaluacionPregunta">
               <PropertyRef Name="EvaluacionPreguntaID" />
@@ -727,8 +1092,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_EvaluacionRespuesta_EvaluacionAlternativa">
-          <End Role="EvaluacionAlternativa" Type="Self.EvaluacionAlternativa" Multiplicity="1" />
-          <End Role="EvaluacionRespuesta" Type="Self.EvaluacionRespuesta" Multiplicity="*" />
+          <End Type="BDEvaluacionModel.EvaluacionAlternativa" Role="EvaluacionAlternativa" Multiplicity="1" />
+          <End Type="BDEvaluacionModel.EvaluacionRespuesta" Role="EvaluacionRespuesta" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="EvaluacionAlternativa">
               <PropertyRef Name="EvaluacionAlternativaID" />
@@ -739,8 +1104,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_EvaluacionMedicion_EvaluacionCiclo">
-          <End Role="EvaluacionCiclo" Type="Self.EvaluacionCiclo" Multiplicity="1" />
-          <End Role="EvaluacionMedicion" Type="Self.EvaluacionMedicion" Multiplicity="*" />
+          <End Type="BDEvaluacionModel.EvaluacionCiclo" Role="EvaluacionCiclo" Multiplicity="1" />
+          <End Type="BDEvaluacionModel.EvaluacionMedicion" Role="EvaluacionMedicion" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="EvaluacionCiclo">
               <PropertyRef Name="EvaluacionCicloID" />
@@ -751,8 +1116,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_EvaluacionPromocionCiclo_EvaluacionCiclo">
-          <End Role="EvaluacionCiclo" Type="Self.EvaluacionCiclo" Multiplicity="1" />
-          <End Role="EvaluacionPromocionCiclo" Type="Self.EvaluacionPromocionCiclo" Multiplicity="*" />
+          <End Type="BDEvaluacionModel.EvaluacionCiclo" Role="EvaluacionCiclo" Multiplicity="1" />
+          <End Type="BDEvaluacionModel.EvaluacionPromocionCiclo" Role="EvaluacionPromocionCiclo" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="EvaluacionCiclo">
               <PropertyRef Name="EvaluacionCicloID" />
@@ -762,183 +1127,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_EvaluacionRespuesta_EvaluacionMedicion">
-          <End Role="EvaluacionMedicion" Type="Self.EvaluacionMedicion" Multiplicity="1" />
-          <End Role="EvaluacionRespuesta" Type="Self.EvaluacionRespuesta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EvaluacionMedicion">
-              <PropertyRef Name="EvaluacionMedicionID" />
-            </Principal>
-            <Dependent Role="EvaluacionRespuesta">
-              <PropertyRef Name="EvaluacionMedicionID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EvaluacionNivel_EvaluacionNivel">
-          <End Role="EvaluacionNivel" Type="Self.EvaluacionNivel" Multiplicity="0..1" />
-          <End Role="EvaluacionNivel1" Type="Self.EvaluacionNivel" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EvaluacionNivel">
-              <PropertyRef Name="EvaluacionNivelID" />
-            </Principal>
-            <Dependent Role="EvaluacionNivel1">
-              <PropertyRef Name="EvaluacionNivelPadreID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EvaluacionPregunta_EvaluacionNivel">
-          <End Role="EvaluacionNivel" Type="Self.EvaluacionNivel" Multiplicity="0..1" />
-          <End Role="EvaluacionPregunta" Type="Self.EvaluacionPregunta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EvaluacionNivel">
-              <PropertyRef Name="EvaluacionNivelID" />
-            </Principal>
-            <Dependent Role="EvaluacionPregunta">
-              <PropertyRef Name="EvaluacionNivelID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EvaluacionPromocionCiclo_EvaluacionPromocion">
-          <End Role="EvaluacionPromocion" Type="Self.EvaluacionPromocion" Multiplicity="1" />
-          <End Role="EvaluacionPromocionCiclo" Type="Self.EvaluacionPromocionCiclo" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EvaluacionPromocion">
-              <PropertyRef Name="EvaluacionPromocionID" />
-            </Principal>
-            <Dependent Role="EvaluacionPromocionCiclo">
-              <PropertyRef Name="EvaluacionPromocionID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EvaluacionRespuesta_EvaluacionPromocion">
-          <End Role="EvaluacionPromocion" Type="Self.EvaluacionPromocion" Multiplicity="1" />
-          <End Role="EvaluacionRespuesta" Type="Self.EvaluacionRespuesta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EvaluacionPromocion">
-              <PropertyRef Name="EvaluacionPromocionID" />
-            </Principal>
-            <Dependent Role="EvaluacionRespuesta">
-              <PropertyRef Name="EvaluacionPromocionID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="BDEvaluacionEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Evaluacion" EntityType="Self.Evaluacion" />
-          <EntitySet Name="EvaluacionAlternativa" EntityType="Self.EvaluacionAlternativa" />
-          <EntitySet Name="EvaluacionCiclo" EntityType="Self.EvaluacionCiclo" />
-          <EntitySet Name="EvaluacionMedicion" EntityType="Self.EvaluacionMedicion" />
-          <EntitySet Name="EvaluacionNivel" EntityType="Self.EvaluacionNivel" />
-          <EntitySet Name="EvaluacionParticipante" EntityType="Self.EvaluacionParticipante" />
-          <EntitySet Name="EvaluacionPregunta" EntityType="Self.EvaluacionPregunta" />
-          <EntitySet Name="EvaluacionPromocion" EntityType="Self.EvaluacionPromocion" />
-          <EntitySet Name="EvaluacionPromocionCiclo" EntityType="Self.EvaluacionPromocionCiclo" />
-          <EntitySet Name="EvaluacionRespuesta" EntityType="Self.EvaluacionRespuesta" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
-          <EntitySet Name="TipoDocumento" EntityType="Self.TipoDocumento" />
-          <AssociationSet Name="FK_EvaluacionCiclo_Evaluacion" Association="Self.FK_EvaluacionCiclo_Evaluacion">
-            <End Role="Evaluacion" EntitySet="Evaluacion" />
-            <End Role="EvaluacionCiclo" EntitySet="EvaluacionCiclo" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EvaluacionNivel_Evaluacion" Association="Self.FK_EvaluacionNivel_Evaluacion">
-            <End Role="Evaluacion" EntitySet="Evaluacion" />
-            <End Role="EvaluacionNivel" EntitySet="EvaluacionNivel" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EvaluacionPromocion_Evaluacion" Association="Self.FK_EvaluacionPromocion_Evaluacion">
-            <End Role="Evaluacion" EntitySet="Evaluacion" />
-            <End Role="EvaluacionPromocion" EntitySet="EvaluacionPromocion" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EvaluacionAlternativa_EvaluacionPregunta" Association="Self.FK_EvaluacionAlternativa_EvaluacionPregunta">
-            <End Role="EvaluacionPregunta" EntitySet="EvaluacionPregunta" />
-            <End Role="EvaluacionAlternativa" EntitySet="EvaluacionAlternativa" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EvaluacionRespuesta_EvaluacionAlternativa" Association="Self.FK_EvaluacionRespuesta_EvaluacionAlternativa">
-            <End Role="EvaluacionAlternativa" EntitySet="EvaluacionAlternativa" />
-            <End Role="EvaluacionRespuesta" EntitySet="EvaluacionRespuesta" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EvaluacionMedicion_EvaluacionCiclo" Association="Self.FK_EvaluacionMedicion_EvaluacionCiclo">
-            <End Role="EvaluacionCiclo" EntitySet="EvaluacionCiclo" />
-            <End Role="EvaluacionMedicion" EntitySet="EvaluacionMedicion" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EvaluacionPromocionCiclo_EvaluacionCiclo" Association="Self.FK_EvaluacionPromocionCiclo_EvaluacionCiclo">
-            <End Role="EvaluacionCiclo" EntitySet="EvaluacionCiclo" />
-            <End Role="EvaluacionPromocionCiclo" EntitySet="EvaluacionPromocionCiclo" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EvaluacionRespuesta_EvaluacionMedicion" Association="Self.FK_EvaluacionRespuesta_EvaluacionMedicion">
-            <End Role="EvaluacionMedicion" EntitySet="EvaluacionMedicion" />
-            <End Role="EvaluacionRespuesta" EntitySet="EvaluacionRespuesta" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EvaluacionNivel_EvaluacionNivel" Association="Self.FK_EvaluacionNivel_EvaluacionNivel">
-            <End Role="EvaluacionNivel" EntitySet="EvaluacionNivel" />
-            <End Role="EvaluacionNivel1" EntitySet="EvaluacionNivel" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EvaluacionPregunta_EvaluacionNivel" Association="Self.FK_EvaluacionPregunta_EvaluacionNivel">
-            <End Role="EvaluacionNivel" EntitySet="EvaluacionNivel" />
-            <End Role="EvaluacionPregunta" EntitySet="EvaluacionPregunta" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EvaluacionPromocionCiclo_EvaluacionPromocion" Association="Self.FK_EvaluacionPromocionCiclo_EvaluacionPromocion">
-            <End Role="EvaluacionPromocion" EntitySet="EvaluacionPromocion" />
-            <End Role="EvaluacionPromocionCiclo" EntitySet="EvaluacionPromocionCiclo" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EvaluacionRespuesta_EvaluacionPromocion" Association="Self.FK_EvaluacionRespuesta_EvaluacionPromocion">
-            <End Role="EvaluacionPromocion" EntitySet="EvaluacionPromocion" />
-            <End Role="EvaluacionRespuesta" EntitySet="EvaluacionRespuesta" />
-          </AssociationSet>
-          <EntitySet Name="EvaluacionPromocionMedicion" EntityType="BDEvaluacionModel.EvaluacionPromocionMedicion" />
-          <AssociationSet Name="FK_EvaluacionPromocionMedicion_EvaluacionCiclo" Association="BDEvaluacionModel.FK_EvaluacionPromocionMedicion_EvaluacionCiclo">
-            <End Role="EvaluacionCiclo" EntitySet="EvaluacionCiclo" />
-            <End Role="EvaluacionPromocionMedicion" EntitySet="EvaluacionPromocionMedicion" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EvaluacionPromocionMedicion_EvaluacionMedicion" Association="BDEvaluacionModel.FK_EvaluacionPromocionMedicion_EvaluacionMedicion">
-            <End Role="EvaluacionMedicion" EntitySet="EvaluacionMedicion" />
-            <End Role="EvaluacionPromocionMedicion" EntitySet="EvaluacionPromocionMedicion" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EvaluacionPromocionMedicion_EvaluacionPromocion" Association="BDEvaluacionModel.FK_EvaluacionPromocionMedicion_EvaluacionPromocion">
-            <End Role="EvaluacionPromocion" EntitySet="EvaluacionPromocion" />
-            <End Role="EvaluacionPromocionMedicion" EntitySet="EvaluacionPromocionMedicion" />
-          </AssociationSet>
-          <EntitySet Name="Participante" EntityType="BDEvaluacionModel.Participante" />
-          <AssociationSet Name="FK_EvaluacionRespuesta_Participante" Association="BDEvaluacionModel.FK_EvaluacionRespuesta_Participante">
-            <End Role="Participante" EntitySet="Participante" />
-            <End Role="EvaluacionRespuesta" EntitySet="EvaluacionRespuesta" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EvaluacionRespuesta_Participante1" Association="BDEvaluacionModel.FK_EvaluacionRespuesta_Participante1">
-            <End Role="Participante" EntitySet="Participante" />
-            <End Role="EvaluacionRespuesta" EntitySet="EvaluacionRespuesta" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Participante_TipoDocumento" Association="BDEvaluacionModel.FK_Participante_TipoDocumento">
-            <End Role="TipoDocumento" EntitySet="TipoDocumento" />
-            <End Role="Participante" EntitySet="Participante" />
-          </AssociationSet>
-          <EntitySet Name="EvaluacionPromocionParticipante" EntityType="BDEvaluacionModel.EvaluacionPromocionParticipante" />
-          <AssociationSet Name="FK_EvaluacionPromocionParticipante_EvaluacionMedicion" Association="BDEvaluacionModel.FK_EvaluacionPromocionParticipante_EvaluacionMedicion">
-            <End Role="EvaluacionMedicion" EntitySet="EvaluacionMedicion" />
-            <End Role="EvaluacionPromocionParticipante" EntitySet="EvaluacionPromocionParticipante" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EvaluacionPromocionParticipante_EvaluacionPromocion" Association="BDEvaluacionModel.FK_EvaluacionPromocionParticipante_EvaluacionPromocion">
-            <End Role="EvaluacionPromocion" EntitySet="EvaluacionPromocion" />
-            <End Role="EvaluacionPromocionParticipante" EntitySet="EvaluacionPromocionParticipante" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EvaluacionPromocionParticipante_Participante" Association="BDEvaluacionModel.FK_EvaluacionPromocionParticipante_Participante">
-            <End Role="Participante" EntitySet="Participante" />
-            <End Role="EvaluacionPromocionParticipante" EntitySet="EvaluacionPromocionParticipante" />
-          </AssociationSet>
-          </EntityContainer>
-        <EntityType Name="EvaluacionPromocionMedicion">
-          <Key>
-            <PropertyRef Name="EvaluacionCicloID" />
-            <PropertyRef Name="EvaluacionMedicionID" />
-            <PropertyRef Name="EvaluacionPromocionID" />
-          </Key>
-          <Property Name="EvaluacionCicloID" Type="Int64" Nullable="false" />
-          <Property Name="EvaluacionMedicionID" Type="Int32" Nullable="false" />
-          <Property Name="EvaluacionPromMedicionFecIni" Type="DateTime" Precision="3" />
-          <Property Name="EvaluacionPromMedicionFecFin" Type="DateTime" Precision="3" />
-          <Property Name="EvaluacionMedicionDescripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="EvaluacionCiclo" Relationship="BDEvaluacionModel.FK_EvaluacionPromocionMedicion_EvaluacionCiclo" FromRole="EvaluacionPromocionMedicion" ToRole="EvaluacionCiclo" />
-          <NavigationProperty Name="EvaluacionMedicion" Relationship="BDEvaluacionModel.FK_EvaluacionPromocionMedicion_EvaluacionMedicion" FromRole="EvaluacionPromocionMedicion" ToRole="EvaluacionMedicion" />
-          <Property Name="EvaluacionPromocionID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="EvaluacionPromocion" Relationship="BDEvaluacionModel.FK_EvaluacionPromocionMedicion_EvaluacionPromocion" FromRole="EvaluacionPromocionMedicion" ToRole="EvaluacionPromocion" />
-        </EntityType>
         <Association Name="FK_EvaluacionPromocionMedicion_EvaluacionCiclo">
           <End Type="BDEvaluacionModel.EvaluacionCiclo" Role="EvaluacionCiclo" Multiplicity="1" />
           <End Type="BDEvaluacionModel.EvaluacionPromocionMedicion" Role="EvaluacionPromocionMedicion" Multiplicity="*" />
@@ -963,6 +1151,78 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_EvaluacionPromocionParticipante_EvaluacionMedicion">
+          <End Type="BDEvaluacionModel.EvaluacionMedicion" Role="EvaluacionMedicion" Multiplicity="1" />
+          <End Type="BDEvaluacionModel.EvaluacionPromocionParticipante" Role="EvaluacionPromocionParticipante" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EvaluacionMedicion">
+              <PropertyRef Name="EvaluacionMedicionID" />
+            </Principal>
+            <Dependent Role="EvaluacionPromocionParticipante">
+              <PropertyRef Name="EvaluacionMedicionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EvaluacionRespuesta_EvaluacionMedicion">
+          <End Type="BDEvaluacionModel.EvaluacionMedicion" Role="EvaluacionMedicion" Multiplicity="1" />
+          <End Type="BDEvaluacionModel.EvaluacionRespuesta" Role="EvaluacionRespuesta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EvaluacionMedicion">
+              <PropertyRef Name="EvaluacionMedicionID" />
+            </Principal>
+            <Dependent Role="EvaluacionRespuesta">
+              <PropertyRef Name="EvaluacionMedicionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Evaluacio__Evalu__5DCAEF64">
+          <End Type="BDEvaluacionModel.EvaluacionNivel" Role="EvaluacionNivel" Multiplicity="1" />
+          <End Type="BDEvaluacionModel.EvaluacionNivelIntro" Role="EvaluacionNivelIntro" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EvaluacionNivel">
+              <PropertyRef Name="EvaluacionNivelID" />
+            </Principal>
+            <Dependent Role="EvaluacionNivelIntro">
+              <PropertyRef Name="EvaluacionNivelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EvaluacionNivel_EvaluacionNivel">
+          <End Type="BDEvaluacionModel.EvaluacionNivel" Role="EvaluacionNivel" Multiplicity="0..1" />
+          <End Type="BDEvaluacionModel.EvaluacionNivel" Role="EvaluacionNivel1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EvaluacionNivel">
+              <PropertyRef Name="EvaluacionNivelID" />
+            </Principal>
+            <Dependent Role="EvaluacionNivel1">
+              <PropertyRef Name="EvaluacionNivelPadreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EvaluacionPregunta_EvaluacionNivel">
+          <End Type="BDEvaluacionModel.EvaluacionNivel" Role="EvaluacionNivel" Multiplicity="0..1" />
+          <End Type="BDEvaluacionModel.EvaluacionPregunta" Role="EvaluacionPregunta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EvaluacionNivel">
+              <PropertyRef Name="EvaluacionNivelID" />
+            </Principal>
+            <Dependent Role="EvaluacionPregunta">
+              <PropertyRef Name="EvaluacionNivelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EvaluacionPromocionCiclo_EvaluacionPromocion">
+          <End Type="BDEvaluacionModel.EvaluacionPromocion" Role="EvaluacionPromocion" Multiplicity="1" />
+          <End Type="BDEvaluacionModel.EvaluacionPromocionCiclo" Role="EvaluacionPromocionCiclo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EvaluacionPromocion">
+              <PropertyRef Name="EvaluacionPromocionID" />
+            </Principal>
+            <Dependent Role="EvaluacionPromocionCiclo">
+              <PropertyRef Name="EvaluacionPromocionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_EvaluacionPromocionMedicion_EvaluacionPromocion">
           <End Type="BDEvaluacionModel.EvaluacionPromocion" Role="EvaluacionPromocion" Multiplicity="1" />
           <End Type="BDEvaluacionModel.EvaluacionPromocionMedicion" Role="EvaluacionPromocionMedicion" Multiplicity="*" />
@@ -975,28 +1235,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Participante">
-          <Key>
-            <PropertyRef Name="ParticipanteID" />
-          </Key>
-          <Property Name="ParticipanteID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ParticipanteApePaterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ParticipanteApeMaterno" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ParticipanteNombres" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="ParticipanteNombreCompleto" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="TipoDocumentoID" Type="Int32" />
-          <Property Name="ParticipanteNroDoc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ParticipanteFecNac" Type="DateTime" Precision="3" />
-          <Property Name="ParticipanteEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="ParticipanteEmailOpcional" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="ParticipanteTelefono" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="ParticipanteTelefonoOpcional" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="ParticipanteEstado" Type="Boolean" />
-          <NavigationProperty Name="EvaluacionRespuesta" Relationship="BDEvaluacionModel.FK_EvaluacionRespuesta_Participante" FromRole="Participante" ToRole="EvaluacionRespuesta" />
-          <NavigationProperty Name="EvaluacionRespuesta1" Relationship="BDEvaluacionModel.FK_EvaluacionRespuesta_Participante1" FromRole="Participante" ToRole="EvaluacionRespuesta" />
-          <NavigationProperty Name="TipoDocumento" Relationship="BDEvaluacionModel.FK_Participante_TipoDocumento" FromRole="Participante" ToRole="TipoDocumento" />
-          <NavigationProperty Name="EvaluacionPromocionParticipante" Relationship="BDEvaluacionModel.FK_EvaluacionPromocionParticipante_Participante" FromRole="Participante" ToRole="EvaluacionPromocionParticipante" />
-        </EntityType>
+        <Association Name="FK_EvaluacionPromocionParticipante_EvaluacionPromocion">
+          <End Type="BDEvaluacionModel.EvaluacionPromocion" Role="EvaluacionPromocion" Multiplicity="1" />
+          <End Type="BDEvaluacionModel.EvaluacionPromocionParticipante" Role="EvaluacionPromocionParticipante" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EvaluacionPromocion">
+              <PropertyRef Name="EvaluacionPromocionID" />
+            </Principal>
+            <Dependent Role="EvaluacionPromocionParticipante">
+              <PropertyRef Name="EvaluacionPromocionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EvaluacionRespuesta_EvaluacionPromocion">
+          <End Type="BDEvaluacionModel.EvaluacionPromocion" Role="EvaluacionPromocion" Multiplicity="1" />
+          <End Type="BDEvaluacionModel.EvaluacionRespuesta" Role="EvaluacionRespuesta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EvaluacionPromocion">
+              <PropertyRef Name="EvaluacionPromocionID" />
+            </Principal>
+            <Dependent Role="EvaluacionRespuesta">
+              <PropertyRef Name="EvaluacionPromocionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EvaluacionPromocionParticipante_Participante">
+          <End Type="BDEvaluacionModel.Participante" Role="Participante" Multiplicity="1" />
+          <End Type="BDEvaluacionModel.EvaluacionPromocionParticipante" Role="EvaluacionPromocionParticipante" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Participante">
+              <PropertyRef Name="ParticipanteID" />
+            </Principal>
+            <Dependent Role="EvaluacionPromocionParticipante">
+              <PropertyRef Name="ParticipanteID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_EvaluacionRespuesta_Participante">
           <End Type="BDEvaluacionModel.Participante" Role="Participante" Multiplicity="1" />
           <End Type="BDEvaluacionModel.EvaluacionRespuesta" Role="EvaluacionRespuesta" Multiplicity="*" />
@@ -1021,6 +1295,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Participa__TipoR__3F466844">
+          <End Type="BDEvaluacionModel.TipoRelacionParticipante" Role="TipoRelacionParticipante" Multiplicity="0..1" />
+          <End Type="BDEvaluacionModel.Participante" Role="Participante" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoRelacionParticipante">
+              <PropertyRef Name="TipoRelacionId" />
+            </Principal>
+            <Dependent Role="Participante">
+              <PropertyRef Name="TipoRelacionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Participante_TipoDocumento">
           <End Type="BDEvaluacionModel.TipoDocumento" Role="TipoDocumento" Multiplicity="0..1" />
           <End Type="BDEvaluacionModel.Participante" Role="Participante" Multiplicity="*" />
@@ -1033,53 +1319,77 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="EvaluacionPromocionParticipante">
+        <ComplexType Name="PromedioEvaluacionxCicloNivel_Result">
+          <Property Type="Int32" Name="IdNivel" Nullable="true" />
+          <Property Type="String" Name="Nivel" Nullable="true" />
+          <Property Type="Int32" Name="OrdenNivel" Nullable="true" />
+          <Property Type="Decimal" Name="PromPersonal" Nullable="true" Precision="4" Scale="2" />
+          <Property Type="Decimal" Name="PromPares" Nullable="true" Precision="4" Scale="2" />
+          <Property Type="Decimal" Name="PromTodosPares" Nullable="true" Precision="4" Scale="2" />
+          <Property Type="Decimal" Name="DesvEstandard" Nullable="true" Precision="4" Scale="2" />
+          <Property Type="Decimal" Name="DesvEstandardMax" Nullable="true" Precision="4" Scale="2" />
+          <Property Type="Decimal" Name="DesvEstandardMin" Nullable="true" Precision="4" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="sp_PromedioEvaluacion_Result">
+          <Property Type="Int32" Name="IdNivelA" Nullable="true" />
+          <Property Type="String" Name="NivelA" Nullable="true" />
+          <Property Type="Int32" Name="OrdenNivelA" Nullable="true" />
+          <Property Type="Int32" Name="IdNivelB" Nullable="true" />
+          <Property Type="String" Name="NivelB" Nullable="true" />
+          <Property Type="Int32" Name="OrdenNivelB" Nullable="true" />
+          <Property Type="String" Name="NivelC" Nullable="true" />
+          <Property Type="Int32" Name="OrdenNivelC" Nullable="true" />
+          <Property Type="Decimal" Name="Promedio" Nullable="true" Precision="4" Scale="2" />
+        </ComplexType>
+        <EntityType Name="PromocionMedicionCicloParticipante">
           <Key>
-            <PropertyRef Name="EvaluacionPromocionID" />
-            <PropertyRef Name="ParticipanteID" />
-            <PropertyRef Name="EvaluacionMedicionID" />
+            <PropertyRef Name="PromocionMedicionParticipanteID" />
           </Key>
+          <Property Name="PromocionMedicionParticipanteID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="EvaluacionPromocionID" Type="Int32" Nullable="false" />
-          <Property Name="ParticipanteID" Type="Int64" Nullable="false" />
+          <Property Name="EvaluacionCicloID" Type="Int64" Nullable="false" />
           <Property Name="EvaluacionMedicionID" Type="Int32" Nullable="false" />
-          <Property Name="EsExterno" Type="Boolean" />
-          <NavigationProperty Name="EvaluacionMedicion" Relationship="BDEvaluacionModel.FK_EvaluacionPromocionParticipante_EvaluacionMedicion" FromRole="EvaluacionPromocionParticipante" ToRole="EvaluacionMedicion" />
-          <NavigationProperty Name="EvaluacionPromocion" Relationship="BDEvaluacionModel.FK_EvaluacionPromocionParticipante_EvaluacionPromocion" FromRole="EvaluacionPromocionParticipante" ToRole="EvaluacionPromocion" />
-          <NavigationProperty Name="Participante" Relationship="BDEvaluacionModel.FK_EvaluacionPromocionParticipante_Participante" FromRole="EvaluacionPromocionParticipante" ToRole="Participante" />
+          <Property Name="ParticipanteNroDoc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EvaluacionCiclo" Relationship="BDEvaluacionModel.FK__Promocion__Evalu__70DDC3D8" FromRole="PromocionMedicionCicloParticipante" ToRole="EvaluacionCiclo" />
+          <NavigationProperty Name="EvaluacionMedicion" Relationship="BDEvaluacionModel.FK__Promocion__Evalu__71D1E811" FromRole="PromocionMedicionCicloParticipante" ToRole="EvaluacionMedicion" />
+          <NavigationProperty Name="EvaluacionPromocion" Relationship="BDEvaluacionModel.FK__Promocion__Evalu__6FE99F9F" FromRole="PromocionMedicionCicloParticipante" ToRole="EvaluacionPromocion" />
+          <Property Name="DireccionVideo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Estado" Type="Boolean" />
+          <Property Name="ParticipanteCorreo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
-        <Association Name="FK_EvaluacionPromocionParticipante_EvaluacionMedicion">
+        <Association Name="FK__Promocion__Evalu__70DDC3D8">
+          <End Type="BDEvaluacionModel.EvaluacionCiclo" Role="EvaluacionCiclo" Multiplicity="1" />
+          <End Type="BDEvaluacionModel.PromocionMedicionCicloParticipante" Role="PromocionMedicionCicloParticipante" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EvaluacionCiclo">
+              <PropertyRef Name="EvaluacionCicloID" />
+            </Principal>
+            <Dependent Role="PromocionMedicionCicloParticipante">
+              <PropertyRef Name="EvaluacionCicloID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Promocion__Evalu__71D1E811">
           <End Type="BDEvaluacionModel.EvaluacionMedicion" Role="EvaluacionMedicion" Multiplicity="1" />
-          <End Type="BDEvaluacionModel.EvaluacionPromocionParticipante" Role="EvaluacionPromocionParticipante" Multiplicity="*" />
+          <End Type="BDEvaluacionModel.PromocionMedicionCicloParticipante" Role="PromocionMedicionCicloParticipante" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="EvaluacionMedicion">
               <PropertyRef Name="EvaluacionMedicionID" />
             </Principal>
-            <Dependent Role="EvaluacionPromocionParticipante">
+            <Dependent Role="PromocionMedicionCicloParticipante">
               <PropertyRef Name="EvaluacionMedicionID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_EvaluacionPromocionParticipante_EvaluacionPromocion">
+        <Association Name="FK__Promocion__Evalu__6FE99F9F">
           <End Type="BDEvaluacionModel.EvaluacionPromocion" Role="EvaluacionPromocion" Multiplicity="1" />
-          <End Type="BDEvaluacionModel.EvaluacionPromocionParticipante" Role="EvaluacionPromocionParticipante" Multiplicity="*" />
+          <End Type="BDEvaluacionModel.PromocionMedicionCicloParticipante" Role="PromocionMedicionCicloParticipante" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="EvaluacionPromocion">
               <PropertyRef Name="EvaluacionPromocionID" />
             </Principal>
-            <Dependent Role="EvaluacionPromocionParticipante">
+            <Dependent Role="PromocionMedicionCicloParticipante">
               <PropertyRef Name="EvaluacionPromocionID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EvaluacionPromocionParticipante_Participante">
-          <End Type="BDEvaluacionModel.Participante" Role="Participante" Multiplicity="1" />
-          <End Type="BDEvaluacionModel.EvaluacionPromocionParticipante" Role="EvaluacionPromocionParticipante" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Participante">
-              <PropertyRef Name="ParticipanteID" />
-            </Principal>
-            <Dependent Role="EvaluacionPromocionParticipante">
-              <PropertyRef Name="ParticipanteID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1092,84 +1402,107 @@
           <EntitySetMapping Name="Evaluacion">
             <EntityTypeMapping TypeName="BDEvaluacionModel.Evaluacion">
               <MappingFragment StoreEntitySet="Evaluacion">
-                <ScalarProperty Name="EvaluacionID" ColumnName="EvaluacionID" />
-                <ScalarProperty Name="EvaluacionDescripcion" ColumnName="EvaluacionDescripcion" />
                 <ScalarProperty Name="EvaluacionEstado" ColumnName="EvaluacionEstado" />
+                <ScalarProperty Name="EvaluacionDescripcion" ColumnName="EvaluacionDescripcion" />
+                <ScalarProperty Name="EvaluacionID" ColumnName="EvaluacionID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="EvaluacionAlternativa">
             <EntityTypeMapping TypeName="BDEvaluacionModel.EvaluacionAlternativa">
               <MappingFragment StoreEntitySet="EvaluacionAlternativa">
-                <ScalarProperty Name="EvaluacionAlternativaID" ColumnName="EvaluacionAlternativaID" />
-                <ScalarProperty Name="EvaluacionPreguntaID" ColumnName="EvaluacionPreguntaID" />
+                <ScalarProperty Name="EvaluacionAlternativaValor" ColumnName="EvaluacionAlternativaValor" />
                 <ScalarProperty Name="EvaluacionAlternativaDescripcion" ColumnName="EvaluacionAlternativaDescripcion" />
+                <ScalarProperty Name="EvaluacionPreguntaID" ColumnName="EvaluacionPreguntaID" />
+                <ScalarProperty Name="EvaluacionAlternativaID" ColumnName="EvaluacionAlternativaID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="EvaluacionCiclo">
             <EntityTypeMapping TypeName="BDEvaluacionModel.EvaluacionCiclo">
               <MappingFragment StoreEntitySet="EvaluacionCiclo">
-                <ScalarProperty Name="EvaluacionCicloID" ColumnName="EvaluacionCicloID" />
-                <ScalarProperty Name="EvaluacionID" ColumnName="EvaluacionID" />
-                <ScalarProperty Name="EvaluacionCicloNro" ColumnName="EvaluacionCicloNro" />
-                <ScalarProperty Name="EvaluacionCicloDescripcion" ColumnName="EvaluacionCicloDescripcion" />
                 <ScalarProperty Name="EvaluacionCicloEstado" ColumnName="EvaluacionCicloEstado" />
+                <ScalarProperty Name="EvaluacionCicloDescripcion" ColumnName="EvaluacionCicloDescripcion" />
+                <ScalarProperty Name="EvaluacionCicloNro" ColumnName="EvaluacionCicloNro" />
+                <ScalarProperty Name="EvaluacionID" ColumnName="EvaluacionID" />
+                <ScalarProperty Name="EvaluacionCicloID" ColumnName="EvaluacionCicloID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="EvaluacionMedicion">
             <EntityTypeMapping TypeName="BDEvaluacionModel.EvaluacionMedicion">
               <MappingFragment StoreEntitySet="EvaluacionMedicion">
-                <ScalarProperty Name="EvaluacionMedicionID" ColumnName="EvaluacionMedicionID" />
-                <ScalarProperty Name="EvaluacionCicloID" ColumnName="EvaluacionCicloID" />
-                <ScalarProperty Name="EvaluacionMedicionDescripcion" ColumnName="EvaluacionMedicionDescripcion" />
                 <ScalarProperty Name="EvaluacionMedicionEstado" ColumnName="EvaluacionMedicionEstado" />
+                <ScalarProperty Name="EvaluacionMedicionDescripcion" ColumnName="EvaluacionMedicionDescripcion" />
+                <ScalarProperty Name="EvaluacionCicloID" ColumnName="EvaluacionCicloID" />
+                <ScalarProperty Name="EvaluacionMedicionID" ColumnName="EvaluacionMedicionID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="EvaluacionNivel">
             <EntityTypeMapping TypeName="BDEvaluacionModel.EvaluacionNivel">
               <MappingFragment StoreEntitySet="EvaluacionNivel">
-                <ScalarProperty Name="EvaluacionNivelID" ColumnName="EvaluacionNivelID" />
-                <ScalarProperty Name="EvaluacionID" ColumnName="EvaluacionID" />
-                <ScalarProperty Name="EvaluacionNivelDescripcion" ColumnName="EvaluacionNivelDescripcion" />
-                <ScalarProperty Name="EvaluacionNivelPadreID" ColumnName="EvaluacionNivelPadreID" />
-                <ScalarProperty Name="EvaluacionNivelOrden" ColumnName="EvaluacionNivelOrden" />
-                <ScalarProperty Name="EvaluacionNivelTipoCalificacion" ColumnName="EvaluacionNivelTipoCalificacion" />
+                <ScalarProperty Name="EvaluacionNivelDefinicionPar" ColumnName="EvaluacionNivelDefinicionPar" />
+                <ScalarProperty Name="EvaluacionNivelDefinicion" ColumnName="EvaluacionNivelDefinicion" />
                 <ScalarProperty Name="EvaluacionNivelEstado" ColumnName="EvaluacionNivelEstado" />
+                <ScalarProperty Name="EvaluacionNivelTipoCalificacion" ColumnName="EvaluacionNivelTipoCalificacion" />
+                <ScalarProperty Name="EvaluacionNivelOrden" ColumnName="EvaluacionNivelOrden" />
+                <ScalarProperty Name="EvaluacionNivelPadreID" ColumnName="EvaluacionNivelPadreID" />
+                <ScalarProperty Name="EvaluacionNivelDescripcion" ColumnName="EvaluacionNivelDescripcion" />
+                <ScalarProperty Name="EvaluacionID" ColumnName="EvaluacionID" />
+                <ScalarProperty Name="EvaluacionNivelID" ColumnName="EvaluacionNivelID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EvaluacionNivelIntro">
+            <EntityTypeMapping TypeName="BDEvaluacionModel.EvaluacionNivelIntro">
+              <MappingFragment StoreEntitySet="EvaluacionNivelIntro">
+                <ScalarProperty Name="ParrafoIntroduccionPar3" ColumnName="ParrafoIntroduccionPar3" />
+                <ScalarProperty Name="ListaIntroduccionPar2" ColumnName="ListaIntroduccionPar2" />
+                <ScalarProperty Name="ParrafoIntroduccionPar2" ColumnName="ParrafoIntroduccionPar2" />
+                <ScalarProperty Name="ListaIntroduccionPar1" ColumnName="ListaIntroduccionPar1" />
+                <ScalarProperty Name="ParrafoIntroduccionPar1" ColumnName="ParrafoIntroduccionPar1" />
+                <ScalarProperty Name="ListaAlternativas" ColumnName="ListaAlternativas" />
+                <ScalarProperty Name="ParrafoIntroduccion3" ColumnName="ParrafoIntroduccion3" />
+                <ScalarProperty Name="ListaIntroduccion2" ColumnName="ListaIntroduccion2" />
+                <ScalarProperty Name="ParrafoIntroduccion2" ColumnName="ParrafoIntroduccion2" />
+                <ScalarProperty Name="ListaIntroduccion1" ColumnName="ListaIntroduccion1" />
+                <ScalarProperty Name="ParrafoIntroduccion1" ColumnName="ParrafoIntroduccion1" />
+                <ScalarProperty Name="EvaluacionNivelID" ColumnName="EvaluacionNivelID" />
+                <ScalarProperty Name="EvaluacionNivelIntroID" ColumnName="EvaluacionNivelIntroID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="EvaluacionParticipante">
             <EntityTypeMapping TypeName="BDEvaluacionModel.EvaluacionParticipante">
               <MappingFragment StoreEntitySet="EvaluacionParticipante">
-                <ScalarProperty Name="EvaluacionID" ColumnName="EvaluacionID" />
                 <ScalarProperty Name="ParticipanteID" ColumnName="ParticipanteID" />
+                <ScalarProperty Name="EvaluacionID" ColumnName="EvaluacionID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="EvaluacionPregunta">
             <EntityTypeMapping TypeName="BDEvaluacionModel.EvaluacionPregunta">
               <MappingFragment StoreEntitySet="EvaluacionPregunta">
-                <ScalarProperty Name="EvaluacionPreguntaID" ColumnName="EvaluacionPreguntaID" />
-                <ScalarProperty Name="EvaluacionNivelID" ColumnName="EvaluacionNivelID" />
-                <ScalarProperty Name="EvaluacionPreguntaDescripcion" ColumnName="EvaluacionPreguntaDescripcion" />
+                <ScalarProperty Name="EvaluacionPreguntaPares" ColumnName="EvaluacionPreguntaPares" />
                 <ScalarProperty Name="EsInversa" ColumnName="EsInversa" />
+                <ScalarProperty Name="EvaluacionPreguntaDescripcion" ColumnName="EvaluacionPreguntaDescripcion" />
+                <ScalarProperty Name="EvaluacionNivelID" ColumnName="EvaluacionNivelID" />
+                <ScalarProperty Name="EvaluacionPreguntaID" ColumnName="EvaluacionPreguntaID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="EvaluacionPromocion">
             <EntityTypeMapping TypeName="BDEvaluacionModel.EvaluacionPromocion">
               <MappingFragment StoreEntitySet="EvaluacionPromocion">
-                <ScalarProperty Name="EvaluacionPromocionCorreo" ColumnName="EvaluacionPromocionCorreo" />
-                <ScalarProperty Name="EvaluacionPromocionID" ColumnName="EvaluacionPromocionID" />
-                <ScalarProperty Name="EvaluacionID" ColumnName="EvaluacionID" />
-                <ScalarProperty Name="EvaluacionPromocionCodigo" ColumnName="EvaluacionPromocionCodigo" />
-                <ScalarProperty Name="EvaluacionPromocionDescripcion" ColumnName="EvaluacionPromocionDescripcion" />
-                <ScalarProperty Name="EvaluacionPromocionFecIni" ColumnName="EvaluacionPromocionFecIni" />
-                <ScalarProperty Name="EvaluacionPromocionFecFin" ColumnName="EvaluacionPromocionFecFin" />
                 <ScalarProperty Name="EvaluacionPromocionEstado" ColumnName="EvaluacionPromocionEstado" />
+                <ScalarProperty Name="EvaluacionPromocionFecFin" ColumnName="EvaluacionPromocionFecFin" />
+                <ScalarProperty Name="EvaluacionPromocionFecIni" ColumnName="EvaluacionPromocionFecIni" />
+                <ScalarProperty Name="EvaluacionPromocionCorreo" ColumnName="EvaluacionPromocionCorreo" />
+                <ScalarProperty Name="EvaluacionPromocionDescripcion" ColumnName="EvaluacionPromocionDescripcion" />
+                <ScalarProperty Name="EvaluacionPromocionCodigo" ColumnName="EvaluacionPromocionCodigo" />
+                <ScalarProperty Name="EvaluacionID" ColumnName="EvaluacionID" />
+                <ScalarProperty Name="EvaluacionPromocionID" ColumnName="EvaluacionPromocionID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1178,60 +1511,61 @@
               <MappingFragment StoreEntitySet="EvaluacionPromocionCiclo">
                 <ScalarProperty Name="EvaluacionCicloDescripcion" ColumnName="EvaluacionCicloDescripcion" />
                 <ScalarProperty Name="EvaluacionCicloNro" ColumnName="EvaluacionCicloNro" />
-                <ScalarProperty Name="EvaluacionPromocionID" ColumnName="EvaluacionPromocionID" />
-                <ScalarProperty Name="EvaluacionCicloID" ColumnName="EvaluacionCicloID" />
-                <ScalarProperty Name="EvaluacionPromCicloFecIni" ColumnName="EvaluacionPromCicloFecIni" />
                 <ScalarProperty Name="EvaluacionPromCicloFecFin" ColumnName="EvaluacionPromCicloFecFin" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="EvaluacionRespuesta">
-            <EntityTypeMapping TypeName="BDEvaluacionModel.EvaluacionRespuesta">
-              <MappingFragment StoreEntitySet="EvaluacionRespuesta">
+                <ScalarProperty Name="EvaluacionPromCicloFecIni" ColumnName="EvaluacionPromCicloFecIni" />
+                <ScalarProperty Name="EvaluacionCicloID" ColumnName="EvaluacionCicloID" />
                 <ScalarProperty Name="EvaluacionPromocionID" ColumnName="EvaluacionPromocionID" />
-                <ScalarProperty Name="ParticipanteID" ColumnName="ParticipanteID" />
-                <ScalarProperty Name="EvaluacionAlternativaID" ColumnName="EvaluacionAlternativaID" />
-                <ScalarProperty Name="EvaluacionMedicionID" ColumnName="EvaluacionMedicionID" />
-                <ScalarProperty Name="ParticipanteEvaluadoID" ColumnName="ParticipanteEvaluadoID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="BDEvaluacionModel.sysdiagrams">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TipoDocumento">
-            <EntityTypeMapping TypeName="BDEvaluacionModel.TipoDocumento">
-              <MappingFragment StoreEntitySet="TipoDocumento">
-                <ScalarProperty Name="TipoDocumentoID" ColumnName="TipoDocumentoID" />
-                <ScalarProperty Name="TipoDocumentoCodigo" ColumnName="TipoDocumentoCodigo" />
-                <ScalarProperty Name="TipoDocumentoDescripcion" ColumnName="TipoDocumentoDescripcion" />
-                <ScalarProperty Name="TipoDocumentoEstado" ColumnName="TipoDocumentoEstado" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="EvaluacionPromocionMedicion">
             <EntityTypeMapping TypeName="BDEvaluacionModel.EvaluacionPromocionMedicion">
               <MappingFragment StoreEntitySet="EvaluacionPromocionMedicion">
-                <ScalarProperty Name="EvaluacionPromocionID" ColumnName="EvaluacionPromocionID" />
+                <ScalarProperty Name="EsEvaluado" ColumnName="EsEvaluado" />
                 <ScalarProperty Name="EvaluacionMedicionDescripcion" ColumnName="EvaluacionMedicionDescripcion" />
                 <ScalarProperty Name="EvaluacionPromMedicionFecFin" ColumnName="EvaluacionPromMedicionFecFin" />
                 <ScalarProperty Name="EvaluacionPromMedicionFecIni" ColumnName="EvaluacionPromMedicionFecIni" />
                 <ScalarProperty Name="EvaluacionMedicionID" ColumnName="EvaluacionMedicionID" />
                 <ScalarProperty Name="EvaluacionCicloID" ColumnName="EvaluacionCicloID" />
+                <ScalarProperty Name="EvaluacionPromocionID" ColumnName="EvaluacionPromocionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EvaluacionPromocionParticipante">
+            <EntityTypeMapping TypeName="BDEvaluacionModel.EvaluacionPromocionParticipante">
+              <MappingFragment StoreEntitySet="EvaluacionPromocionParticipante">
+                <ScalarProperty Name="EsExterno" ColumnName="EsExterno" />
+                <ScalarProperty Name="EvaluacionMedicionID" ColumnName="EvaluacionMedicionID" />
+                <ScalarProperty Name="ParticipanteID" ColumnName="ParticipanteID" />
+                <ScalarProperty Name="EvaluacionPromocionID" ColumnName="EvaluacionPromocionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EvaluacionRespuesta">
+            <EntityTypeMapping TypeName="BDEvaluacionModel.EvaluacionRespuesta">
+              <MappingFragment StoreEntitySet="EvaluacionRespuesta">
+                <ScalarProperty Name="ParticipanteEvaluadoID" ColumnName="ParticipanteEvaluadoID" />
+                <ScalarProperty Name="EvaluacionMedicionID" ColumnName="EvaluacionMedicionID" />
+                <ScalarProperty Name="EvaluacionAlternativaID" ColumnName="EvaluacionAlternativaID" />
+                <ScalarProperty Name="ParticipanteID" ColumnName="ParticipanteID" />
+                <ScalarProperty Name="EvaluacionPromocionID" ColumnName="EvaluacionPromocionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EvaluacionUsuario">
+            <EntityTypeMapping TypeName="BDEvaluacionModel.EvaluacionUsuario">
+              <MappingFragment StoreEntitySet="EvaluacionUsuario">
+                <ScalarProperty Name="TipoRol" ColumnName="TipoRol" />
+                <ScalarProperty Name="PassUsuario" ColumnName="PassUsuario" />
+                <ScalarProperty Name="CodUsuario" ColumnName="CodUsuario" />
+                <ScalarProperty Name="UsuarioID" ColumnName="UsuarioID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Participante">
             <EntityTypeMapping TypeName="BDEvaluacionModel.Participante">
               <MappingFragment StoreEntitySet="Participante">
+                <ScalarProperty Name="TipoRelacionId" ColumnName="TipoRelacionId" />
                 <ScalarProperty Name="ParticipanteEstado" ColumnName="ParticipanteEstado" />
                 <ScalarProperty Name="ParticipanteTelefonoOpcional" ColumnName="ParticipanteTelefonoOpcional" />
                 <ScalarProperty Name="ParticipanteTelefono" ColumnName="ParticipanteTelefono" />
@@ -1248,13 +1582,66 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="EvaluacionPromocionParticipante">
-            <EntityTypeMapping TypeName="BDEvaluacionModel.EvaluacionPromocionParticipante">
-              <MappingFragment StoreEntitySet="EvaluacionPromocionParticipante">
-                <ScalarProperty Name="EsExterno" ColumnName="EsExterno" />
+          <EntitySetMapping Name="TipoDocumento">
+            <EntityTypeMapping TypeName="BDEvaluacionModel.TipoDocumento">
+              <MappingFragment StoreEntitySet="TipoDocumento">
+                <ScalarProperty Name="TipoDocumentoEstado" ColumnName="TipoDocumentoEstado" />
+                <ScalarProperty Name="TipoDocumentoDescripcion" ColumnName="TipoDocumentoDescripcion" />
+                <ScalarProperty Name="TipoDocumentoCodigo" ColumnName="TipoDocumentoCodigo" />
+                <ScalarProperty Name="TipoDocumentoID" ColumnName="TipoDocumentoID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoRelacionParticipante">
+            <EntityTypeMapping TypeName="BDEvaluacionModel.TipoRelacionParticipante">
+              <MappingFragment StoreEntitySet="TipoRelacionParticipante">
+                <ScalarProperty Name="EstadoTipoRelacion" ColumnName="EstadoTipoRelacion" />
+                <ScalarProperty Name="DescripcionTipoRelacion" ColumnName="DescripcionTipoRelacion" />
+                <ScalarProperty Name="TipoRelacionId" ColumnName="TipoRelacionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="PromedioEvaluacionxCicloNivel" FunctionName="BDEvaluacionModel.Store.PromedioEvaluacionxCicloNivel">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BDEvaluacionModel.PromedioEvaluacionxCicloNivel_Result">
+                <ScalarProperty Name="IdNivel" ColumnName="IdNivel" />
+                <ScalarProperty Name="Nivel" ColumnName="Nivel" />
+                <ScalarProperty Name="OrdenNivel" ColumnName="OrdenNivel" />
+                <ScalarProperty Name="PromPersonal" ColumnName="PromPersonal" />
+                <ScalarProperty Name="PromPares" ColumnName="PromPares" />
+                <ScalarProperty Name="PromTodosPares" ColumnName="PromTodosPares" />
+                <ScalarProperty Name="DesvEstandard" ColumnName="DesvEstandard" />
+                <ScalarProperty Name="DesvEstandardMax" ColumnName="DesvEstandardMax" />
+                <ScalarProperty Name="DesvEstandardMin" ColumnName="DesvEstandardMin" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_PromedioEvaluacion" FunctionName="BDEvaluacionModel.Store.sp_PromedioEvaluacion">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="BDEvaluacionModel.sp_PromedioEvaluacion_Result">
+                <ScalarProperty Name="IdNivelA" ColumnName="IdNivelA" />
+                <ScalarProperty Name="NivelA" ColumnName="NivelA" />
+                <ScalarProperty Name="OrdenNivelA" ColumnName="OrdenNivelA" />
+                <ScalarProperty Name="IdNivelB" ColumnName="IdNivelB" />
+                <ScalarProperty Name="NivelB" ColumnName="NivelB" />
+                <ScalarProperty Name="OrdenNivelB" ColumnName="OrdenNivelB" />
+                <ScalarProperty Name="NivelC" ColumnName="NivelC" />
+                <ScalarProperty Name="OrdenNivelC" ColumnName="OrdenNivelC" />
+                <ScalarProperty Name="Promedio" ColumnName="Promedio" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="PromocionMedicionCicloParticipante">
+            <EntityTypeMapping TypeName="BDEvaluacionModel.PromocionMedicionCicloParticipante">
+              <MappingFragment StoreEntitySet="PromocionMedicionCicloParticipante">
+                <ScalarProperty Name="ParticipanteCorreo" ColumnName="ParticipanteCorreo" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="DireccionVideo" ColumnName="DireccionVideo" />
+                <ScalarProperty Name="ParticipanteNroDoc" ColumnName="ParticipanteNroDoc" />
                 <ScalarProperty Name="EvaluacionMedicionID" ColumnName="EvaluacionMedicionID" />
-                <ScalarProperty Name="ParticipanteID" ColumnName="ParticipanteID" />
+                <ScalarProperty Name="EvaluacionCicloID" ColumnName="EvaluacionCicloID" />
                 <ScalarProperty Name="EvaluacionPromocionID" ColumnName="EvaluacionPromocionID" />
+                <ScalarProperty Name="PromocionMedicionParticipanteID" ColumnName="PromocionMedicionParticipanteID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
