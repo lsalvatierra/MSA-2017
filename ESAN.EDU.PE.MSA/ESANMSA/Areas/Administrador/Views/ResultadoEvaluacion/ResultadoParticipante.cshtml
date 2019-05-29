@@ -195,7 +195,7 @@
                 dataNivelValPromPares.push(listaNivelA[key].PromPares);
             }
             var chartData = {
-                type: "hbar",  // Specify your chart type here.
+                type: "hbullet",  // Specify your chart type here.
                 "plotarea": {
                     "adjust-layout": true,
                     "margin-right": "12%"
@@ -205,7 +205,10 @@
                 },
                 "plot": {
                     "value-box": {
-                        "text": "%v"
+                        "color": '#000',
+                        "placement": 'v',
+                        "fontSize": 18,
+                        "text": '&nbsp;&nbsp;&nbsp;&nbsp;[%v / %g]'
                     },
                     "tooltip": {
                         "text": "%v"
@@ -217,11 +220,14 @@
                 series: [  // Insert your series data here.
                     {
                         values: dataNivelValPromPersonal,
-                        "text": "Personal"
+                        "text": "Personal",
+                        "goals": [5, 3, 4, 3, 5, 6, 5, 7, 1],
+                        "goals": [4, 4, 1, 7, 1, 3, 3, 3, 5]
                     },
                     {
                         values: dataNivelValPromPares,
-                        "text": "Pares"
+                        "text": "Pares",
+                        "goals": [5,3,4,3,5,6,5,7,1]
                     }
                 ]
             };
@@ -233,7 +239,7 @@
             });
         </script>
         <br /><br />
-        <h3><strong>DESVIACIÓN ESTÁNDAR DE HABILIDADES DE TRABAJO EN EQUIPO</strong></h3>
+        <h3><strong>HABILIDADES DE TRABAJO EN EQUIPO</strong></h3>
         <table style="margin: 0 auto;" border="1">
             <thead>
                 <tr>
@@ -386,7 +392,7 @@
             });
         </script>
         <br /><br />
-        <h3><strong>DESVIACIÓN ESTÁNDAR DE HABILIDADES DE LIDERAZGO</strong></h3>
+        <h3><strong>HABILIDADES DE LIDERAZGO</strong></h3>
         <table style="margin: 0 auto;" border="1">
             <thead>
                 <tr>
@@ -495,7 +501,7 @@
             });
         </script>
         <br /><br />
-        <h3><strong>DESVIACIÓN ESTÁNDAR DE PRESENTACIÓN ORAL</strong></h3>
+        <h3><strong>PRESENTACIÓN ORAL</strong></h3>
         <table style="margin: 0 auto;" border="1">
             <thead>
                 <tr>
