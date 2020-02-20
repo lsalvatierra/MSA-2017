@@ -20,6 +20,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -193,6 +194,9 @@
     <Content Include="Content\timepicki\timepicki.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Rotativa\msvcp120.dll" />
+    <Content Include="Rotativa\msvcr120.dll" />
+    <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\Areas\Administrador\Promocion.js" />
     <Content Include="Scripts\Areas\Administrador\ResultadoEvaluacion\frmPromociones.js" />
     <Content Include="Scripts\Areas\Administrador\ResultadoEvaluacion\ResultadoParticipante.js" />
@@ -238,9 +242,9 @@
     <Content Include="Areas\Alumno\Views\Evaluacion\_PartialFinEvaluacion.cshtml" />
     <Content Include="Areas\Alumno\Views\Evaluacion\_PartialPorcentajeAvance.cshtml" />
     <Content Include="Areas\Alumno\Views\Evaluacion\_PartialSiguientePaginaEval.cshtml" />
-    <Content Include="App_Browsers\qt.browser" />
     <Content Include="Areas\Seguridad\Views\Acceso\Login.cshtml" />
     <Content Include="Areas\Administrador\Views\Link\EmailExterno.cshtml" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\PerfilMSA.pubxml" />
     <Content Include="Scripts\Datatable\images\Sorting icons.psd" />
     <None Include="Scripts\jquery\jquery-1.9.1.intellisense.js" />
