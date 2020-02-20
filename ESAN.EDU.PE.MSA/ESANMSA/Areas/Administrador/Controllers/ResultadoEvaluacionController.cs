@@ -47,9 +47,20 @@ namespace ESANMSA.Areas.Administrador.Controllers
         [HttpGet]
         public ActionResult ResultadoParticipante(int idEvaluacion, int idPromocion, int idParticipante,int idCiclo) 
         {
-            ViewBag.lstResultA = DAParticipante.ObtenerResultadoFinalxParticipante(idEvaluacion, 1, idPromocion, idCiclo, idParticipante).ToList();
-            ViewBag.lstResultB = DAParticipante.ObtenerResultadoFinalxParticipante(idEvaluacion, 2, idPromocion, idCiclo, idParticipante).ToList();
-            ViewBag.lstResultC = DAParticipante.ObtenerResultadoFinalxParticipante(idEvaluacion, 3, idPromocion, idCiclo, idParticipante).ToList();
+            string ExisteInfoReporte = "0";
+            List<PromedioEvaluacionxCicloNivel_Result> lstResultA = DAParticipante.ObtenerResultadoFinalxParticipante(idEvaluacion, 1, idPromocion, idCiclo, idParticipante).ToList();
+            List<PromedioEvaluacionxCicloNivel_Result> lstResultB = DAParticipante.ObtenerResultadoFinalxParticipante(idEvaluacion, 2, idPromocion, idCiclo, idParticipante).ToList();
+            List<PromedioEvaluacionxCicloNivel_Result> lstResultC = DAParticipante.ObtenerResultadoFinalxParticipante(idEvaluacion, 3, idPromocion, idCiclo, idParticipante).ToList();
+            if (lstResultA.Count > 0 && lstResultB.Count > 0 && lstResultC.Count > 0) {
+                ViewBag.UniversoA = lstResultA.FirstOrDefault().CantParticipantes.ToString();
+                ViewBag.UniversoB = lstResultB.FirstOrDefault().CantParticipantes.ToString();
+                ViewBag.UniversoC = lstResultC.FirstOrDefault().CantParticipantes.ToString();
+                ViewBag.lstResultA = lstResultA;
+                ViewBag.lstResultB = lstResultB;
+                ViewBag.lstResultC = lstResultC;
+                ExisteInfoReporte = "1";
+            }
+            ViewBag.ExisteInfoReporte = ExisteInfoReporte;
             ViewBag.objParticipante = DAParticipante.ObtenerParticipantexID(idParticipante);
             ViewBag.objEvaluacion = DAEvaluacion.ObtenerEvaluacion(idPromocion);
             return new Rotativa.ViewAsPdf("ResultadoParticipante")
